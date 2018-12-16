@@ -1,4 +1,4 @@
-# JDAC [![Discord](https://discordapp.com/api/guilds/184657525990359041/widget.png)](https://discord.gg/hprGMaM) [![Documentation](https://img.shields.io/badge/Docs-Commandler-blue.svg)](https://jdac.elypia.com/) [![GitLab Pipeline Status](https://gitlab.com/Elypia/JDAC/badges/master/pipeline.svg)](https://gitlab.com/Elypia/JDAC/commits/master) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/4756f0a78c104040b93c8df85cd9f9ff)](https://www.codacy.com/app/Elypia/Commandler?utm_source=gitlab.com&amp;utm_medium=referral&amp;utm_content=Elypia/Commandler&amp;utm_campaign=Badge_Grade) [![Codacy Badge](https://api.codacy.com/project/badge/Coverage/4756f0a78c104040b93c8df85cd9f9ff)](https://www.codacy.com/app/Elypia/Commandler?utm_source=gitlab.com&utm_medium=referral&utm_content=Elypia/Commandler&utm_campaign=Badge_Coverage)
+# JDAC [![Discord](https://discordapp.com/api/guilds/184657525990359041/widget.png)](https://discord.gg/hprGMaM) [![Documentation](https://img.shields.io/badge/Docs-Commandler-blue.svg)](https://jdac.elypia.com/) [![GitLab Pipeline Status](https://gitlab.com/Elypia/JDAC/badges/master/pipeline.svg)](https://gitlab.com/Elypia/JDAC/commits/master) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/552d6f7fd2b841ca95decfe5aa694dd0)](https://www.codacy.com/app/Elypia/JDAC?utm_source=gitlab.com&amp;utm_medium=referral&amp;utm_content=Elypia/JDAC&amp;utm_campaign=Badge_Grade) [![Codacy Badge](https://api.codacy.com/project/badge/Coverage/4756f0a78c104040b93c8df85cd9f9ff)](https://www.codacy.com/app/Elypia/Commandler?utm_source=gitlab.com&utm_medium=referral&utm_content=Elypia/Commandler&utm_campaign=Badge_Coverage)
 
 ## Importing
 ### [Gradle](https://gradle.org/)
@@ -64,9 +64,9 @@ public class Main {
 }
 ```
 > This created our `ExampleModule` class, and then adds it to our `ModulesContext` which is used by all Commandler libraries to manage modules. This alone allows commands to be performed, as well as documentation and website generation for your module.  
-
+>
 > The commands `ping!` and `Say` are accessible via `>ex ping` and `>ex say {text}` respectively. As `ping!` is a static command, it can also be accessed without specifying the module name, like `>ping`.  
-
+>
 > Parameters are parsed by Commandler, so they just have to be specified in method heads, not parsed. Parsing it done through parser objects which are defined for each type, JDAC provided a parser for all Discord entities by default but these can be overridden.
 
 ## Support
