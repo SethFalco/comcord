@@ -20,6 +20,7 @@ public @interface Channels {
     Class<? extends Payload>[] payload() default {};
 
     class Validator implements ConstraintValidator<Channels, JDACEvent> {
+
         private ChannelType[] types;
 
         @Override
