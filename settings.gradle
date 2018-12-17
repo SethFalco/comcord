@@ -1,4 +1,3 @@
 rootProject.name = "JDAC"
 
 include "core"
-include "logback-logger"

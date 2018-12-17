@@ -25,7 +25,7 @@ public class JDACDispatcher extends ListenerAdapter {
 
     @Override
     public void onMessageUpdate(MessageUpdateEvent event) {
-        boolean command = processor.isCommand(event, event.getMessage().getContentRaw()) == null;
+        boolean command = processor.isCommand(event, event.getMessage().getContentRaw());
 
         if (command || event.getAuthor().isBot())
             return;
