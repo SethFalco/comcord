@@ -40,9 +40,6 @@ public class JDACEvent extends CommandEvent<GenericMessageEvent, Message> {
 
     @Override
     public <T> Message send(T output) {
-        if (output instanceof String)
-            return send((String)output);
-
         Message message = builder.build(this, output);
         source.getChannel().sendMessage(message).queue();
         return message;

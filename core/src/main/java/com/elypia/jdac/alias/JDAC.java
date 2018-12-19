@@ -11,6 +11,8 @@ public class JDAC extends Commandler<GenericMessageEvent, Message> {
     public JDAC(Builder jdacBuilder) {
         super(jdacBuilder);
 
+        builder = new JDACMessageBuilder();
+
         parser.add(
             EmoteParser.class,
             GuildParser.class,
@@ -36,3 +38,4 @@ public class JDAC extends Commandler<GenericMessageEvent, Message> {
         }
     }
 }
+
