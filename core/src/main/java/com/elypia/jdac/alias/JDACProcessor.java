@@ -14,6 +14,6 @@ public class JDACProcessor extends CommandProcessor<GenericMessageEvent, Message
     @Override
     public JDACEvent process(Commandler<GenericMessageEvent, Message> commandler, GenericMessageEvent source, String content) {
         var event = super.process(commandler, source, content);
-        return new JDACEvent(event);
+        return (event != null) ? new JDACEvent(event) : null;
     }
 }
