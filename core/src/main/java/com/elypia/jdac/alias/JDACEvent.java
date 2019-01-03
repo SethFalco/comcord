@@ -1,15 +1,18 @@
 package com.elypia.jdac.alias;
 
+import com.elypia.commandler.*;
 import com.elypia.commandler.impl.CommandEvent;
-import com.elypia.commandler.interfaces.ICommandEvent;
-import net.dv8tion.jda.core.Permission;
+import net.dv8tion.jda.core.MessageBuilder;
+import net.dv8tion.jda.core.*;
 import net.dv8tion.jda.core.entities.*;
 import net.dv8tion.jda.core.events.message.*;
 
+import java.util.Map;
+
 public class JDACEvent extends CommandEvent<GenericMessageEvent, Message> {
 
-    public JDACEvent(ICommandEvent<GenericMessageEvent, Message> event) {
-        super(event.getCommandler(), event.getSource(), event.getInput());
+    public JDACEvent(Commandler<GenericMessageEvent, Message> commandler, GenericMessageEvent source, CommandInput input) {
+        super(commandler, source, input);
     }
 
     public MessageReceivedEvent asMessageRecieved() {
@@ -41,6 +44,14 @@ public class JDACEvent extends CommandEvent<GenericMessageEvent, Message> {
     @Override
     public <T> Message send(T output) {
         Message message = builder.build(this, output);
+        source.getChannel().sendMessage(message).queue();
+        return message;
+    }
+
+    @Override
+    public <T> Message send(String body, Map<String, T> params) {
+        String content = scripts.get(source, body, params);
+        Message message = new MessageBuilder(content).build();
         source.getChannel().sendMessage(message).queue();
         return message;
     }

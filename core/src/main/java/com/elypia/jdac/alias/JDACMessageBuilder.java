@@ -2,8 +2,8 @@ package com.elypia.jdac.alias;
 
 import com.elypia.commandler.MessageBuilder;
 import com.elypia.commandler.interfaces.ICommandEvent;
-import net.dv8tion.jda.core.Permission;
-import net.dv8tion.jda.core.entities.*;
+import com.elypia.jdac.JDACUtils;
+import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.events.message.GenericMessageEvent;
 
 import java.util.Objects;
@@ -17,18 +17,11 @@ public class JDACMessageBuilder extends MessageBuilder<Message> {
         JDACEvent jdacEvent = (JDACEvent)event;
         GenericMessageEvent source = jdacEvent.getSource();
 
-        if (!source.getChannelType().isGuild())
-            return builder.buildEmbed((JDACEvent)event, object);
+        if (JDACUtils.canSendEmbeds(source)) {
+            Message embed =  builder.buildEmbed((JDACEvent) event, object);
 
-        else {
-            TextChannel channel = source.getTextChannel();
-
-            if (source.getGuild().getSelfMember().hasPermission(channel, Permission.MESSAGE_EMBED_LINKS)) {
-                Message message =  builder.buildEmbed((JDACEvent) event, object);
-
-                if (message != null)
-                    return message;
-            }
+            if (embed != null)
+                return embed;
         }
 
         return (Message)builder.build(event, object);
