@@ -2,10 +2,9 @@ package com.elypia.jdac.alias;
 
 import com.elypia.commandler.*;
 import com.elypia.commandler.impl.CommandEvent;
-import net.dv8tion.jda.core.MessageBuilder;
-import net.dv8tion.jda.core.*;
-import net.dv8tion.jda.core.entities.*;
-import net.dv8tion.jda.core.events.message.*;
+import net.dv8tion.jda.api.*;
+import net.dv8tion.jda.api.entities.*;
+import net.dv8tion.jda.api.events.message.*;
 
 import java.util.Map;
 
@@ -52,7 +51,7 @@ public class JDACEvent extends CommandEvent<GenericMessageEvent, Message> {
     public <T> Message send(String body, Map<String, T> params) {
         String content = scripts.get(source, body, params);
         Message message = new MessageBuilder(content).build();
-        source.getChannel().sendMessage(message).queue();
+        source.getChannel().sendMessage(content).queue();
         return message;
     }
 }

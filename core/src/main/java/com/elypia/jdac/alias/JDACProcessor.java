@@ -3,8 +3,8 @@ package com.elypia.jdac.alias;
 import com.elypia.commandler.*;
 import com.elypia.commandler.impl.CommandProcessor;
 import com.elypia.commandler.interfaces.ICommandEvent;
-import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.events.message.GenericMessageEvent;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.events.message.GenericMessageEvent;
 
 public class JDACProcessor extends CommandProcessor<GenericMessageEvent, Message> {
 

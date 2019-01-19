@@ -4,8 +4,8 @@ import com.elypia.commandler.*;
 import com.elypia.commandler.interfaces.ICommandEvent;
 import com.elypia.commandler.metadata.ModuleData;
 import com.elypia.jdac.JDACUtils;
-import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.events.message.GenericMessageEvent;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.events.message.GenericMessageEvent;
 
 public class JDACHandler extends Handler<GenericMessageEvent, Message> {
 
@@ -16,7 +16,6 @@ public class JDACHandler extends Handler<GenericMessageEvent, Message> {
      * commands or obtain any static data.
      *
      * @param commandler Our parent Commandler class.
-     * @return Returns if the {@link #test()} for this module passed.
      */
     public JDACHandler(Commandler<GenericMessageEvent, Message> commandler) {
         super(commandler);

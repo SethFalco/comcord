@@ -2,8 +2,8 @@ package com.elypia.jdac.building;
 
 import com.elypia.commandler.annotations.Compatible;
 import com.elypia.jdac.alias.*;
-import net.dv8tion.jda.core.MessageBuilder;
-import net.dv8tion.jda.core.entities.*;
+import net.dv8tion.jda.api.MessageBuilder;
+import net.dv8tion.jda.api.entities.*;
 
 @Compatible(MessageEmbed.class)
 public class MessageEmbedBuilder implements IJDACBuilder<MessageEmbed> {

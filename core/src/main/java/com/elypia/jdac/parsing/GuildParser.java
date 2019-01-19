@@ -4,8 +4,8 @@ import com.elypia.commandler.annotations.Compatible;
 import com.elypia.commandler.metadata.ParamData;
 import com.elypia.jdac.Scope;
 import com.elypia.jdac.alias.*;
-import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 import java.util.*;
 

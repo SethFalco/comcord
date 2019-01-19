@@ -1,14 +1,14 @@
 package com.elypia.jdac.alias;
 
-import com.elypia.commandler.MessageBuilder;
+import com.elypia.commandler.ResponseBuilder;
 import com.elypia.commandler.interfaces.ICommandEvent;
 import com.elypia.jdac.JDACUtils;
-import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.events.message.GenericMessageEvent;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.events.message.GenericMessageEvent;
 
 import java.util.Objects;
 
-public class JDACMessageBuilder extends MessageBuilder<Message> {
+public class JDACResponseBuilder extends ResponseBuilder<Message> {
 
     @Override
     public Message build(ICommandEvent event, Object object) {

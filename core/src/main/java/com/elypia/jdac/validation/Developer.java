@@ -1,9 +1,8 @@
 package com.elypia.jdac.validation;
 
 import com.elypia.jdac.alias.JDACEvent;
-import net.dv8tion.jda.bot.JDABot;
-import net.dv8tion.jda.bot.entities.ApplicationInfo;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.entities.ApplicationInfo;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 import javax.validation.*;
 import java.lang.annotation.*;
@@ -28,9 +27,7 @@ public @interface Developer {
             MessageReceivedEvent source = (MessageReceivedEvent)value.getSource();
 
             if (ownerId == 0) {
-                JDABot bot = value.getSource().getJDA().asBot();
-                ApplicationInfo info = bot.getApplicationInfo().complete();
-
+                ApplicationInfo info = value.getSource().getJDA().getApplicationInfo().complete();
                 ownerId = info.getOwner().getIdLong();
             }
 

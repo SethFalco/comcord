@@ -1,7 +1,7 @@
 package com.elypia.jdac.validation;
 
 import com.elypia.jdac.alias.JDACEvent;
-import net.dv8tion.jda.core.entities.ChannelType;
+import net.dv8tion.jda.api.entities.ChannelType;
 
 import javax.validation.*;
 import java.lang.annotation.*;

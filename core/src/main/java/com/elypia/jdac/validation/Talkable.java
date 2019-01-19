@@ -1,6 +1,6 @@
 package com.elypia.jdac.validation;
 
-import net.dv8tion.jda.core.entities.TextChannel;
+import net.dv8tion.jda.api.entities.TextChannel;
 
 import javax.validation.*;
 import java.lang.annotation.*;

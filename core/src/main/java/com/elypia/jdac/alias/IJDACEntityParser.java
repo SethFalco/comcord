@@ -2,7 +2,7 @@ package com.elypia.jdac.alias;
 
 import com.elypia.commandler.metadata.ParamData;
 import com.elypia.jdac.*;
-import net.dv8tion.jda.core.entities.*;
+import net.dv8tion.jda.api.entities.*;
 
 import java.util.*;
 import java.util.function.Predicate;

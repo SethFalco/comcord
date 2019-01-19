@@ -1,7 +1,7 @@
 package com.elypia.jdac.alias;
 
 import com.elypia.commandler.interfaces.IBuilder;
-import net.dv8tion.jda.core.entities.Message;
+import net.dv8tion.jda.api.entities.Message;
 
 public interface IJDACBuilder<O> extends IBuilder<JDACEvent, O, Message> {
 

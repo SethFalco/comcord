@@ -133,7 +133,7 @@ subprojects { subproject ->
 
     dependencies {
         // JDA
-        implementation "net.dv8tion:JDA:3.8.1_447"
+        implementation "net.dv8tion:JDA:4.ALPHA.0_6"
 
         // Commandler
 //        implementation "com.elypia.commandler:core:3.0.0"

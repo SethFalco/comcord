@@ -1,9 +1,9 @@
 package com.elypia.jdac.validation;
 
 import com.elypia.jdac.alias.JDACEvent;
-import net.dv8tion.jda.core.Permission;
-import net.dv8tion.jda.core.entities.TextChannel;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 import javax.validation.*;
 import java.lang.annotation.*;

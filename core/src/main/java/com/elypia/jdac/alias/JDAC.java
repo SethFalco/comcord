@@ -3,15 +3,15 @@ package com.elypia.jdac.alias;
 import com.elypia.commandler.Commandler;
 import com.elypia.jdac.building.*;
 import com.elypia.jdac.parsing.*;
-import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.events.message.GenericMessageEvent;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.events.message.GenericMessageEvent;
 
 public class JDAC extends Commandler<GenericMessageEvent, Message> {
 
     public JDAC(Builder jdacBuilder) {
         super(jdacBuilder);
 
-        builder = new JDACMessageBuilder();
+        builder = new JDACResponseBuilder();
 
         parser.add(
             EmoteParser.class,

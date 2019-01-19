@@ -1,7 +1,7 @@
 package com.elypia.jdac.validation;
 
 import com.elypia.jdac.alias.JDACEvent;
-import net.dv8tion.jda.core.events.message.GenericMessageEvent;
+import net.dv8tion.jda.api.events.message.GenericMessageEvent;
 
 import javax.validation.*;
 import java.lang.annotation.*;
