@@ -1,6 +1,7 @@
 package com.elypia.jdac.alias;
 
 import com.elypia.commandler.Commandler;
+import com.elypia.jdac.JDACDispatcher;
 import com.elypia.jdac.building.*;
 import com.elypia.jdac.parsing.*;
 import net.dv8tion.jda.api.entities.Message;
@@ -29,7 +30,11 @@ public class JDAC extends Commandler<GenericMessageEvent, Message> {
         );
     }
 
-    public static class Builder extends Commandler.Builder<GenericMessageEvent, Message> {
+    public JDACDispatcher getDispatcher() {
+        return new JDACDispatcher(this);
+    }
+
+    public static class Builder extends Commandler.Builder<Builder, GenericMessageEvent, Message> {
 
         @Override
         public JDAC build() {
