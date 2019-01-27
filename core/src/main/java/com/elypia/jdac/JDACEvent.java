@@ -1,10 +1,15 @@
-package com.elypia.jdac.alias;
+package com.elypia.jdac;
 
-import com.elypia.commandler.*;
+import com.elypia.commandler.CommandInput;
+import com.elypia.commandler.Commandler;
 import com.elypia.commandler.impl.CommandEvent;
-import net.dv8tion.jda.api.*;
-import net.dv8tion.jda.api.entities.*;
-import net.dv8tion.jda.api.events.message.*;
+import net.dv8tion.jda.api.MessageBuilder;
+import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.events.message.GenericMessageEvent;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 import java.util.Map;
 

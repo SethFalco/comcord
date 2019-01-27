@@ -2,12 +2,16 @@ package com.elypia.jdac.parsing;
 
 import com.elypia.commandler.annotations.Compatible;
 import com.elypia.commandler.metadata.ParamData;
+import com.elypia.jdac.IJDACEntityParser;
+import com.elypia.jdac.JDACEvent;
 import com.elypia.jdac.Scope;
-import com.elypia.jdac.alias.*;
-import net.dv8tion.jda.api.entities.*;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Compatible(Role.class)

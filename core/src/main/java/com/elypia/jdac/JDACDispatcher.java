@@ -1,8 +1,8 @@
 package com.elypia.jdac;
 
-import com.elypia.jdac.alias.*;
 import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.events.message.*;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.MessageUpdateEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 public class JDACDispatcher extends ListenerAdapter {

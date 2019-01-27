@@ -1,4 +1,4 @@
-package com.elypia.jdac.alias;
+package com.elypia.jdac;
 
 import com.elypia.commandler.interfaces.IParser;
 

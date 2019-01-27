@@ -1,15 +1,19 @@
 package com.elypia.jdac.validation;
 
-import com.elypia.jdac.alias.JDACEvent;
+import com.elypia.jdac.JDACEvent;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
-import javax.validation.*;
+import javax.validation.Constraint;
+import javax.validation.ConstraintValidator;
+import javax.validation.ConstraintValidatorContext;
+import javax.validation.Payload;
 import java.lang.annotation.*;
 
 @Target({ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
+@Documented
 @Constraint(validatedBy = {Permissions.Validator.class})
 public @interface Permissions {
 

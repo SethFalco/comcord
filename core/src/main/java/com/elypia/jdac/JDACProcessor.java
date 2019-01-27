@@ -1,6 +1,7 @@
-package com.elypia.jdac.alias;
+package com.elypia.jdac;
 
-import com.elypia.commandler.*;
+import com.elypia.commandler.CommandInput;
+import com.elypia.commandler.Commandler;
 import com.elypia.commandler.impl.CommandProcessor;
 import com.elypia.commandler.interfaces.ICommandEvent;
 import net.dv8tion.jda.api.entities.Message;

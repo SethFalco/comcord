@@ -1,8 +1,7 @@
-package com.elypia.jdac.alias;
+package com.elypia.jdac;
 
 import com.elypia.commandler.ResponseBuilder;
 import com.elypia.commandler.interfaces.ICommandEvent;
-import com.elypia.jdac.JDACUtils;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.message.GenericMessageEvent;
 

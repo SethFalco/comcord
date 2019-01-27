@@ -1,14 +1,18 @@
 package com.elypia.jdac.validation;
 
-import com.elypia.jdac.alias.JDACEvent;
+import com.elypia.jdac.JDACEvent;
 import net.dv8tion.jda.api.entities.ApplicationInfo;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
-import javax.validation.*;
+import javax.validation.Constraint;
+import javax.validation.ConstraintValidator;
+import javax.validation.ConstraintValidatorContext;
+import javax.validation.Payload;
 import java.lang.annotation.*;
 
 @Target({ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
+@Documented
 @Constraint(validatedBy = {Developer.Validator.class})
 public @interface Developer {
 

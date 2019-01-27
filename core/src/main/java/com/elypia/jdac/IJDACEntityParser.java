@@ -1,10 +1,11 @@
-package com.elypia.jdac.alias;
+package com.elypia.jdac;
 
 import com.elypia.commandler.metadata.ParamData;
-import com.elypia.jdac.*;
-import net.dv8tion.jda.api.entities.*;
+import net.dv8tion.jda.api.entities.IMentionable;
+import net.dv8tion.jda.api.entities.ISnowflake;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.function.Predicate;
 
 public interface IJDACEntityParser<O> extends IJDACParser<O> {
