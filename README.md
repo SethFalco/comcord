@@ -1,31 +1,10 @@
-# JDAC [![Discord](https://discordapp.com/api/guilds/184657525990359041/widget.png)](https://discord.gg/hprGMaM) [![Documentation](https://img.shields.io/badge/Docs-Commandler-blue.svg)](https://jdac.elypia.com/) [![GitLab Pipeline Status](https://gitlab.com/Elypia/JDAC/badges/master/pipeline.svg)](https://gitlab.com/Elypia/JDAC/commits/master) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/552d6f7fd2b841ca95decfe5aa694dd0)](https://www.codacy.com/app/Elypia/JDAC?utm_source=gitlab.com&amp;utm_medium=referral&amp;utm_content=Elypia/JDAC&amp;utm_campaign=Badge_Grade) [![Codacy Badge](https://api.codacy.com/project/badge/Coverage/4756f0a78c104040b93c8df85cd9f9ff)](https://www.codacy.com/app/Elypia/Commandler?utm_source=gitlab.com&utm_medium=referral&utm_content=Elypia/Commandler&utm_campaign=Badge_Coverage)
+# Discord Commandler [![Discord][discord-members]][discord] [![Download][bintray-download]][bintray] [![Documentation][docs-shield]][docs] [![GitLab Pipeline Status][gitlab-build]][gitlab] [![Coverage][gitlab-coverage]][gitlab] 
+The [Gradle][gradle]/[Maven][maven] import string can be found at the Download badge above!
 
-## Importing
-### [Gradle](https://gradle.org/)
-```gradle
-implementation 'com.elypia.jdac:{ARTIFACT}:{VERSION}'
-```
-
-### [Maven](https://maven.apache.org/)
-```xml
-<dependency>
-  <groupId>com.elypia.jdac</groupId>
-  <artifactId>{ARTIFACT}</artifactId>
-  <version>{VERSION}</version>
-</dependency>
-```
-
-## **Artifacts**
-| Artifact         | Description                                                      |
-|------------------|------------------------------------------------------------------|
-| `core`           | Integration of Commandler with JDA for Discord command handling. |
-| `logback-logger` | A `logback` appender for logging to a Discord message channel.   |
+**Declaration: This library is a work in progress and is not considered stable _YET_ outside of internal use.**
 
 ## About
-JDAC is a set of utilities to aide in Discord bot development by providing tools, primiarly command handling through Commandler.  
-
-Commandler is a command handling framework which uses annotations to execute commands as well as parsers and builders
-for parameters and message types, an example could be as follows:
+Discord Commandler is an extension to Commandelr for integration with Discord.  
 
 ## Quick-Start
 **Main.java.**
@@ -33,16 +12,12 @@ for parameters and message types, an example could be as follows:
 public class Main {
     
     public static void main(String[] args) throws LoginException {
-        ModulesContext context = new ModulesContext();
-        context.addModules(ExampleModule.class);
-    
-        JDAC jdac = new JDAC.Builder()
-            .setContext(context)
-            .setPrefix(">")
-            .build();
+        ContextLoader loader = new ContextLoader(ExampleModule.class);
+        DiscordController controller = new DiscordController();
+        Commandler commandler = new Commandler(loader, controller);
     
         new JDABuilder("${TOKEN}")
-            .addEventListener(new JDACDispatcher(jdac))
+            .addEventListener(controller.getDispatcher())
             .build();
     }
     
@@ -70,6 +45,22 @@ public class Main {
 > Parameters are parsed by Commandler, so they just have to be specified in method heads, not parsed. Parsing it done through parser objects which are defined for each type, JDAC provided a parser for all Discord entities by default but these can be overridden.
 
 ## Support
-Should any problems occur, come visit us over on [Discord](https://discord.gg/hprGMaM)! We're always around and there are ample developers that would be willing to help; if it's a problem with the library itself then we'll make sure to get it sorted.
+Should any problems occur, come visit us over on [Discord][discord]! We're always around and there are
+ample developers that would be willing to help; if it's a problem with the library itself then we'll
+make sure to get it sorted.
 
-This project is _heavily_ relied on by [Alexis, the Discord bot](https://discordapp.com/oauth2/authorize?client_id=230716794212581376&scope=bot), our Discord bot.
+[discord]: https://discord.gg/hprGMaM "Discord Invite"
+[discord-members]: https://discordapp.com/api/guilds/184657525990359041/widget.png "Discord Shield"
+[bintray]: https://bintray.com/elypia/Commandler/core/_latestVersion "Bintray Latest Version"
+[bintray-download]: https://api.bintray.com/packages/elypia/Commandler/core/images/download.svg "Bintray Download Shield"
+[docs]: https://commandler.elypia.com/ "Commandler Documentation"
+[docs-shield]: https://img.shields.io/badge/Docs-Commandler-blue.svg "Commandler Documentation Shield"
+[gitlab]: https://gitlab.com/Elypia/commandler/commits/master "Repository on GitLab"
+[gitlab-build]: https://gitlab.com/Elypia/commandler/badges/master/pipeline.svg "GitLab Build Shield"
+[gitlab-coverage]: https://gitlab.com/Elypia/commandler/badges/master/coverage.svg "GitLab Coverage Shield"
+
+[gradle]: https://gradle.org/ "Depend via Gradle"
+[maven]: https://maven.apache.org/ "Depend via Maven"
+
+[elypia]: https://elypia.com/ "Elypia Homepage"
+[night-config]: https://github.com/TheElectronWill/Night-Config "GitHub Repo for Night-Config"

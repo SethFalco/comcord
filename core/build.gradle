@@ -1,0 +1,6 @@
+dependencies {
+    implementation files("/home/seth/Desktop/git/Elypia/commandler/core/build/libs/core-3.0.0.jar")
+
+    implementation "net.dv8tion:JDA:4.ALPHA.0_108"
+    implementation "org.apache.commons:commons-lang3:3.9"
+}

@@ -1,4 +1,8 @@
 rootProject.name = "JDAC"
 
+/** Library */
 include "core"
-include "logback-logging"
+include "logger"
+
+/** Example */
+include "example"
