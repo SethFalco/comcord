@@ -19,7 +19,7 @@ public class EmoteAdapter implements EntityAdapter<Emote> {
         MessageReceivedEvent source = (MessageReceivedEvent)event.getSource();
         Set<Emote> emotes = new HashSet<>(source.getMessage().getEmotes());
 
-        switch (getScope(data, Scope.MUTUAL)) {
+        switch (getScope(event, data, Scope.MUTUAL)) {
             case GLOBAL: {
                 emotes.addAll(source.getJDA().getEmotes());
                 break;

@@ -19,7 +19,7 @@ public class VoiceChannelAdapter implements EntityAdapter<VoiceChannel> {
         MessageReceivedEvent source = (MessageReceivedEvent)event.getSource();
         Collection<VoiceChannel> channels = new ArrayList<>();
 
-        switch (getScope(data, Scope.LOCAL)) {
+        switch (getScope(event, data, Scope.LOCAL)) {
             case GLOBAL: {
                 channels.addAll(source.getJDA().getVoiceChannels());
                 break;

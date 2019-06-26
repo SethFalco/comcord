@@ -92,7 +92,7 @@ configure(publishedProjects) {
     jar {
         manifest {
             attributes "Implementation-Title": this.name + project.path.replace(':', '-'),
-                    "Implementation-Version": version
+                       "Implementation-Version": version
         }
     }
 

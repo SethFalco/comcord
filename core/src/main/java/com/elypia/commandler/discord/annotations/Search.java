@@ -16,8 +16,13 @@ import java.lang.annotation.*;
 public @interface Search {
 
     /**
-     * @return The scope to search for.
+     * @return The scope to search by in a guild.
      */
-    Scope value();
+    Scope inGuild() default Scope.LOCAL;
+
+    /**
+     * @return The scope to search by when not in a guild.
+     */
+    Scope inPrivate() default Scope.MUTUAL;
 }
 

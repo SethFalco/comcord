@@ -19,7 +19,7 @@ public class UserAdapter implements EntityAdapter<User> {
         MessageReceivedEvent source = (MessageReceivedEvent)event.getSource();
         Collection<User> users = new ArrayList<>();
 
-        switch (getScope(data, Scope.LOCAL)) {
+        switch (getScope(event, data, Scope.LOCAL)) {
             case GLOBAL: {
                 users.addAll(source.getJDA().getUsers());
                 break;

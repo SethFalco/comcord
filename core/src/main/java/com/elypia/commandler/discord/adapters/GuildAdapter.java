@@ -18,7 +18,7 @@ public class GuildAdapter implements EntityAdapter<Guild> {
         MessageReceivedEvent source = (MessageReceivedEvent)event.getSource();
         Collection<Guild> guilds = new ArrayList<>();
 
-        switch (getScope(data, Scope.MUTUAL)) {
+        switch (getScope(event, data, Scope.MUTUAL)) {
             case GLOBAL: {
                 guilds.addAll(source.getJDA().getGuilds());
                 break;

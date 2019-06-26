@@ -19,7 +19,7 @@ public class RoleAdapter implements EntityAdapter<Role> {
         MessageReceivedEvent source = (MessageReceivedEvent)event.getSource();
         Collection<Role> roles = new ArrayList<>();
 
-        switch (getScope(data, Scope.LOCAL)) {
+        switch (getScope(event, data, Scope.LOCAL)) {
             case GLOBAL: {
                 roles.addAll(source.getJDA().getRoles());
                 break;

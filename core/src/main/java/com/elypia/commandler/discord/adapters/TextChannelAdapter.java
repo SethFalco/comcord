@@ -19,7 +19,7 @@ public class TextChannelAdapter implements EntityAdapter<TextChannel> {
         MessageReceivedEvent source = (MessageReceivedEvent)event.getSource();
         Collection<TextChannel> channels = new ArrayList<>();
 
-        switch (getScope(data, Scope.LOCAL)) {
+        switch (getScope(event, data, Scope.LOCAL)) {
             case GLOBAL: {
                 channels.addAll(source.getJDA().getTextChannels());
                 break;
