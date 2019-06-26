@@ -5,7 +5,6 @@ plugins {
 def publishedProjects = [
     /** Library */
     project(":core"),
-    project(":logger")
 ]
 
 def applicationProjects = [

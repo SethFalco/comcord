@@ -1,8 +1,6 @@
 # Discord Commandler [![Discord][discord-members]][discord] [![Download][bintray-download]][bintray] [![Documentation][docs-shield]][docs] [![GitLab Pipeline Status][gitlab-build]][gitlab] [![Coverage][gitlab-coverage]][gitlab] 
 The [Gradle][gradle]/[Maven][maven] import string can be found at the Download badge above!
 
-**Declaration: This library is a work in progress and is not considered stable _YET_ outside of internal use.**
-
 ## About
 Discord Commandler is an extension to Commandelr for integration with Discord.  
 
