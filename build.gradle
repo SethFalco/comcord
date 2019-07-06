@@ -7,18 +7,13 @@ def publishedProjects = [
     project(":core"),
 ]
 
-def applicationProjects = [
-    /** Example */
-    project(":example")
-]
-
 allprojects() {
     apply plugin: "idea"
     apply plugin: "jacoco"
 
-    group = "com.elypia.discordcommandler"
+    group = "com.elypia.cmdlrdiscord"
     version = "2.0.0"
-    description = "Brining Commandler and Discord together."
+    description = "Bringing Commandler and Discord together."
 
     ext {
         repoUrl = "https://gitlab.com/Elypia/discord-commandler"
@@ -29,6 +24,7 @@ allprojects() {
 
     repositories {
         jcenter()
+        mavenLocal()
     }
 
     jacoco {
@@ -38,13 +34,10 @@ allprojects() {
 
 configure(publishedProjects) {
     apply plugin: "java-library"
-}
+    apply plugin: "maven-publish"
+    apply plugin: "com.jfrog.bintray"
+    apply plugin: "maven"
 
-configure(applicationProjects) {
-    apply plugin: "java"
-}
-
-configure(publishedProjects + applicationProjects) {
     sourceCompatibility = 11
     targetCompatibility = 11
 
@@ -54,16 +47,9 @@ configure(publishedProjects + applicationProjects) {
         // Logging
         implementation "org.slf4j:slf4j-api:1.7.26"
         testRuntimeOnly "ch.qos.logback:logback-classic:1.2.3"
-    }
-}
 
-configure(publishedProjects) {
-    apply plugin: "maven-publish"
-    apply plugin: "com.jfrog.bintray"
-
-    dependencies {
         // Testing
-        testImplementation "org.junit.jupiter:junit-jupiter:5.4.2"
+        testImplementation "org.junit.jupiter:junit-jupiter:5.5.0"
         testImplementation "org.mockito:mockito-core:2.28.2"
     }
 
@@ -108,7 +94,7 @@ configure(publishedProjects) {
         javadoc {
             options {
                 links += [
-                        "https://docs.oracle.com/en/java/javase/12/docs/api/"
+                    "https://docs.oracle.com/en/java/javase/12/docs/api/"
                 ]
             }
         }

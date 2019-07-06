@@ -1,7 +1,4 @@
-rootProject.name = "Discord Commandler"
+rootProject.name = "cmdlr-discord"
 
 /** Library */
 include "core"
-
-/** Example */
-include "example"
