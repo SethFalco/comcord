@@ -2,45 +2,58 @@
 The [Gradle][gradle]/[Maven][maven] import string can be found at the Download badge above!
 
 ## About
-Discord Commandler is an extension to Commandelr for integration with Discord.  
+Discord Commandler is an extension to Commandler for integration with Discord.  
 
 ## Quick-Start
-**Main.java.**
+**Main.java**
 ```java
 public class Main {
     
     public static void main(String[] args) throws LoginException {
-        ContextLoader loader = new ContextLoader(ExampleModule.class);
-        DiscordController controller = new DiscordController();
-        Commandler commandler = new Commandler(loader, controller);
-    
-        new JDABuilder("${TOKEN}")
+        AnnotationLoader loader = new AnnotationLoader(ExampleModule.class);
+        Context context = new ContextLoader(loader).load().build();
+        Commandler commandler = new Commandler.Builder(context)
+            .build();
+        
+        DispatcherManager dispatcherManager = commandler.getDispatcherManager();
+        dispatcherManager.addDispatcher(new CommandDispatcher(commandler, ">"));
+    		
+        JDA jda = new JDABuilder("${TOKEN}")
             .addEventListener(controller.getDispatcher())
             .build();
-    }
-    
-    @Module(id = "Example", aliases = {"example", "ex"}, help = "Trying to show off Commandler!")
-    public static class ExampleModule extends JDACHandler {
-    
-        @Static
-        @Command(id = "ping!", aliases = "ping", help = "Check if I'm alive.")
-        public String ping() {
-            return "pong!";
-        }
-    
-        @Command(id = "Say", aliases = "say", help = "Repeat after you.")
-        @Param(id = "text", help = "The text to repeat.")
-        public String say(String text) {
-            return text;
-        }
+
+        new DiscordController(dispatcherManager, jda);
     }
 }
 ```
-> This created our `ExampleModule` class, and then adds it to our `ModulesContext` which is used by all Commandler libraries to manage modules. This alone allows commands to be performed, as well as documentation and website generation for your module.  
+
+**ExampleModule.java**
+```java
+@Module(name = "Example", aliases = {"example", "ex"}, help = "Trying to show off Commandler!")
+public class ExampleModule extends JDACHandler {
+
+    @Static
+    @Command(name = "ping!", aliases = "ping", help = "Check if I'm alive.")
+    public String ping() {
+        return "pong!";
+    }
+
+    @Command(name = "Say", aliases = "say", help = "Repeat after you.")
+    public String say(@Param(name = "text", help = "The text to repeat.") String text) {
+        return text;
+    }
+}
+```
+> This creates the `ExampleModule`, and then adds it to our `Context` which is used
+> by all Commandler libraries to manage modules. This alone allows commands to be 
+> performed, as well as documentation and website generation for your module.  
 >
-> The commands `ping!` and `Say` are accessible via `>ex ping` and `>ex say {text}` respectively. As `ping!` is a static command, it can also be accessed without specifying the module name, like `>ping`.  
+> The commands `ping!` and `Say` are accessible via `>ex ping` and `>ex say {text}`
+> respectively. As `ping!` is a static command, it can also be accessed without specifying
+> the module name, like `>ping`.  
 >
-> Parameters are parsed by Commandler, so they just have to be specified in method heads, not parsed. Parsing it done through parser objects which are defined for each type, JDAC provided a parser for all Discord entities by default but these can be overridden.
+> Parameters are adapted by Commandler; they just have to be specified in method
+> signatures and Commandler can do the rest.
 
 ## Support
 Should any problems occur, come visit us over on [Discord][discord]! We're always around and there are
