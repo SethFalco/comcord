@@ -62,13 +62,13 @@ make sure to get it sorted.
 
 [discord]: https://discord.gg/hprGMaM "Discord Invite"
 [discord-members]: https://discordapp.com/api/guilds/184657525990359041/widget.png "Discord Shield"
-[bintray]: https://bintray.com/elypia/Commandler/core/_latestVersion "Bintray Latest Version"
-[bintray-download]: https://api.bintray.com/packages/elypia/Commandler/core/images/download.svg "Bintray Download Shield"
+[bintray]: https://bintray.com/elypia/discord-commandler/core/_latestVersion "Bintray Latest Version"
+[bintray-download]: https://api.bintray.com/packages/elypia/discord-commandler/core/images/download.svg "Bintray Download Shield"
 [docs]: https://commandler.elypia.com/ "Commandler Documentation"
 [docs-shield]: https://img.shields.io/badge/Docs-Commandler-blue.svg "Commandler Documentation Shield"
-[gitlab]: https://gitlab.com/Elypia/commandler/commits/master "Repository on GitLab"
-[gitlab-build]: https://gitlab.com/Elypia/commandler/badges/master/pipeline.svg "GitLab Build Shield"
-[gitlab-coverage]: https://gitlab.com/Elypia/commandler/badges/master/coverage.svg "GitLab Coverage Shield"
+[gitlab]: https://gitlab.com/Elypia/discord-commandler/commits/master "Repository on GitLab"
+[gitlab-build]: https://gitlab.com/Elypia/discord-commandler/badges/master/pipeline.svg "GitLab Build Shield"
+[gitlab-coverage]: https://gitlab.com/Elypia/discord-commandler/badges/master/coverage.svg "GitLab Coverage Shield"
 
 [gradle]: https://gradle.org/ "Depend via Gradle"
 [maven]: https://maven.apache.org/ "Depend via Maven"
