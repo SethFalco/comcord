@@ -1,6 +1,5 @@
 dependencies {
     api "com.elypia.commandler:core:4.0.0"
 
-    implementation "net.dv8tion:JDA:4.BETA.0_19"
-    implementation "org.apache.commons:commons-lang3:3.9"
+    api "net.dv8tion:JDA:4.BETA.0_19"
 }
