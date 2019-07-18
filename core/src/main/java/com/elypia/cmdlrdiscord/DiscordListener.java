@@ -1,6 +1,5 @@
 package com.elypia.cmdlrdiscord;
 
-import com.elypia.commandler.interfaces.Controller;
 import com.elypia.commandler.managers.DispatcherManager;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.message.*;
@@ -12,9 +11,9 @@ public class DiscordListener extends ListenerAdapter {
     private static final Logger logger = LoggerFactory.getLogger(DiscordListener.class);
 
     private final DispatcherManager dispatcher;
-    private final Controller controller;
+    private final DiscordController controller;
 
-    public DiscordListener(final DispatcherManager dispatcher, Controller controller) {
+    public DiscordListener(final DispatcherManager dispatcher, DiscordController controller) {
         this.dispatcher = dispatcher;
         this.controller = controller;
     }
@@ -26,10 +25,10 @@ public class DiscordListener extends ListenerAdapter {
 
         String content = event.getMessage().getContentRaw();
 
-        Object object = dispatcher.dispatch(controller, event, content);
+        Message message = dispatcher.dispatch(controller, event, content);
 
-        if (object != null)
-            event.getChannel().sendMessage((Message)object).queue();
+        if (message != null)
+            event.getChannel().sendMessage(message).queue();
     }
 
     @Override
@@ -43,12 +42,12 @@ public class DiscordListener extends ListenerAdapter {
 
         event.getChannel().getHistoryAfter(updatedMessage.getIdLong(), 1).queue(history -> {
             if (history.isEmpty())
-                event.getChannel().sendMessage((Message)dispatcher.dispatch(controller, event, content)).queue();
+                event.getChannel().sendMessage(dispatcher.dispatch(controller, event, content)).queue();
             else {
                 Message nextMessage = history.getRetrievedHistory().get(0);
 
                 if (nextMessage.getAuthor().getIdLong() == event.getJDA().getSelfUser().getIdLong())
-                    nextMessage.editMessage((Message)dispatcher.dispatch(controller, event, content)).queue();
+                    nextMessage.editMessage(dispatcher.dispatch(controller, event, content)).queue();
             }
         });
     }

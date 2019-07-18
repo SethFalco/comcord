@@ -11,11 +11,13 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import java.util.*;
 import java.util.stream.Collectors;
 
+// TODO: Make a way to specify "all" as a list argument.
+// TODO: Make a way that adapters can return a list of many arguments.
 @Adapter(Emote.class)
 public class EmoteAdapter implements EntityAdapter<Emote> {
 
     @Override
-    public Emote adapt(String input, Class<? extends Emote> type, MetaParam data, CommandlerEvent<?> event) {
+    public Emote adapt(String input, Class<? extends Emote> type, MetaParam data, CommandlerEvent<?, ?> event) {
         MessageReceivedEvent source = (MessageReceivedEvent)event.getSource();
         Set<Emote> emotes = new HashSet<>(source.getMessage().getEmotes());
 

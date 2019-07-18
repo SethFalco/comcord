@@ -16,10 +16,10 @@ public @interface Nsfw {
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 
-    class Validator implements ConstraintValidator<Nsfw, CommandlerEvent<?>> {
+    class Validator implements ConstraintValidator<Nsfw, CommandlerEvent<?, ?>> {
 
         @Override
-        public boolean isValid(CommandlerEvent<?> value, ConstraintValidatorContext context) {
+        public boolean isValid(CommandlerEvent<?, ?> value, ConstraintValidatorContext context) {
             GenericMessageEvent source = (GenericMessageEvent)value.getSource();
             return !source.getChannelType().isGuild() || source.getTextChannel().isNSFW();
         }

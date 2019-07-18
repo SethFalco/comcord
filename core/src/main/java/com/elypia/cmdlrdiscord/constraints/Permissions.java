@@ -28,7 +28,7 @@ public @interface Permissions {
      */
     boolean user() default true;
 
-    class Validator implements ConstraintValidator<Permissions, CommandlerEvent<?>> {
+    class Validator implements ConstraintValidator<Permissions, CommandlerEvent<?, ?>> {
 
         private Permission[] permissions;
         private boolean user;
@@ -40,7 +40,7 @@ public @interface Permissions {
         }
 
         @Override
-        public boolean isValid(CommandlerEvent<?> value, ConstraintValidatorContext context) {
+        public boolean isValid(CommandlerEvent<?, ?> value, ConstraintValidatorContext context) {
             MessageReceivedEvent source = (MessageReceivedEvent)value.getSource();
 
             if (!source.getChannelType().isGuild())

@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 public class VoiceChannelAdapter implements EntityAdapter<VoiceChannel> {
 
     @Override
-    public VoiceChannel adapt(String input, Class<? extends VoiceChannel> type, MetaParam data, CommandlerEvent<?> event) {
+    public VoiceChannel adapt(String input, Class<? extends VoiceChannel> type, MetaParam data, CommandlerEvent<?, ?> event) {
         MessageReceivedEvent source = (MessageReceivedEvent)event.getSource();
         Collection<VoiceChannel> channels = new ArrayList<>();
 

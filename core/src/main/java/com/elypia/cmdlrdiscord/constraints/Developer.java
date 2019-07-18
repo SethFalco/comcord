@@ -17,12 +17,12 @@ public @interface Developer {
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 
-    class Validator implements ConstraintValidator<Developer, CommandlerEvent<?>> {
+    class Validator implements ConstraintValidator<Developer, CommandlerEvent<?, ?>> {
 
         private static long ownerId;
 
         @Override
-        public boolean isValid(CommandlerEvent<?> value, ConstraintValidatorContext context) {
+        public boolean isValid(CommandlerEvent<?, ?> value, ConstraintValidatorContext context) {
             MessageReceivedEvent source = (MessageReceivedEvent)value.getSource();
 
             if (ownerId == 0) {

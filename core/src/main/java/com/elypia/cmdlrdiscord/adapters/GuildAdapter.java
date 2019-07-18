@@ -14,7 +14,7 @@ import java.util.*;
 public class GuildAdapter implements EntityAdapter<Guild> {
 
     @Override
-    public Guild adapt(String input, Class<? extends Guild> type, MetaParam data, CommandlerEvent<?> event) {
+    public Guild adapt(String input, Class<? extends Guild> type, MetaParam data, CommandlerEvent<?, ?> event) {
         MessageReceivedEvent source = (MessageReceivedEvent)event.getSource();
         Collection<Guild> guilds = new ArrayList<>();
 

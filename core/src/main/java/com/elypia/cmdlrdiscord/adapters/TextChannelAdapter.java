@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 public class TextChannelAdapter implements EntityAdapter<TextChannel> {
 
     @Override
-    public TextChannel adapt(String input, Class<? extends TextChannel> type, MetaParam data, CommandlerEvent<?> event) {
+    public TextChannel adapt(String input, Class<? extends TextChannel> type, MetaParam data, CommandlerEvent<?, ?> event) {
         MessageReceivedEvent source = (MessageReceivedEvent)event.getSource();
         Collection<TextChannel> channels = new ArrayList<>();
 

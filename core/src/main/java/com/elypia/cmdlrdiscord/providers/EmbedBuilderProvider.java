@@ -11,7 +11,7 @@ import net.dv8tion.jda.api.events.message.GenericMessageEvent;
 public class EmbedBuilderProvider implements DiscordProvider<EmbedBuilder> {
 
     @Override
-    public Message buildMessage(CommandlerEvent<?> event, EmbedBuilder output) {
+    public Message buildMessage(CommandlerEvent<?, ?> event, EmbedBuilder output) {
         GenericMessageEvent source = (GenericMessageEvent)event.getSource();
 
         if (source.getChannelType().isGuild())

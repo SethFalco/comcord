@@ -19,7 +19,7 @@ public @interface Channels {
 
     ChannelType[] value();
 
-    class Validator implements ConstraintValidator<Channels, CommandlerEvent<?>> {
+    class Validator implements ConstraintValidator<Channels, CommandlerEvent<?, ?>> {
 
         private ChannelType[] types;
 
@@ -29,7 +29,7 @@ public @interface Channels {
         }
 
         @Override
-        public boolean isValid(CommandlerEvent<?> value, ConstraintValidatorContext context) {
+        public boolean isValid(CommandlerEvent<?, ?> value, ConstraintValidatorContext context) {
             ChannelType type = ((GenericMessageEvent)value.getSource()).getChannelType();
 
             for (ChannelType channelType : types) {

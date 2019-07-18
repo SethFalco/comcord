@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 public class RoleAdapter implements EntityAdapter<Role> {
 
     @Override
-    public Role adapt(String input, Class<? extends Role> type, MetaParam data, CommandlerEvent<?> event) {
+    public Role adapt(String input, Class<? extends Role> type, MetaParam data, CommandlerEvent<?, ?> event) {
         MessageReceivedEvent source = (MessageReceivedEvent)event.getSource();
         Collection<Role> roles = new ArrayList<>();
 

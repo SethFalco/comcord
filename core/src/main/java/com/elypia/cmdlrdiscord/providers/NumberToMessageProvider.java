@@ -24,7 +24,7 @@ public class NumberToMessageProvider implements ResponseProvider<Number, Message
     }
 
     @Override
-    public Message provide(CommandlerEvent<?> event, Number output) {
+    public Message provide(CommandlerEvent<?, Message> event, Number output) {
         return new MessageBuilder(format.format(output)).build();
     }
 }

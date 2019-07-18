@@ -11,7 +11,7 @@ import java.util.Objects;
 public interface DiscordProvider<O> extends ResponseProvider<O, Message> {
 
     @Override
-    default Message provide(CommandlerEvent<?> event, O output) {
+    default Message provide(CommandlerEvent<?, Message> event, O output) {
         Objects.requireNonNull(output);
         GenericMessageEvent source = (GenericMessageEvent)event.getSource();
 
@@ -25,9 +25,9 @@ public interface DiscordProvider<O> extends ResponseProvider<O, Message> {
         return buildMessage(event, output);
     }
 
-    Message buildMessage(CommandlerEvent<?> event, O output);
+    Message buildMessage(CommandlerEvent<?, ?> event, O output);
 
-    default Message buildEmbed(CommandlerEvent<?> event, O output) {
+    default Message buildEmbed(CommandlerEvent<?, ?> event, O output) {
         return null;
     }
 

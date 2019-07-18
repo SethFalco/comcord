@@ -12,7 +12,7 @@ import java.net.URL;
 public class MiscToMessageProvider implements ResponseProvider<Object, Message> {
 
     @Override
-    public Message provide(CommandlerEvent<?> event, Object output) {
+    public Message provide(CommandlerEvent<?, Message> event, Object output) {
         return new MessageBuilder(output.toString()).build();
     }
 }

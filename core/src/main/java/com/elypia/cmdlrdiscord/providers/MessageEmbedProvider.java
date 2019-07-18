@@ -10,7 +10,7 @@ import net.dv8tion.jda.api.entities.*;
 public class MessageEmbedProvider implements DiscordProvider<MessageEmbed> {
 
     @Override
-    public Message buildMessage(CommandlerEvent<?> event, MessageEmbed output) {
+    public Message buildMessage(CommandlerEvent<?, ?> event, MessageEmbed output) {
         return new MessageBuilder(output).build();
     }
 }

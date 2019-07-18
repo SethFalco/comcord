@@ -18,10 +18,10 @@ public @interface Elevated {
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 
-    class Validator implements ConstraintValidator<Elevated, CommandlerEvent<?>> {
+    class Validator implements ConstraintValidator<Elevated, CommandlerEvent<?, ?>> {
 
         @Override
-        public boolean isValid(CommandlerEvent<?> value, ConstraintValidatorContext context) {
+        public boolean isValid(CommandlerEvent<?, ?> value, ConstraintValidatorContext context) {
             MessageReceivedEvent source = (MessageReceivedEvent)value.getSource();
 
             if (!source.getChannelType().isGuild())

@@ -13,9 +13,9 @@ import java.util.function.Predicate;
 
 public interface EntityAdapter<O> extends ParamAdapter<O> {
 
-    O adapt(String input, Class<? extends O> type, MetaParam data, CommandlerEvent<?> event);
+    O adapt(String input, Class<? extends O> type, MetaParam data, CommandlerEvent<?, ?> event);
 
-    default Scope getScope(CommandlerEvent<?> event, MetaParam data, Scope defaultScope) {
+    default Scope getScope(CommandlerEvent<?, ?> event, MetaParam data, Scope defaultScope) {
         Scoped scoped = data.getAnnotatedElement().getAnnotation(Scoped.class);
 
         if (scoped == null)

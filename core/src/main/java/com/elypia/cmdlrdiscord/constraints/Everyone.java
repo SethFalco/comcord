@@ -21,10 +21,10 @@ public @interface Everyone {
 
     class Validator implements ConstraintValidator<Everyone, String> {
 
-        private CommandlerEvent<?> event;
+        private CommandlerEvent<?, ?> event;
 
         @Inject
-        public Validator(CommandlerEvent<?> event) {
+        public Validator(CommandlerEvent<?, ?> event) {
             this.event = event;
         }
 

@@ -14,8 +14,13 @@ import java.util.stream.Collectors;
 @Adapter(User.class)
 public class UserAdapter implements EntityAdapter<User> {
 
+    // TODO: Accomodate MessageUpdateEvent
+    // TODO: Assumes you are in a guild/text channel
+    // TODO: Check effective name
+    // TODO: Empty quotes doesn't parse correctly
+    // TODO: CommandlerEvent is not being injected @Everyone
     @Override
-    public User adapt(String input, Class<? extends User> type, MetaParam data, CommandlerEvent<?> event) {
+    public User adapt(String input, Class<? extends User> type, MetaParam data, CommandlerEvent<?, ?> event) {
         MessageReceivedEvent source = (MessageReceivedEvent)event.getSource();
         Collection<User> users = new ArrayList<>();
 
@@ -35,7 +40,7 @@ public class UserAdapter implements EntityAdapter<User> {
             }
             case LOCAL: {
                 users.addAll(source.getGuild().getMembers().parallelStream()
-                        .map(Member::getUser).collect(Collectors.toSet()));
+                    .map(Member::getUser).collect(Collectors.toSet()));
                 break;
             }
             default: {
@@ -44,7 +49,7 @@ public class UserAdapter implements EntityAdapter<User> {
         }
 
         return filter(users, type, input, role ->
-            role.getName().equalsIgnoreCase(input)
+            role.getName().equalsIgnoreCase(input) || ("<@!" + role.getId() + ">").equals(input)
         );
     }
 }
