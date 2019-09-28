@@ -14,7 +14,11 @@
  * limitations under the License.
  */
 
-rootProject.name = "comcord"
+package org.elypia.comcord.adapters;
 
-/** Library */
-include "core"
+/**
+ * @author seth@elypia.org (Syed Shah)
+ */
+public class EmoteAdapterTest {
+
+}

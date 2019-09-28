@@ -14,7 +14,24 @@
  * limitations under the License.
  */
 
-rootProject.name = "comcord"
+package org.elypia.comcord;
 
-/** Library */
-include "core"
+import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.entities.Message;
+import org.elypia.commandler.interfaces.Controller;
+import org.elypia.commandler.managers.DispatcherManager;
+
+/**
+ * @author seth@elypia.org (Syed Shah)
+ */
+public class DiscordIntegration implements Controller<Message> {
+
+    public DiscordIntegration(DispatcherManager dispatcher, JDA jda) {
+        jda.addEventListener(new DiscordListener(dispatcher, this));
+    }
+
+    @Override
+    public Class<Message> getMessageType() {
+        return Message.class;
+    }
+}

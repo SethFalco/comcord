@@ -1,8 +1,8 @@
-# Discord Commandler [![Discord][discord-members]][discord] [![Download][bintray-download]][bintray] [![Documentation][docs-shield]][docs] [![GitLab Pipeline Status][gitlab-build]][gitlab] [![Coverage][gitlab-coverage]][gitlab] 
+# Comcord [![Discord][discord-members]][discord] [![Download][bintray-download]][bintray] [![Documentation][docs-shield]][docs] [![GitLab Pipeline Status][gitlab-build]][gitlab] [![Coverage][gitlab-coverage]][gitlab] 
 The [Gradle][gradle]/[Maven][maven] import string can be found at the Download badge above!
 
 ## About
-Discord Commandler is an extension to Commandler for integration with Discord.  
+Comcord (**Com**mandler for Dis**cord**) is an extension to Commandler for integration with Discord.  
 
 ## Quick-Start
 **Main.java**
@@ -29,17 +29,19 @@ public class Main {
 
 **ExampleModule.java**
 ```java
-@Module(name = "Example", aliases = {"example", "ex"}, help = "Trying to show off Commandler!")
-public class ExampleModule extends JDACHandler {
+@Controller @Aliases({"example", "ex"})
+@Help(name = "Example", help = "Trying to show off Commandler!")
+public class ExampleModule extends CommandController {
 
-    @Static
-    @Command(name = "ping!", aliases = "ping", help = "Check if I'm alive.")
+    @Static @Control @Aliases("ping")
+    @Help(name = "ping!", help = "Check if I'm alive.")
     public String ping() {
         return "pong!";
     }
-
-    @Command(name = "Say", aliases = "say", help = "Repeat after you.")
-    public String say(@Param(name = "text", help = "The text to repeat.") String text) {
+    
+    @Control @Aliases("say")
+    @Help(name = "Say", help = "Repeat after you.")
+    public String say(@Param @Help(name = "text", help = "The text to repeat.") String text) {
         return text;
     }
 }
@@ -62,16 +64,15 @@ make sure to get it sorted.
 
 [discord]: https://discord.gg/hprGMaM "Discord Invite"
 [discord-members]: https://discordapp.com/api/guilds/184657525990359041/widget.png "Discord Shield"
-[bintray]: https://bintray.com/elypia/discord-commandler/core/_latestVersion "Bintray Latest Version"
-[bintray-download]: https://api.bintray.com/packages/elypia/discord-commandler/core/images/download.svg "Bintray Download Shield"
-[docs]: https://commandler.elypia.com/ "Commandler Documentation"
+[bintray]: https://bintray.com/elypia/comcord/core/_latestVersion "Bintray Latest Version"
+[bintray-download]: https://api.bintray.com/packages/elypia/comcord/core/images/download.svg "Bintray Download Shield"
+[docs]: https://commandler.elypia.org/ "Commandler Documentation"
 [docs-shield]: https://img.shields.io/badge/Docs-Commandler-blue.svg "Commandler Documentation Shield"
-[gitlab]: https://gitlab.com/Elypia/discord-commandler/commits/master "Repository on GitLab"
-[gitlab-build]: https://gitlab.com/Elypia/discord-commandler/badges/master/pipeline.svg "GitLab Build Shield"
-[gitlab-coverage]: https://gitlab.com/Elypia/discord-commandler/badges/master/coverage.svg "GitLab Coverage Shield"
+[gitlab]: https://gitlab.com/Elypia/comcord/commits/master "Repository on GitLab"
+[gitlab-build]: https://gitlab.com/Elypia/comcord/badges/master/pipeline.svg "GitLab Build Shield"
+[gitlab-coverage]: https://gitlab.com/Elypia/comcord/badges/master/coverage.svg "GitLab Coverage Shield"
 
 [gradle]: https://gradle.org/ "Depend via Gradle"
 [maven]: https://maven.apache.org/ "Depend via Maven"
 
-[elypia]: https://elypia.com/ "Elypia Homepage"
-[night-config]: https://github.com/TheElectronWill/Night-Config "GitHub Repo for Night-Config"
+[elypia]: https://elypia.org/ "Elypia Homepage"
