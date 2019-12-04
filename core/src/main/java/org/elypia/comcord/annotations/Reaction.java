@@ -19,7 +19,7 @@ package org.elypia.comcord.annotations;
 import java.lang.annotation.*;
 
 /**
- * @author seth@elypia.org (Syed Shah)
+ * @author seth@elypia.org (Seth Falco)
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)

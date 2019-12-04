@@ -14,27 +14,26 @@
  * limitations under the License.
  */
 
-package org.elypia.comcord.interfaces;
+package org.elypia.comcord.api;
 
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.GenericMessageEvent;
-import org.elypia.commandler.CommandlerEvent;
-import org.elypia.commandler.interfaces.ResponseProvider;
+import org.elypia.commandler.api.Messenger;
+import org.elypia.commandler.event.ActionEvent;
 
 import java.util.Objects;
 
 /**
- * @author seth@elypia.org (Syed Shah)
+ * @author seth@elypia.org (Seth Falco)
  */
-public interface DiscordProvider<O> extends ResponseProvider<O, Message> {
+public interface DiscordMessenger<O> extends Messenger<O, Message> {
 
     @Override
-    default Message provide(CommandlerEvent<?, Message> event, O output) {
+    default Message provide(ActionEvent<?, Message> event, O output) {
         Objects.requireNonNull(output);
-        GenericMessageEvent source = (GenericMessageEvent)event.getSource();
 
-        if (canSendEmbed(source)) {
+        if (event != null && canSendEmbed((GenericMessageEvent)event.getRequest().getSource())) {
             Message embed =  buildEmbed(event, output);
 
             if (embed != null)
@@ -44,14 +43,14 @@ public interface DiscordProvider<O> extends ResponseProvider<O, Message> {
         return buildMessage(event, output);
     }
 
-    Message buildMessage(CommandlerEvent<?, ?> event, O output);
+    Message buildMessage(ActionEvent<?, Message> event, O output);
 
-    default Message buildEmbed(CommandlerEvent<?, ?> event, O output) {
+    default Message buildEmbed(ActionEvent<?, Message> event, O output) {
         return null;
     }
 
     private boolean canSendEmbed(GenericMessageEvent source) {
-        if (!source.getChannelType().isGuild())
+        if (!source.isFromGuild())
             return true;
 
         Member self = source.getGuild().getSelfMember();

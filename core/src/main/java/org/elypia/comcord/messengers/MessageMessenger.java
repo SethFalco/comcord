@@ -14,24 +14,22 @@
  * limitations under the License.
  */
 
-package org.elypia.comcord.providers;
+package org.elypia.comcord.messengers;
 
-import net.dv8tion.jda.api.MessageBuilder;
 import net.dv8tion.jda.api.entities.Message;
-import org.elypia.commandler.CommandlerEvent;
-import org.elypia.commandler.annotations.Provider;
-import org.elypia.commandler.interfaces.ResponseProvider;
+import org.elypia.comcord.api.DiscordMessenger;
+import org.elypia.commandler.event.ActionEvent;
 
-import java.net.URL;
+import javax.inject.Singleton;
 
 /**
- * @author seth@elypia.org (Syed Shah)
+ * @author seth@elypia.org (Seth Falco)
  */
-@Provider(provides = Message.class, value = {String.class, Character.class, char.class, Boolean.class, boolean.class, URL.class})
-public class MiscToMessageProvider implements ResponseProvider<Object, Message> {
+@Singleton
+public class MessageMessenger implements DiscordMessenger<Message> {
 
     @Override
-    public Message provide(CommandlerEvent<?, Message> event, Object output) {
-        return new MessageBuilder(output.toString()).build();
+    public Message buildMessage(ActionEvent<?, Message> event, Message output) {
+        return output;
     }
 }

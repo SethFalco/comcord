@@ -16,31 +16,26 @@
 
 package org.elypia.comcord.constraints;
 
-import net.dv8tion.jda.api.entities.TextChannel;
+import org.elypia.comcord.validators.GuildOwnerValidator;
 
 import javax.validation.*;
 import java.lang.annotation.*;
 
 /**
- * @author seth@elypia.org (Syed Shah)
+ * Validate that a command was performed by the owner of the Guild
+ * if the command was performed in a guild at all.
+ *
+ * If it was not performed in a guild it should always pass.
+ *
+ * @author seth@elypia.org (Seth Falco)
  */
 @Target({ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-@Constraint(validatedBy = {Talkable.Validator.class})
-public @interface Talkable {
+@Constraint(validatedBy = {GuildOwnerValidator.class})
+public @interface GuildOwner {
 
-    String message() default "{org.elypia.comcord.constraints.Talkable.message}";
-
+    String message() default "{org.elypia.comcord.constraints.GuildOwner.message}";
     Class<?>[] groups() default {};
-
     Class<? extends Payload>[] payload() default {};
-
-    class Validator implements ConstraintValidator<Talkable, TextChannel> {
-
-        @Override
-        public boolean isValid(TextChannel value, ConstraintValidatorContext context) {
-            return !value.getType().isGuild() && !value.canTalk();
-        }
-    }
 }

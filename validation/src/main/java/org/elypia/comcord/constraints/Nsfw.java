@@ -14,24 +14,28 @@
  * limitations under the License.
  */
 
-package org.elypia.comcord;
+package org.elypia.comcord.constraints;
+
+import org.elypia.comcord.validators.NsfwValidator;
+
+import javax.validation.*;
+import java.lang.annotation.*;
 
 /**
+ * Verify that the application is allowed to send things deemed
+ * NSFW in the channel.
+ *
+ * If the message is in PMs/DMs, it should allow the message regardless.
+ *
  * @author seth@elypia.org (Seth Falco)
  */
-public enum Scope {
+@Target({ElementType.PARAMETER})
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+@Constraint(validatedBy = {NsfwValidator.class})
+public @interface Nsfw {
 
-    /** Scoped everything that the bot can see. */
-    GLOBAL,
-
-    /**
-     * Scoped mutual places that the performing user, and the bot
-     * can both see.
-     */
-    MUTUAL,
-
-    /**
-     * Only search in the current group or channel.
-     */
-    LOCAL
+    String message() default "{org.elypia.comcord.constraints.Nsfw.message}";
+    Class<?>[] groups() default {};
+    Class<? extends Payload>[] payload() default {};
 }

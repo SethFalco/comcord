@@ -14,22 +14,23 @@
  * limitations under the License.
  */
 
-package org.elypia.comcord.providers;
+package org.elypia.comcord.constraints;
 
-import net.dv8tion.jda.api.MessageBuilder;
-import net.dv8tion.jda.api.entities.*;
-import org.elypia.comcord.interfaces.DiscordProvider;
-import org.elypia.commandler.CommandlerEvent;
-import org.elypia.commandler.annotations.Provider;
+import org.elypia.comcord.validators.ElevatedValidator;
+
+import javax.validation.*;
+import java.lang.annotation.*;
 
 /**
- * @author seth@elypia.org (Syed Shah)
+ * @author seth@elypia.org (Seth Falco)
  */
-@Provider(provides = Message.class, value = MessageEmbed.class)
-public class MessageEmbedProvider implements DiscordProvider<MessageEmbed> {
+@Target({ElementType.PARAMETER})
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+@Constraint(validatedBy = {ElevatedValidator.class})
+public @interface Elevated {
 
-    @Override
-    public Message buildMessage(CommandlerEvent<?, ?> event, MessageEmbed output) {
-        return new MessageBuilder(output).build();
-    }
+    String message() default "{org.elypia.comcord.constraints.Elevated.message}";
+    Class<?>[] groups() default {};
+    Class<? extends Payload>[] payload() default {};
 }

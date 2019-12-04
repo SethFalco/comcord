@@ -17,7 +17,7 @@
 package org.elypia.comcord.adapters;
 
 /**
- * @author seth@elypia.org (Syed Shah)
+ * @author seth@elypia.org (Seth Falco)
  */
 public class EmoteAdapterTest {
 

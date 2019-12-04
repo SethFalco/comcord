@@ -14,7 +14,20 @@
  * limitations under the License.
  */
 
-dependencies {
-    api "org.elypia.commandler:core:${commandlerVersion}"
-    api "net.dv8tion:JDA:4.0.0_68"
+package org.elypia.comcord.validators;
+
+import net.dv8tion.jda.api.entities.TextChannel;
+import org.elypia.comcord.constraints.Talkable;
+
+import javax.validation.*;
+
+/**
+ * @author seth@elypia.org (Seth Falco)
+ */
+public class TalkableValidator implements ConstraintValidator<Talkable, TextChannel> {
+
+    @Override
+    public boolean isValid(TextChannel value, ConstraintValidatorContext context) {
+        return !value.getType().isGuild() && !value.canTalk();
+    }
 }

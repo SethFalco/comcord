@@ -14,33 +14,33 @@
  * limitations under the License.
  */
 
-package org.elypia.comcord.interfaces;
+package org.elypia.comcord.api;
 
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.guild.GenericGuildEvent;
 import org.elypia.comcord.Scope;
 import org.elypia.comcord.annotations.Scoped;
-import org.elypia.commandler.CommandlerEvent;
-import org.elypia.commandler.interfaces.ParamAdapter;
+import org.elypia.commandler.api.Adapter;
+import org.elypia.commandler.event.ActionEvent;
 import org.elypia.commandler.metadata.MetaParam;
 
 import java.util.*;
 import java.util.function.Predicate;
 
 /**
- * @author seth@elypia.org (Syed Shah)
+ * @author seth@elypia.org (Seth Falco)
  */
-public interface EntityAdapter<O> extends ParamAdapter<O> {
+public interface EntityAdapter<O> extends Adapter<O> {
 
-    O adapt(String input, Class<? extends O> type, MetaParam data, CommandlerEvent<?, ?> event);
+    O adapt(String input, Class<? extends O> type, MetaParam data, ActionEvent<?, ?> event);
 
-    default Scope getScope(CommandlerEvent<?, ?> event, MetaParam data, Scope defaultScope) {
-        Scoped scoped = data.getAnnotatedElement().getAnnotation(Scoped.class);
+    default Scope getScope(ActionEvent<?, ?> event, MetaParam data, Scope defaultScope) {
+        Scoped scoped = data.getParameter().getAnnotation(Scoped.class);
 
         if (scoped == null)
             return defaultScope;
 
-        return (event.getSource() instanceof GenericGuildEvent) ? scoped.inGuild() : scoped.inPrivate();
+        return (event.getRequest().getSource() instanceof GenericGuildEvent) ? scoped.inGuild() : scoped.inPrivate();
     }
 
     default O filter(Collection<O> collection, Class<? extends O> type, String input, Predicate<O> predicate) {

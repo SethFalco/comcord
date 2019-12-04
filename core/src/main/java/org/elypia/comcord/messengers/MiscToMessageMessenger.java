@@ -14,23 +14,23 @@
  * limitations under the License.
  */
 
-package org.elypia.comcord.providers;
+package org.elypia.comcord.messengers;
 
+import net.dv8tion.jda.api.MessageBuilder;
 import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.internal.entities.DataMessage;
-import org.elypia.comcord.interfaces.DiscordProvider;
-import org.elypia.commandler.CommandlerEvent;
-import org.elypia.commandler.annotations.Provider;
+import org.elypia.comcord.api.DiscordMessenger;
+import org.elypia.commandler.event.ActionEvent;
 
-// TODO: If the object returned is already the Controller type, just return that.
+import javax.inject.Singleton;
+
 /**
- * @author seth@elypia.org (Syed Shah)
+ * @author seth@elypia.org (Seth Falco)
  */
-@Provider(provides = Message.class, value = {Message.class, DataMessage.class})
-public class MessageProvider implements DiscordProvider<Message> {
+@Singleton
+public class MiscToMessageMessenger implements DiscordMessenger<Object> {
 
     @Override
-    public Message buildMessage(CommandlerEvent<?, ?> event, Message output) {
-        return output;
+    public Message buildMessage(ActionEvent<?, Message> event, Object output) {
+        return new MessageBuilder(output.toString()).build();
     }
 }

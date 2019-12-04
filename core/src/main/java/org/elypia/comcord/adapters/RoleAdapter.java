@@ -17,25 +17,23 @@
 package org.elypia.comcord.adapters;
 
 import net.dv8tion.jda.api.entities.*;
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-import org.elypia.comcord.Scope;
-import org.elypia.comcord.interfaces.EntityAdapter;
-import org.elypia.commandler.CommandlerEvent;
-import org.elypia.commandler.annotations.Adapter;
+import net.dv8tion.jda.api.events.Event;
+import org.elypia.comcord.*;
+import org.elypia.comcord.api.EntityAdapter;
+import org.elypia.commandler.event.ActionEvent;
 import org.elypia.commandler.metadata.MetaParam;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * @author seth@elypia.org (Syed Shah)
+ * @author seth@elypia.org (Seth Falco)
  */
-@Adapter(Role.class)
 public class RoleAdapter implements EntityAdapter<Role> {
 
     @Override
-    public Role adapt(String input, Class<? extends Role> type, MetaParam data, CommandlerEvent<?, ?> event) {
-        MessageReceivedEvent source = (MessageReceivedEvent)event.getSource();
+    public Role adapt(String input, Class<? extends Role> type, MetaParam data, ActionEvent<?, ?> event) {
+        Event source = (Event)event.getRequest().getSource();
         Collection<Role> roles = new ArrayList<>();
 
         switch (getScope(event, data, Scope.LOCAL)) {
@@ -44,7 +42,7 @@ public class RoleAdapter implements EntityAdapter<Role> {
                 break;
             }
             case MUTUAL: {
-                roles.addAll(source.getAuthor().getMutualGuilds()
+                roles.addAll(EventUtils.getAuthor(source).getMutualGuilds()
                     .parallelStream()
                     .map(Guild::getRoles)
                     .flatMap(List::stream)
@@ -52,7 +50,7 @@ public class RoleAdapter implements EntityAdapter<Role> {
                 break;
             }
             case LOCAL: {
-                roles.addAll(source.getGuild().getRoles());
+                roles.addAll(EventUtils.getGuild(source).getRoles());
                 break;
             }
             default: {

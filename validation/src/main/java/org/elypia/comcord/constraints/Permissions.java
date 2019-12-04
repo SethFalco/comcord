@@ -17,20 +17,28 @@
 package org.elypia.comcord.constraints;
 
 import net.dv8tion.jda.api.Permission;
-import net.dv8tion.jda.api.entities.TextChannel;
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-import org.elypia.commandler.CommandlerEvent;
+import org.elypia.comcord.validators.PermissionsEventValidator;
 
 import javax.validation.*;
 import java.lang.annotation.*;
 
 /**
- * @author seth@elypia.org (Syed Shah)
+ * Validate that the application has the {@link Permission} required
+ * in the channel or event to perform the action.
+ *
+ * Using the {@link #user()} parameter, it can also be configured if the
+ * user performing the command also required the permissions or not.
+ *
+ * This is helpful when performing admin related commands, or a command
+ * which is essentially a shortcut to several commands in Discord which
+ * may require
+ *
+ * @author seth@elypia.org (Seth Falco)
  */
 @Target({ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-@Constraint(validatedBy = {Permissions.Validator.class})
+@Constraint(validatedBy = {PermissionsEventValidator.class})
 public @interface Permissions {
 
     String message() default "{org.elypia.comcord.constraints.Permissions.message}";
@@ -46,31 +54,4 @@ public @interface Permissions {
      * @return If the user also needs these permissions to perform this command.
      */
     boolean user() default true;
-
-    class Validator implements ConstraintValidator<Permissions, CommandlerEvent<?, ?>> {
-
-        private Permission[] permissions;
-        private boolean user;
-
-        @Override
-        public void initialize(Permissions constraintAnnotation) {
-            permissions = constraintAnnotation.value();
-            user = constraintAnnotation.user();
-        }
-
-        @Override
-        public boolean isValid(CommandlerEvent<?, ?> value, ConstraintValidatorContext context) {
-            MessageReceivedEvent source = (MessageReceivedEvent)value.getSource();
-
-            if (!source.getChannelType().isGuild())
-                return true;
-
-            TextChannel channel = source.getTextChannel();
-
-            if (!source.getGuild().getSelfMember().hasPermission(channel, permissions))
-                return false;
-
-            return !user || source.getMember().hasPermission(channel, permissions);
-        }
-    }
 }

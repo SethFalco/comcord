@@ -14,24 +14,27 @@
  * limitations under the License.
  */
 
-package org.elypia.comcord.dispatchers;
+package org.elypia.comcord.validators;
 
-import org.elypia.commandler.Request;
-import org.elypia.commandler.api.Dispatcher;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.events.Event;
+import org.elypia.comcord.EventUtils;
+import org.elypia.comcord.constraints.GuildOwner;
 import org.elypia.commandler.event.ActionEvent;
+
+import javax.inject.Singleton;
+import javax.validation.*;
 
 /**
  * @author seth@elypia.org (Seth Falco)
  */
-public class ReactionDispatcher implements Dispatcher {
+@Singleton
+public class GuildOwnerValidator implements ConstraintValidator<GuildOwner, ActionEvent<Event, ?>> {
 
     @Override
-    public <S, M> boolean isValid(Request<S, M> request) {
-        return false;
-    }
-
-    @Override
-    public <S, M> ActionEvent<S, M> parse(Request<S, M> request) {
-        return null;
+    public boolean isValid(ActionEvent<Event, ?> value, ConstraintValidatorContext context) {
+        Event source = value.getRequest().getSource();
+        Member member = EventUtils.getMember(source);
+        return member != null && member.isOwner();
     }
 }

@@ -16,35 +16,34 @@
 
 package org.elypia.comcord;
 
-import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.*;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import org.elypia.commandler.managers.DispatcherManager;
 import org.slf4j.*;
 
 /**
- * @author seth@elypia.org (Syed Shah)
+ * @author seth@elypia.org (Seth Falco)
  */
 public class DiscordListener extends ListenerAdapter {
 
     private static final Logger logger = LoggerFactory.getLogger(DiscordListener.class);
 
-    private final DispatcherManager dispatcher;
-    private final org.elypia.comcord.DiscordIntegration controller;
+    private final DiscordIntegration integration;
+    private final boolean listeningToBots;
 
-    public DiscordListener(final DispatcherManager dispatcher, org.elypia.comcord.DiscordIntegration controller) {
-        this.dispatcher = dispatcher;
-        this.controller = controller;
+    public DiscordListener(final DiscordIntegration integration, final DiscordConfig config) {
+        this.integration = integration;
+        this.listeningToBots = config.isListeningToBots();
     }
 
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
-        if (event.getAuthor().isBot())
+        if (event.getAuthor().isBot() && !listeningToBots)
             return;
 
         String content = event.getMessage().getContentRaw();
 
-        Message message = dispatcher.dispatch(controller, event, content);
+        Message message = integration.process(event, event.getMessage(), content);
 
         if (message != null)
             event.getChannel().sendMessage(message).queue();
@@ -54,19 +53,28 @@ public class DiscordListener extends ListenerAdapter {
     public void onMessageUpdate(MessageUpdateEvent event) {
         String content = event.getMessage().getContentRaw();
 
-        if (event.getAuthor().isBot())
+        if (event.getAuthor().isBot() && !listeningToBots)
             return;
 
         Message updatedMessage = event.getMessage();
+        MessageChannel channel = event.getChannel();
 
-        event.getChannel().getHistoryAfter(updatedMessage.getIdLong(), 1).queue(history -> {
-            if (history.isEmpty())
-                event.getChannel().sendMessage(dispatcher.dispatch(controller, event, content)).queue();
+        channel.getHistoryAfter(updatedMessage.getIdLong(), 1).queue(history -> {
+            if (history.isEmpty()) {
+                Message message = integration.process(event, event.getMessage(), content);
+
+                if (message != null)
+                    channel.sendMessage(message).queue();
+            }
             else {
                 Message nextMessage = history.getRetrievedHistory().get(0);
 
-                if (nextMessage.getAuthor().getIdLong() == event.getJDA().getSelfUser().getIdLong())
-                    nextMessage.editMessage(dispatcher.dispatch(controller, event, content)).queue();
+                if (nextMessage.getAuthor().getIdLong() == event.getJDA().getSelfUser().getIdLong()) {
+                    Message message = integration.process(event, event.getMessage(), content);
+
+                    if (message != null)
+                        nextMessage.editMessage(message).queue();
+                }
             }
         });
     }

@@ -17,20 +17,18 @@
 package org.elypia.comcord.adapters;
 
 import net.dv8tion.jda.api.entities.*;
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-import org.elypia.comcord.Scope;
-import org.elypia.comcord.interfaces.EntityAdapter;
-import org.elypia.commandler.CommandlerEvent;
-import org.elypia.commandler.annotations.Adapter;
+import net.dv8tion.jda.api.events.Event;
+import org.elypia.comcord.*;
+import org.elypia.comcord.api.EntityAdapter;
+import org.elypia.commandler.event.ActionEvent;
 import org.elypia.commandler.metadata.MetaParam;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * @author seth@elypia.org (Syed Shah)
+ * @author seth@elypia.org (Seth Falco)
  */
-@Adapter(User.class)
 public class UserAdapter implements EntityAdapter<User> {
 
     // TODO: Accomodate MessageUpdateEvent
@@ -39,8 +37,8 @@ public class UserAdapter implements EntityAdapter<User> {
     // TODO: Empty quotes doesn't parse correctly
     // TODO: CommandlerEvent is not being injected @Everyone
     @Override
-    public User adapt(String input, Class<? extends User> type, MetaParam data, CommandlerEvent<?, ?> event) {
-        MessageReceivedEvent source = (MessageReceivedEvent)event.getSource();
+    public User adapt(String input, Class<? extends User> type, MetaParam data, ActionEvent<?, ?> event) {
+        Event source = (Event)event.getRequest().getSource();
         Collection<User> users = new ArrayList<>();
 
         switch (getScope(event, data, Scope.LOCAL)) {
@@ -49,7 +47,7 @@ public class UserAdapter implements EntityAdapter<User> {
                 break;
             }
             case MUTUAL: {
-                users.addAll(source.getAuthor().getMutualGuilds()
+                users.addAll(EventUtils.getAuthor(source).getMutualGuilds()
                     .parallelStream()
                     .map(Guild::getMembers)
                     .flatMap(List::stream)
@@ -58,7 +56,7 @@ public class UserAdapter implements EntityAdapter<User> {
                 break;
             }
             case LOCAL: {
-                users.addAll(source.getGuild().getMembers().parallelStream()
+                users.addAll(EventUtils.getGuild(source).getMembers().parallelStream()
                     .map(Member::getUser).collect(Collectors.toSet()));
                 break;
             }

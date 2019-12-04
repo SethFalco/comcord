@@ -1,78 +1,71 @@
-# Comcord [![Discord][discord-members]][discord] [![Download][bintray-download]][bintray] [![Documentation][docs-shield]][docs] [![GitLab Pipeline Status][gitlab-build]][gitlab] [![Coverage][gitlab-coverage]][gitlab] 
-The [Gradle][gradle]/[Maven][maven] import string can be found at the Download badge above!
+# Comcord [![discord-members]][discord] [![bintray-download]][bintray] [![docs-shield]][docs] [![gitlab-build]][gitlab] [![gitlab-coverage]][gitlab] [![donate-shield]][elypia-donate]
+The [Gradle]/[Maven] import string can be found at the Download badge above!
 
 ## About
-Comcord (**Com**mandler for Dis**cord**) is an extension to Commandler for integration with Discord.  
+Comcord (**Com**mandler for Dis**cord**) is an extension to Commandler
+for integration with Discord.  
+
+This will provide various pre-made implementations to help you get
+started as quickly as possible with making a Discord bot.
 
 ## Quick-Start
+
+**application.yml**
+```yml
+commandler:
+  dispatcher:
+    - class: "org.elypia.commandler.dispatchers.StandardDispatcher"
+      prefix:
+        - ">"
+comcord:
+  bot-token: "I recommend you set this through environment variables instead."
+  bot-owner-id: 127578559790186497
+  support-guild-id: 184657525990359041
+```
+
 **Main.java**
 ```java
 public class Main {
     
     public static void main(String[] args) throws LoginException {
-        AnnotationLoader loader = new AnnotationLoader(ExampleModule.class);
-        Context context = new ContextLoader(loader).load().build();
-        Commandler commandler = new Commandler.Builder(context)
-            .build();
+        // Intitialize Commandler and get the injection context
+        Commandler commandler = new Commandler();
+        InjectorService injector = commandler.getAppContext().getInjector();
+
+        // Get the Discord bot token
+        String token = injector.getInstance(DiscordConfig.class).getBotToken();
         
-        DispatcherManager dispatcherManager = commandler.getDispatcherManager();
-        dispatcherManager.addDispatcher(new CommandDispatcher(commandler, ">"));
-    		
-        JDA jda = new JDABuilder("${TOKEN}")
+        // Login to Discord
+        JDA jda = new JDABuilder(token)
             .addEventListener(controller.getDispatcher())
             .build();
 
-        new DiscordController(dispatcherManager, jda);
+        // Add JDA to your Injection context
+        injector.add(jda, JDA.class);
+        
+        // Run Commandler
+        commandler.run();
     }
 }
 ```
-
-**ExampleModule.java**
-```java
-@Controller @Aliases({"example", "ex"})
-@Help(name = "Example", help = "Trying to show off Commandler!")
-public class ExampleModule extends CommandController {
-
-    @Static @Control @Aliases("ping")
-    @Help(name = "ping!", help = "Check if I'm alive.")
-    public String ping() {
-        return "pong!";
-    }
-    
-    @Control @Aliases("say")
-    @Help(name = "Say", help = "Repeat after you.")
-    public String say(@Param @Help(name = "text", help = "The text to repeat.") String text) {
-        return text;
-    }
-}
-```
-> This creates the `ExampleModule`, and then adds it to our `Context` which is used
-> by all Commandler libraries to manage modules. This alone allows commands to be 
-> performed, as well as documentation and website generation for your module.  
->
-> The commands `ping!` and `Say` are accessible via `>ex ping` and `>ex say {text}`
-> respectively. As `ping!` is a static command, it can also be accessed without specifying
-> the module name, like `>ping`.  
->
-> Parameters are adapted by Commandler; they just have to be specified in method
-> signatures and Commandler can do the rest.
 
 ## Support
-Should any problems occur, come visit us over on [Discord][discord]! We're always around and there are
-ample developers that would be willing to help; if it's a problem with the library itself then we'll
-make sure to get it sorted.
+Should any problems occur, come visit us over on [Discord]!
+We're always around and there are ample developers that would be 
+willing to help; if it's a problem with the library itself 
+then we'll make sure to get it sorted.
 
-[discord]: https://discord.gg/hprGMaM "Discord Invite"
-[discord-members]: https://discordapp.com/api/guilds/184657525990359041/widget.png "Discord Shield"
+[Discord]: https://discordapp.com/invite/hprGMaM "Discord Invite"
 [bintray]: https://bintray.com/elypia/comcord/core/_latestVersion "Bintray Latest Version"
-[bintray-download]: https://api.bintray.com/packages/elypia/comcord/core/images/download.svg "Bintray Download Shield"
-[docs]: https://commandler.elypia.org/ "Commandler Documentation"
-[docs-shield]: https://img.shields.io/badge/Docs-Commandler-blue.svg "Commandler Documentation Shield"
+[docs]: https://elypia.gitlab.io/comcord "Commandler Documentation"
 [gitlab]: https://gitlab.com/Elypia/comcord/commits/master "Repository on GitLab"
+[elypia-donate]: https://elypia.org/donate "Donate to Elypia"
+[Gradle]: https://gradle.org/ "Depend via Gradle"
+[Maven]: https://maven.apache.org/ "Depend via Maven"
+
+[discord-members]: https://discordapp.com/api/guilds/184657525990359041/widget.png "Discord Shield"
+[bintray-download]: https://api.bintray.com/packages/elypia/comcord/core/images/download.svg "Bintray Download Shield"
+[docs-shield]: https://img.shields.io/badge/Docs-Commandler-blue.svg "Commandler Documentation Shield"
 [gitlab-build]: https://gitlab.com/Elypia/comcord/badges/master/pipeline.svg "GitLab Build Shield"
 [gitlab-coverage]: https://gitlab.com/Elypia/comcord/badges/master/coverage.svg "GitLab Coverage Shield"
-
-[gradle]: https://gradle.org/ "Depend via Gradle"
-[maven]: https://maven.apache.org/ "Depend via Maven"
-
-[elypia]: https://elypia.org/ "Elypia Homepage"
+[donate-shield]: https://img.shields.io/badge/Elypia-Donate-blueviolet "Donate Shield"

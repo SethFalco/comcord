@@ -14,7 +14,23 @@
  * limitations under the License.
  */
 
-dependencies {
-    api "org.elypia.commandler:core:${commandlerVersion}"
-    api "net.dv8tion:JDA:4.0.0_68"
+package org.elypia.comcord.constraints;
+
+import org.elypia.comcord.validators.BotOwnerValidator;
+
+import javax.validation.*;
+import java.lang.annotation.*;
+
+/**
+ * @author seth@elypia.org (Seth Falco)
+ */
+@Target({ElementType.PARAMETER})
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+@Constraint(validatedBy = {BotOwnerValidator.class})
+public @interface BotOwner {
+
+    String message() default "{org.elypia.comcord.constraints.BotOwner.message}";
+    Class<?>[] groups() default {};
+    Class<? extends Payload>[] payload() default {};
 }

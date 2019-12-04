@@ -14,36 +14,39 @@
  * limitations under the License.
  */
 
-package org.elypia.comcord.providers;
+package org.elypia.comcord.messengers;
 
 import net.dv8tion.jda.api.MessageBuilder;
 import net.dv8tion.jda.api.entities.Message;
-import org.elypia.commandler.CommandlerEvent;
-import org.elypia.commandler.annotations.Provider;
-import org.elypia.commandler.interfaces.ResponseProvider;
+import org.elypia.comcord.api.DiscordMessenger;
+import org.elypia.commandler.event.ActionEvent;
 
 import javax.inject.Inject;
 import java.text.NumberFormat;
 
 /**
- * @author seth@elypia.org (Syed Shah)
+ * @author seth@elypia.org (Seth Falco)
  */
-@Provider(provides = String.class, value = {Number.class, double.class, float.class, long.class, int.class, short.class, byte.class})
-public class NumberToMessageProvider implements ResponseProvider<Number, Message> {
+public class NumberToMessageMessenger implements DiscordMessenger<Number> {
 
     private NumberFormat format;
 
-    public NumberToMessageProvider() {
+    public NumberToMessageMessenger() {
         this(NumberFormat.getInstance());
     }
 
     @Inject
-    public NumberToMessageProvider(NumberFormat format) {
+    public NumberToMessageMessenger(NumberFormat format) {
         this.format = format;
     }
 
     @Override
-    public Message provide(CommandlerEvent<?, Message> event, Number output) {
-        return new MessageBuilder(format.format(output)).build();
+    public Message buildMessage(ActionEvent<?, Message> event, Number output) {
+        String formatted = event.getMetaCommand().getProperty(this.getClass(), "formatted", true);
+
+        if (formatted.equalsIgnoreCase("true"))
+            return new MessageBuilder(format.format(output)).build();
+        else
+            return new MessageBuilder(String.valueOf(output)).build();
     }
 }

@@ -27,7 +27,7 @@ import java.lang.annotation.*;
  * only in the current chat or in any mutual guilds, and Globally,
  * through all of Discord that the bot can see.
  *
- * @author seth@elypia.org (Syed Shah)
+ * @author seth@elypia.org (Seth Falco)
  */
 @Target({ElementType.PARAMETER, ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)

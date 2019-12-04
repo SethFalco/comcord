@@ -18,20 +18,37 @@ package org.elypia.comcord;
 
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Message;
-import org.elypia.commandler.interfaces.Controller;
-import org.elypia.commandler.managers.DispatcherManager;
+import net.dv8tion.jda.api.events.Event;
+import net.dv8tion.jda.api.events.message.GenericMessageEvent;
+import org.elypia.commandler.Commandler;
+import org.elypia.commandler.api.AbstractIntegration;
+
+import javax.inject.*;
+import java.io.Serializable;
 
 /**
- * @author seth@elypia.org (Syed Shah)
+ * @author seth@elypia.org (Seth Falco)
  */
-public class DiscordIntegration implements Controller<Message> {
+@Singleton
+public class DiscordIntegration extends AbstractIntegration<Event, Message> {
 
-    public DiscordIntegration(DispatcherManager dispatcher, JDA jda) {
-        jda.addEventListener(new DiscordListener(dispatcher, this));
+    @Inject
+    public DiscordIntegration(final Commandler commandler, final JDA jda) {
+        this.commandler = commandler;
+        DiscordConfig config = commandler.getAppContext().getInjector().getInstance(DiscordConfig.class);
+        jda.addEventListener(new DiscordListener(this, config));
     }
 
     @Override
     public Class<Message> getMessageType() {
         return Message.class;
+    }
+
+    @Override
+    public Serializable getActionId(Event source) {
+        if (source instanceof GenericMessageEvent)
+            return ((GenericMessageEvent)source).getMessageIdLong();
+
+        throw new IllegalStateException("Can't get serializable ID of this action.");
     }
 }

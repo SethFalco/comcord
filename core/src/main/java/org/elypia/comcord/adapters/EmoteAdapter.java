@@ -17,11 +17,10 @@
 package org.elypia.comcord.adapters;
 
 import net.dv8tion.jda.api.entities.*;
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-import org.elypia.comcord.Scope;
-import org.elypia.comcord.interfaces.EntityAdapter;
-import org.elypia.commandler.CommandlerEvent;
-import org.elypia.commandler.annotations.Adapter;
+import net.dv8tion.jda.api.events.Event;
+import org.elypia.comcord.*;
+import org.elypia.comcord.api.EntityAdapter;
+import org.elypia.commandler.event.ActionEvent;
 import org.elypia.commandler.metadata.MetaParam;
 
 import java.util.*;
@@ -30,15 +29,14 @@ import java.util.stream.Collectors;
 // TODO: Make a way to specify "all" as a list argument.
 // TODO: Make a way that adapters can return a list of many arguments.
 /**
- * @author seth@elypia.org (Syed Shah)
+ * @author seth@elypia.org (Seth Falco)
  */
-@Adapter(Emote.class)
 public class EmoteAdapter implements EntityAdapter<Emote> {
 
     @Override
-    public Emote adapt(String input, Class<? extends Emote> type, MetaParam data, CommandlerEvent<?, ?> event) {
-        MessageReceivedEvent source = (MessageReceivedEvent)event.getSource();
-        Set<Emote> emotes = new HashSet<>(source.getMessage().getEmotes());
+    public Emote adapt(String input, Class<? extends Emote> type, MetaParam data, ActionEvent<?, ?> event) {
+        Event source = (Event)event.getRequest().getSource();
+        Set<Emote> emotes = new HashSet<>(EventUtils.getMessage(source).getEmotes());
 
         switch (getScope(event, data, Scope.MUTUAL)) {
             case GLOBAL: {
@@ -46,7 +44,7 @@ public class EmoteAdapter implements EntityAdapter<Emote> {
                 break;
             }
             case MUTUAL: {
-                emotes.addAll(source.getAuthor().getMutualGuilds()
+                emotes.addAll(EventUtils.getAuthor(source).getMutualGuilds()
                     .parallelStream()
                     .map(Guild::getEmotes)
                     .flatMap(List::stream)
@@ -54,7 +52,7 @@ public class EmoteAdapter implements EntityAdapter<Emote> {
                 break;
             }
             case LOCAL: {
-                emotes.addAll(source.getGuild().getEmotes());
+                emotes.addAll(EventUtils.getGuild(source).getEmotes());
                 break;
             }
             default: {

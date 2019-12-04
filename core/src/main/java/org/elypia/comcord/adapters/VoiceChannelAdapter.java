@@ -17,25 +17,23 @@
 package org.elypia.comcord.adapters;
 
 import net.dv8tion.jda.api.entities.*;
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-import org.elypia.comcord.Scope;
-import org.elypia.comcord.interfaces.EntityAdapter;
-import org.elypia.commandler.CommandlerEvent;
-import org.elypia.commandler.annotations.Adapter;
+import net.dv8tion.jda.api.events.Event;
+import org.elypia.comcord.*;
+import org.elypia.comcord.api.EntityAdapter;
+import org.elypia.commandler.event.ActionEvent;
 import org.elypia.commandler.metadata.MetaParam;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * @author seth@elypia.org (Syed Shah)
+ * @author seth@elypia.org (Seth Falco)
  */
-@Adapter(VoiceChannel.class)
 public class VoiceChannelAdapter implements EntityAdapter<VoiceChannel> {
 
     @Override
-    public VoiceChannel adapt(String input, Class<? extends VoiceChannel> type, MetaParam data, CommandlerEvent<?, ?> event) {
-        MessageReceivedEvent source = (MessageReceivedEvent)event.getSource();
+    public VoiceChannel adapt(String input, Class<? extends VoiceChannel> type, MetaParam data, ActionEvent<?, ?> event) {
+        Event source = (Event)event.getRequest().getSource();
         Collection<VoiceChannel> channels = new ArrayList<>();
 
         switch (getScope(event, data, Scope.LOCAL)) {
@@ -44,7 +42,7 @@ public class VoiceChannelAdapter implements EntityAdapter<VoiceChannel> {
                 break;
             }
             case MUTUAL: {
-                channels.addAll(source.getAuthor().getMutualGuilds()
+                channels.addAll(EventUtils.getAuthor(source).getMutualGuilds()
                     .parallelStream()
                     .map(Guild::getVoiceChannels)
                     .flatMap(List::stream)
@@ -52,7 +50,7 @@ public class VoiceChannelAdapter implements EntityAdapter<VoiceChannel> {
                 break;
             }
             case LOCAL: {
-                channels.addAll(source.getGuild().getVoiceChannels());
+                channels.addAll(EventUtils.getGuild(source).getVoiceChannels());
                 break;
             }
             default: {

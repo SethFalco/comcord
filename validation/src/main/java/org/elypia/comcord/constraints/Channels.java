@@ -16,31 +16,27 @@
 
 package org.elypia.comcord.constraints;
 
-import net.dv8tion.jda.api.events.message.GenericMessageEvent;
-import org.elypia.commandler.CommandlerEvent;
+import net.dv8tion.jda.api.entities.ChannelType;
+import org.elypia.comcord.validators.ChannelsValidator;
 
 import javax.validation.*;
 import java.lang.annotation.*;
 
 /**
- * @author seth@elypia.org (Syed Shah)
+ * @author seth@elypia.org (Seth Falco)
  */
 @Target({ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-@Constraint(validatedBy = {Nsfw.Validator.class})
-public @interface Nsfw {
+@Constraint(validatedBy = {ChannelsValidator.class})
+public @interface Channels {
 
-    String message() default "{org.elypia.comcord.constraints.Nsfw.message}";
+    String message() default "{org.elypia.comcord.constraints.Channels.message}";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 
-    class Validator implements ConstraintValidator<Nsfw, CommandlerEvent<?, ?>> {
-
-        @Override
-        public boolean isValid(CommandlerEvent<?, ?> value, ConstraintValidatorContext context) {
-            GenericMessageEvent source = (GenericMessageEvent)value.getSource();
-            return !source.getChannelType().isGuild() || source.getTextChannel().isNSFW();
-        }
-    }
+    /**
+     * @return The acceptable channels type this can be received from.
+     */
+    ChannelType[] value();
 }
