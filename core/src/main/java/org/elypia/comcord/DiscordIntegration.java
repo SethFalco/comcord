@@ -35,7 +35,7 @@ public class DiscordIntegration extends AbstractIntegration<Event, Message> {
     @Inject
     public DiscordIntegration(final Commandler commandler, final JDA jda) {
         this.commandler = commandler;
-        DiscordConfig config = commandler.getAppContext().getInjector().getInstance(DiscordConfig.class);
+        DiscordConfig config = commandler.getInjector().getInstance(DiscordConfig.class);
         jda.addEventListener(new DiscordListener(this, config));
     }
 

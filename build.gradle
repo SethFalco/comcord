@@ -16,6 +16,7 @@
 
 plugins {
     id "com.jfrog.bintray" version "1.8.4" apply false
+    id "io.spring.dependency-management" version "1.0.9.RELEASE" apply false
 }
 
 def publishedProjects = [
@@ -37,6 +38,7 @@ allprojects() {
         issueUrl = "${repoUrl}/issues"
         website = "https://elypia.org/"
 
+        deltaSpikeVersion = "1.9.3"
         commandlerVersion = "4.0.0"
     }
 
@@ -55,20 +57,37 @@ configure(publishedProjects) {
     apply plugin: "maven-publish"
     apply plugin: "com.jfrog.bintray"
     apply plugin: "maven"
+    apply plugin: "io.spring.dependency-management"
 
     sourceCompatibility = 11
     targetCompatibility = 11
 
     [compileJava, compileTestJava, javadoc]*.options*.encoding = 'UTF-8'
 
+    dependencyManagement {
+        imports {
+            mavenBom "org.apache.deltaspike.distribution:distributions-bom:${deltaSpikeVersion}"
+        }
+    }
+
+    sourceSets {
+        main {
+            output.resourcesDir = output.classesDirs.singleFile
+        }
+
+        test {
+            output.resourcesDir = output.classesDirs.singleFile
+        }
+    }
+
     dependencies {
         // Logging
-        implementation "org.slf4j:slf4j-api:1.7.29"
+        implementation "org.slf4j:slf4j-api:1.7.30"
         testRuntimeOnly "ch.qos.logback:logback-classic:1.2.3"
 
         // Testing
-        testImplementation "org.junit.jupiter:junit-jupiter:5.5.2"
-        testImplementation "org.mockito:mockito-core:3.2.0"
+        testImplementation "org.junit.jupiter:junit-jupiter:5.6.0"
+        testImplementation "org.mockito:mockito-core:3.2.4"
     }
 
     /** Testing */

@@ -1,4 +1,4 @@
-# Comcord [![discord-members]][discord] [![bintray-download]][bintray] [![docs-shield]][docs] [![gitlab-build]][gitlab] [![gitlab-coverage]][gitlab] [![donate-shield]][elypia-donate]
+# Comcord [![matrix-members]][matrix] [![discord-members]][discord] [![bintray-download]][bintray] [![docs-shield]][docs] [![gitlab-build]][gitlab] [![gitlab-coverage]][gitlab] [![donate-shield]][elypia-donate]
 The [Gradle]/[Maven] import string can be found at the Download badge above!
 
 ## About
@@ -55,6 +55,7 @@ We're always around and there are ample developers that would be
 willing to help; if it's a problem with the library itself 
 then we'll make sure to get it sorted.
 
+[matrix]: https://matrix.to/#/+elypia:matrix.org "Matrix Invite"
 [Discord]: https://discordapp.com/invite/hprGMaM "Discord Invite"
 [bintray]: https://bintray.com/elypia/comcord/core/_latestVersion "Bintray Latest Version"
 [docs]: https://elypia.gitlab.io/comcord "Commandler Documentation"
@@ -63,6 +64,7 @@ then we'll make sure to get it sorted.
 [Gradle]: https://gradle.org/ "Depend via Gradle"
 [Maven]: https://maven.apache.org/ "Depend via Maven"
 
+[matrix-members]: https://img.shields.io/matrix/elypia-general:matrix.org?logo=matrix "Matrix Shield"
 [discord-members]: https://discordapp.com/api/guilds/184657525990359041/widget.png "Discord Shield"
 [bintray-download]: https://api.bintray.com/packages/elypia/comcord/core/images/download.svg "Bintray Download Shield"
 [docs-shield]: https://img.shields.io/badge/Docs-Commandler-blue.svg "Commandler Documentation Shield"

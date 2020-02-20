@@ -30,6 +30,10 @@ import net.dv8tion.jda.api.events.message.*;
  */
 public final class EventUtils {
 
+    private EventUtils() {
+        // Do nothing
+    }
+
     /**
      * @param source The Discord event to get a member from.
      * @return The member contained within this event.

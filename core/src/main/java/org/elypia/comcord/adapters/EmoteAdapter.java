@@ -23,6 +23,7 @@ import org.elypia.comcord.api.EntityAdapter;
 import org.elypia.commandler.event.ActionEvent;
 import org.elypia.commandler.metadata.MetaParam;
 
+import javax.inject.Singleton;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -31,6 +32,7 @@ import java.util.stream.Collectors;
 /**
  * @author seth@elypia.org (Seth Falco)
  */
+@Singleton
 public class EmoteAdapter implements EntityAdapter<Emote> {
 
     @Override
@@ -39,25 +41,21 @@ public class EmoteAdapter implements EntityAdapter<Emote> {
         Set<Emote> emotes = new HashSet<>(EventUtils.getMessage(source).getEmotes());
 
         switch (getScope(event, data, Scope.MUTUAL)) {
-            case GLOBAL: {
+            case GLOBAL:
                 emotes.addAll(source.getJDA().getEmotes());
                 break;
-            }
-            case MUTUAL: {
+            case MUTUAL:
                 emotes.addAll(EventUtils.getAuthor(source).getMutualGuilds()
                     .parallelStream()
                     .map(Guild::getEmotes)
                     .flatMap(List::stream)
                     .collect(Collectors.toSet()));
                 break;
-            }
-            case LOCAL: {
+            case LOCAL:
                 emotes.addAll(EventUtils.getGuild(source).getEmotes());
                 break;
-            }
-            default: {
+            default:
                 throw new IllegalStateException("Unmanaged search scope.");
-            }
         }
 
         return filter(emotes, type, input, emote ->

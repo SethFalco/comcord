@@ -58,4 +58,7 @@ out/
 *.iml
 
 # Eclipse
-/bin/
+bin/
+.settings/
+.classpath
+.project

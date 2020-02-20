@@ -21,9 +21,12 @@ import net.dv8tion.jda.api.events.message.*;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.slf4j.*;
 
+import javax.inject.*;
+
 /**
  * @author seth@elypia.org (Seth Falco)
  */
+@Singleton
 public class DiscordListener extends ListenerAdapter {
 
     private static final Logger logger = LoggerFactory.getLogger(DiscordListener.class);
@@ -31,6 +34,7 @@ public class DiscordListener extends ListenerAdapter {
     private final DiscordIntegration integration;
     private final boolean listeningToBots;
 
+    @Inject
     public DiscordListener(final DiscordIntegration integration, final DiscordConfig config) {
         this.integration = integration;
         this.listeningToBots = config.isListeningToBots();

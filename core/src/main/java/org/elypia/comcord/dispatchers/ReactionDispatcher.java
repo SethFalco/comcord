@@ -20,9 +20,12 @@ import org.elypia.commandler.Request;
 import org.elypia.commandler.api.Dispatcher;
 import org.elypia.commandler.event.ActionEvent;
 
+import javax.inject.Singleton;
+
 /**
  * @author seth@elypia.org (Seth Falco)
  */
+@Singleton
 public class ReactionDispatcher implements Dispatcher {
 
     @Override

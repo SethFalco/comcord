@@ -23,12 +23,14 @@ import org.elypia.comcord.api.EntityAdapter;
 import org.elypia.commandler.event.ActionEvent;
 import org.elypia.commandler.metadata.MetaParam;
 
+import javax.inject.Singleton;
 import java.util.*;
 import java.util.stream.Collectors;
 
 /**
  * @author seth@elypia.org (Seth Falco)
  */
+@Singleton
 public class VoiceChannelAdapter implements EntityAdapter<VoiceChannel> {
 
     @Override
@@ -37,25 +39,21 @@ public class VoiceChannelAdapter implements EntityAdapter<VoiceChannel> {
         Collection<VoiceChannel> channels = new ArrayList<>();
 
         switch (getScope(event, data, Scope.LOCAL)) {
-            case GLOBAL: {
+            case GLOBAL:
                 channels.addAll(source.getJDA().getVoiceChannels());
                 break;
-            }
-            case MUTUAL: {
+            case MUTUAL:
                 channels.addAll(EventUtils.getAuthor(source).getMutualGuilds()
                     .parallelStream()
                     .map(Guild::getVoiceChannels)
                     .flatMap(List::stream)
                     .collect(Collectors.toSet()));
                 break;
-            }
-            case LOCAL: {
+            case LOCAL:
                 channels.addAll(EventUtils.getGuild(source).getVoiceChannels());
                 break;
-            }
-            default: {
+            default:
                 throw new IllegalStateException("Unmanaged search scope.");
-            }
         }
 
         return filter(channels, type, input, role ->

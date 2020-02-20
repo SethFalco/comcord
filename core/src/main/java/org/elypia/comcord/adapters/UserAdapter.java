@@ -23,12 +23,14 @@ import org.elypia.comcord.api.EntityAdapter;
 import org.elypia.commandler.event.ActionEvent;
 import org.elypia.commandler.metadata.MetaParam;
 
+import javax.inject.Singleton;
 import java.util.*;
 import java.util.stream.Collectors;
 
 /**
  * @author seth@elypia.org (Seth Falco)
  */
+@Singleton
 public class UserAdapter implements EntityAdapter<User> {
 
     // TODO: Accomodate MessageUpdateEvent
@@ -42,11 +44,10 @@ public class UserAdapter implements EntityAdapter<User> {
         Collection<User> users = new ArrayList<>();
 
         switch (getScope(event, data, Scope.LOCAL)) {
-            case GLOBAL: {
+            case GLOBAL:
                 users.addAll(source.getJDA().getUsers());
                 break;
-            }
-            case MUTUAL: {
+            case MUTUAL:
                 users.addAll(EventUtils.getAuthor(source).getMutualGuilds()
                     .parallelStream()
                     .map(Guild::getMembers)
@@ -54,15 +55,12 @@ public class UserAdapter implements EntityAdapter<User> {
                     .map(Member::getUser)
                     .collect(Collectors.toSet()));
                 break;
-            }
-            case LOCAL: {
+            case LOCAL:
                 users.addAll(EventUtils.getGuild(source).getMembers().parallelStream()
                     .map(Member::getUser).collect(Collectors.toSet()));
                 break;
-            }
-            default: {
+            default:
                 throw new IllegalStateException("Unmanaged search scope.");
-            }
         }
 
         return filter(users, type, input, role ->

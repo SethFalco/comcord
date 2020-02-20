@@ -16,15 +16,16 @@
 
 package org.elypia.comcord;
 
-import org.elypia.commandler.config.ConfigService;
+import org.apache.deltaspike.core.api.config.*;
 
-import javax.inject.*;
+import javax.inject.Singleton;
 
 /**
  * @author seth@elypia.org (Seth Falco)
  */
 @Singleton
-public class DiscordConfig {
+@Configuration(prefix = "comcord.")
+public interface DiscordConfig {
 
     /**
      * The Discord bot token.
@@ -32,14 +33,16 @@ public class DiscordConfig {
      *
      * @see <a href="https://discordapp.com/developers/applications/">Discord Developer Portal</a>
      */
-    private final String botToken;
+    @ConfigProperty(name = "bot-token")
+    String getBotToken();
 
     /**
      * The support guild to get help with the bot.
      * ComCord does not specifically use this, but it's
      * deemed as common metadata for any ComCord application.
      */
-    private final long supportGuildId;
+    @ConfigProperty(name ="support-guild-id")
+    long getSupportGuildId();
 
     /**
      * If the {@link DiscordListener} implementation should
@@ -48,24 +51,6 @@ public class DiscordConfig {
      * It's <strong>strongly</strong> recommended that this is
      * false, to avoid bots from triggering eachothers commands.
      */
-    private final boolean listeningToBots;
-
-    @Inject
-    public DiscordConfig(final ConfigService configService) {
-        botToken = configService.getString("comcord.bot-token");
-        supportGuildId = configService.getLong("comcord.support-guild-id");
-        listeningToBots = configService.getBoolean("comcord.listen-to-bots", false);
-    }
-
-    public String getBotToken() {
-        return botToken;
-    }
-
-    public long getSupportGuildId() {
-        return supportGuildId;
-    }
-
-    public boolean isListeningToBots() {
-        return listeningToBots;
-    }
+    @ConfigProperty(name = "listen-to-bots")
+    boolean isListeningToBots();
 }

@@ -21,12 +21,13 @@ import net.dv8tion.jda.api.entities.Message;
 import org.elypia.comcord.api.DiscordMessenger;
 import org.elypia.commandler.event.ActionEvent;
 
-import javax.inject.Inject;
+import javax.inject.*;
 import java.text.NumberFormat;
 
 /**
  * @author seth@elypia.org (Seth Falco)
  */
+@Singleton
 public class NumberToMessageMessenger implements DiscordMessenger<Number> {
 
     private NumberFormat format;

@@ -32,7 +32,7 @@ import javax.validation.*;
 @Singleton
 public class BotOwnerValidator implements ConstraintValidator<BotOwner, ActionEvent<Event, ?>> {
 
-    private static long ownerId;
+    private final long ownerId;
 
     @Inject
     public BotOwnerValidator(final JDA jda) {

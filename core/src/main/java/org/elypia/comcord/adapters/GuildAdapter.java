@@ -23,11 +23,13 @@ import org.elypia.comcord.api.EntityAdapter;
 import org.elypia.commandler.event.ActionEvent;
 import org.elypia.commandler.metadata.MetaParam;
 
+import javax.inject.Singleton;
 import java.util.*;
 
 /**
  * @author seth@elypia.org (Seth Falco)
  */
+@Singleton
 public class GuildAdapter implements EntityAdapter<Guild> {
 
     @Override
@@ -36,20 +38,16 @@ public class GuildAdapter implements EntityAdapter<Guild> {
         Collection<Guild> guilds = new ArrayList<>();
 
         switch (getScope(event, data, Scope.MUTUAL)) {
-            case GLOBAL: {
+            case GLOBAL:
                 guilds.addAll(source.getJDA().getGuilds());
                 break;
-            }
-            case MUTUAL: {
+            case MUTUAL:
                 guilds.addAll(EventUtils.getAuthor(source).getMutualGuilds());
                 break;
-            }
-            case LOCAL: {
+            case LOCAL:
                 throw new IllegalStateException("Can't search for guilds locally.");
-            }
-            default: {
+            default:
                 throw new IllegalStateException("Unmanaged search scope.");
-            }
         }
 
         return filter(guilds, type, input, guild ->
