@@ -23,19 +23,19 @@ import net.dv8tion.jda.api.events.message.GenericMessageEvent;
 import org.elypia.commandler.Commandler;
 import org.elypia.commandler.api.AbstractIntegration;
 
-import javax.inject.*;
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 import java.io.Serializable;
 
 /**
  * @author seth@elypia.org (Seth Falco)
  */
-@Singleton
+@ApplicationScoped
 public class DiscordIntegration extends AbstractIntegration<Event, Message> {
 
     @Inject
-    public DiscordIntegration(final Commandler commandler, final JDA jda) {
+    public DiscordIntegration(final Commandler commandler, final JDA jda, DiscordConfig config) {
         this.commandler = commandler;
-        DiscordConfig config = commandler.getInjector().getInstance(DiscordConfig.class);
         jda.addEventListener(new DiscordListener(this, config));
     }
 

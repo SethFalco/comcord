@@ -18,12 +18,9 @@ package org.elypia.comcord;
 
 import org.apache.deltaspike.core.api.config.*;
 
-import javax.inject.Singleton;
-
 /**
  * @author seth@elypia.org (Seth Falco)
  */
-@Singleton
 @Configuration(prefix = "comcord.")
 public interface DiscordConfig {
 
