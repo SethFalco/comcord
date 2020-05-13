@@ -20,6 +20,7 @@ import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.Event;
 import org.elypia.comcord.*;
 import org.elypia.comcord.api.EntityAdapter;
+import org.elypia.commandler.annotation.ParamAdapter;
 import org.elypia.commandler.event.ActionEvent;
 import org.elypia.commandler.metadata.MetaParam;
 
@@ -31,6 +32,7 @@ import java.util.stream.Collectors;
  * @author seth@elypia.org (Seth Falco)
  */
 @Singleton
+@ParamAdapter(User.class)
 public class UserAdapter implements EntityAdapter<User> {
 
     // TODO: Accomodate MessageUpdateEvent

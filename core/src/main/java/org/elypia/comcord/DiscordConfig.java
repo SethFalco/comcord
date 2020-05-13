@@ -21,14 +21,14 @@ import org.apache.deltaspike.core.api.config.*;
 /**
  * @author seth@elypia.org (Seth Falco)
  */
-@Configuration(prefix = "comcord.")
+@Configuration(prefix = "discord.")
 public interface DiscordConfig {
 
     /**
      * The Discord bot token.
      * This can be obtained on the Discord Developer Portal.
      *
-     * @see <a href="https://discordapp.com/developers/applications/">Discord Developer Portal</a>
+     * @see <a href="https://discord.com/developers/applications/">Discord Developer Portal</a>
      */
     @ConfigProperty(name = "bot-token")
     String getBotToken();
@@ -39,7 +39,7 @@ public interface DiscordConfig {
      * deemed as common metadata for any ComCord application.
      */
     @ConfigProperty(name ="support-guild-id")
-    long getSupportGuildId();
+    Long getSupportGuildId();
 
     /**
      * If the {@link DiscordListener} implementation should
@@ -48,6 +48,6 @@ public interface DiscordConfig {
      * It's <strong>strongly</strong> recommended that this is
      * false, to avoid bots from triggering eachothers commands.
      */
-    @ConfigProperty(name = "listen-to-bots")
+    @ConfigProperty(name = "listen-to-bots", defaultValue = "false")
     boolean isListeningToBots();
 }

@@ -19,8 +19,6 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="https://commandler.elypia.org application.xsd">
   <commandler>
-    <config>org.elypia.comcord.DiscordConfig</config>
-    <integration>org.elypia.comcord.DiscordIntegration</integration>
     <adapter type="org.elypia.comcord.adapters.EmoteAdapter">
       <compatible>net.dv8tion.jda.api.entities.Emote</compatible>
     </adapter>

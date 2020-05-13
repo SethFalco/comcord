@@ -21,9 +21,10 @@ import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.Event;
 import net.dv8tion.jda.api.events.message.GenericMessageEvent;
 import org.elypia.commandler.Commandler;
-import org.elypia.commandler.api.AbstractIntegration;
+import org.elypia.commandler.api.*;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.Producer;
 import javax.inject.Inject;
 import java.io.Serializable;
 
@@ -31,12 +32,30 @@ import java.io.Serializable;
  * @author seth@elypia.org (Seth Falco)
  */
 @ApplicationScoped
-public class DiscordIntegration extends AbstractIntegration<Event, Message> {
+public class DiscordIntegration implements Integration<Event, Message> {
 
+    private final Commandler commandler;
+    private final ActionListener listener;
+    private final JDA jda;
+    private final DiscordConfig config;
+
+    /**
+     * You're expected to use the {@link Producer}
+     * annotation to provide the {@link JDA} instance for integration.
+     *
+     * @param commandler
+     * @param listener
+     * @param jda
+     * @param config
+     */
     @Inject
-    public DiscordIntegration(final Commandler commandler, final JDA jda, DiscordConfig config) {
+    public DiscordIntegration(Commandler commandler, ActionListener listener, JDA jda, DiscordConfig config) {
         this.commandler = commandler;
-        jda.addEventListener(new DiscordListener(this, config));
+        this.listener = listener;
+        this.jda = jda;
+        this.config = config;
+
+        jda.addEventListener(new DiscordListener(this));
     }
 
     @Override
@@ -50,5 +69,13 @@ public class DiscordIntegration extends AbstractIntegration<Event, Message> {
             return ((GenericMessageEvent)source).getMessageIdLong();
 
         throw new IllegalStateException("Can't get serializable ID of this action.");
+    }
+
+    public ActionListener getListener() {
+        return listener;
+    }
+
+    public DiscordConfig getConfig() {
+        return config;
     }
 }

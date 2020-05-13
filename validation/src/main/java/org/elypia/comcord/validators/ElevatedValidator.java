@@ -17,33 +17,46 @@
 package org.elypia.comcord.validators;
 
 import net.dv8tion.jda.api.*;
-import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.Event;
 import org.elypia.comcord.EventUtils;
 import org.elypia.comcord.constraints.Elevated;
 import org.elypia.commandler.event.ActionEvent;
 
-import javax.inject.*;
+import javax.inject.Inject;
 import javax.validation.*;
 
 /**
+ * This is not intended for checking specific permissions,
+ * but rather as a generic way to determine if a user is
+ * allowed to configure parts of the bot.
+ *
+ * See {@link org.elypia.comcord.constraints.Permissions} for checking permissions.
+ *
  * @author seth@elypia.org (Seth Falco)
  */
-@Singleton
 public class ElevatedValidator implements ConstraintValidator<Elevated, ActionEvent<Event, ?>> {
 
-    private final JDA jda;
-
     @Inject
-    public ElevatedValidator(final JDA jda) {
-        this.jda = jda;
+    private JDA jda;
+
+    private long ownerId;
+
+    public ElevatedValidator() {
+        // Do nothing
+    }
+
+    @Override
+    public void initialize(Elevated elevated) {
+        ApplicationInfo info = jda.retrieveApplicationInfo().complete();
+        ownerId = info.getOwner().getIdLong();
     }
 
     @Override
     public boolean isValid(ActionEvent<Event, ?> value, ConstraintValidatorContext context) {
         Event source = value.getRequest().getSource();
 
-        if (EventUtils.getGuild(source) != null)
+        if (EventUtils.getGuild(source) == null)
             return true;
 
         TextChannel channel = EventUtils.getTextChannel(source);
@@ -51,6 +64,7 @@ public class ElevatedValidator implements ConstraintValidator<Elevated, ActionEv
         if (EventUtils.getMember(source).hasPermission(channel, Permission.MANAGE_SERVER))
             return true;
 
-        return new BotOwnerValidator(jda).isValid(value, context);
+        User user = EventUtils.getAuthor(source);
+        return user.getIdLong() == ownerId;
     }
 }

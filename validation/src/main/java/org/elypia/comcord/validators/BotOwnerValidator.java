@@ -23,19 +23,21 @@ import org.elypia.comcord.EventUtils;
 import org.elypia.comcord.constraints.BotOwner;
 import org.elypia.commandler.event.ActionEvent;
 
-import javax.inject.*;
+import javax.inject.Inject;
 import javax.validation.*;
 
 /**
  * @author seth@elypia.org (Seth Falco)
  */
-@Singleton
 public class BotOwnerValidator implements ConstraintValidator<BotOwner, ActionEvent<Event, ?>> {
 
-    private final long ownerId;
-
     @Inject
-    public BotOwnerValidator(final JDA jda) {
+    private JDA jda;
+
+    private long ownerId;
+
+    @Override
+    public void initialize(BotOwner botOwner) {
         ApplicationInfo info = jda.retrieveApplicationInfo().complete();
         ownerId = info.getOwner().getIdLong();
     }

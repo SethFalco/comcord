@@ -81,8 +81,12 @@ public final class EventUtils {
      * @return The member contained within this event.
      */
     public static Guild getGuild(final Event source) {
-        if (source instanceof GenericMessageEvent)
-            return ((GenericMessageEvent)source).getGuild();
+        if (source instanceof GenericMessageEvent) {
+            GenericMessageEvent event = (GenericMessageEvent)source;
+
+            if (event.isFromGuild())
+                return event.getGuild();
+        }
 
         if (source instanceof GenericGuildEvent)
             return ((GenericGuildEvent)source).getGuild();

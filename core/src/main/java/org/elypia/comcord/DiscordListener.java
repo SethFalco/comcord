@@ -21,12 +21,9 @@ import net.dv8tion.jda.api.events.message.*;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.slf4j.*;
 
-import javax.inject.*;
-
 /**
  * @author seth@elypia.org (Seth Falco)
  */
-@Singleton
 public class DiscordListener extends ListenerAdapter {
 
     private static final Logger logger = LoggerFactory.getLogger(DiscordListener.class);
@@ -34,12 +31,16 @@ public class DiscordListener extends ListenerAdapter {
     private final DiscordIntegration integration;
     private final boolean listeningToBots;
 
-    @Inject
-    public DiscordListener(final DiscordIntegration integration, final DiscordConfig config) {
+    public DiscordListener(final DiscordIntegration integration) {
         this.integration = integration;
-        this.listeningToBots = config.isListeningToBots();
+        this.listeningToBots = integration.getConfig().isListeningToBots();
     }
 
+    /**
+     * When receiving a message, handle it normally.
+     *
+     * @param event All text message events, in DM or a guild text channel.
+     */
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
         if (event.getAuthor().isBot() && !listeningToBots)
@@ -47,12 +48,18 @@ public class DiscordListener extends ListenerAdapter {
 
         String content = event.getMessage().getContentRaw();
 
-        Message message = integration.process(event, event.getMessage(), content);
+        Message message = integration.getListener().onAction(integration, event, event.getMessage(), content);
 
         if (message != null)
             event.getChannel().sendMessage(message).queue();
     }
 
+    /**
+     * When receiving an edit event, we'll still perform if it's
+     * the last message, or a message from us is the message after it.
+     *
+     * @param event All text message edit events, in DM or a guild text channel.
+     */
     @Override
     public void onMessageUpdate(MessageUpdateEvent event) {
         String content = event.getMessage().getContentRaw();
@@ -65,7 +72,7 @@ public class DiscordListener extends ListenerAdapter {
 
         channel.getHistoryAfter(updatedMessage.getIdLong(), 1).queue(history -> {
             if (history.isEmpty()) {
-                Message message = integration.process(event, event.getMessage(), content);
+                Message message = integration.getListener().onAction(integration, event, event.getMessage(), content);
 
                 if (message != null)
                     channel.sendMessage(message).queue();
@@ -74,7 +81,7 @@ public class DiscordListener extends ListenerAdapter {
                 Message nextMessage = history.getRetrievedHistory().get(0);
 
                 if (nextMessage.getAuthor().getIdLong() == event.getJDA().getSelfUser().getIdLong()) {
-                    Message message = integration.process(event, event.getMessage(), content);
+                    Message message = integration.getListener().onAction(integration, event, event.getMessage(), content);
 
                     if (message != null)
                         nextMessage.editMessage(message).queue();
