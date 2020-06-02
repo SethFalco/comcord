@@ -1,5 +1,5 @@
 /*
- * Copyright 2019-2020 Elypia CIC
+ * Copyright 2019-2019 Elypia CIC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,20 +14,8 @@
  * limitations under the License.
  */
 
-package org.elypia.comcord.validators;
-
-import net.dv8tion.jda.api.entities.TextChannel;
-import org.elypia.comcord.constraints.Talkable;
-
-import javax.validation.*;
-
 /**
- * @author seth@elypia.org (Seth Falco)
+ * All {@link javax.validation.ConstraintValidator} implementations
+ * for the default validation annotations provided by Comcord.
  */
-public class TalkableValidator implements ConstraintValidator<Talkable, TextChannel> {
-
-    @Override
-    public boolean isValid(TextChannel value, ConstraintValidatorContext context) {
-        return !value.getType().isGuild() && !value.canTalk();
-    }
-}
+package org.elypia.comcord.validators;

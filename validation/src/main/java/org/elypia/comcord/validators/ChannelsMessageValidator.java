@@ -17,19 +17,16 @@
 package org.elypia.comcord.validators;
 
 import net.dv8tion.jda.api.entities.*;
-import net.dv8tion.jda.api.events.Event;
-import org.elypia.comcord.EventUtils;
 import org.elypia.comcord.constraints.Channels;
-import org.elypia.commandler.event.ActionEvent;
 
-import javax.inject.Singleton;
+import javax.enterprise.context.ApplicationScoped;
 import javax.validation.*;
 
 /**
  * @author seth@elypia.org (Seth Falco)
  */
-@Singleton
-public class ChannelsValidator implements ConstraintValidator<Channels, ActionEvent<Event, ?>> {
+@ApplicationScoped
+public class ChannelsMessageValidator implements ConstraintValidator<Channels, Message> {
 
     private ChannelType[] types;
 
@@ -39,10 +36,8 @@ public class ChannelsValidator implements ConstraintValidator<Channels, ActionEv
     }
 
     @Override
-    public boolean isValid(ActionEvent<Event, ?> value, ConstraintValidatorContext context) {
-        Event source = value.getRequest().getSource();
-        MessageChannel channel = EventUtils.getMessageChannel(source);
-        ChannelType type = channel.getType();
+    public boolean isValid(Message message, ConstraintValidatorContext context) {
+        ChannelType type = message.getChannelType();
 
         for (ChannelType channelType : types) {
             if (channelType == type)

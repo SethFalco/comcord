@@ -39,7 +39,7 @@ allprojects() {
         website = "https://elypia.org/"
 
         deltaSpikeVersion = "1.9.3"
-        commandlerVersion = "4.0.0"
+        commandlerVersion = "4.0.1"
     }
 
     repositories {
@@ -154,7 +154,7 @@ configure(publishedProjects) {
             userOrg = "elypia"
             websiteUrl = website
             licenses = ["Apache-2.0"]
-            vcsUrl = gitUrl
+            vcsUrl = repoUrl
             issueTrackerUrl = issueUrl
             publicDownloadNumbers = true
             version {
@@ -182,7 +182,7 @@ configure(publishedProjects) {
                     url = website
                     licenses {
                         license {
-                            name = "The Apache License, Version 2.0"
+                            name = "Apache-2.0"
                             url = "http://www.apache.org/licenses/LICENSE-2.0.txt"
                         }
                     }

@@ -14,24 +14,28 @@
  * limitations under the License.
  */
 
-package org.elypia.comcord.messengers;
+package org.elypia.comcord.validators;
 
-import net.dv8tion.jda.api.MessageBuilder;
-import net.dv8tion.jda.api.entities.Message;
-import org.elypia.comcord.api.DiscordMessenger;
-import org.elypia.commandler.annotation.stereotypes.MessageProvider;
-import org.elypia.commandler.event.ActionEvent;
+import net.dv8tion.jda.api.entities.*;
+import org.elypia.comcord.constraints.Nsfw;
 
-import java.net.URL;
+import javax.enterprise.context.ApplicationScoped;
+import javax.validation.*;
 
 /**
  * @author seth@elypia.org (Seth Falco)
  */
-@MessageProvider(provides = Message.class, value = {Boolean.class, CharSequence.class, Character.class, URL.class})
-public class MiscToMessageMessenger implements DiscordMessenger<Object> {
+@ApplicationScoped
+public class NsfwMessageChannelValidator implements ConstraintValidator<Nsfw, MessageChannel> {
 
     @Override
-    public Message buildMessage(ActionEvent<?, Message> event, Object output) {
-        return new MessageBuilder(output.toString()).build();
+    public boolean isValid(MessageChannel channel, ConstraintValidatorContext context) {
+        ChannelType type = channel.getType();
+
+        if (!type.isGuild())
+            return true;
+
+        TextChannel textChannel = (TextChannel)channel;
+        return textChannel.isNSFW();
     }
 }

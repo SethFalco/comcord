@@ -20,18 +20,16 @@ import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.Event;
 import org.elypia.comcord.*;
 import org.elypia.comcord.api.EntityAdapter;
-import org.elypia.commandler.annotation.ParamAdapter;
+import org.elypia.commandler.annotation.stereotypes.ParamAdapter;
 import org.elypia.commandler.event.ActionEvent;
 import org.elypia.commandler.metadata.MetaParam;
 
-import javax.inject.Singleton;
 import java.util.*;
 import java.util.stream.Collectors;
 
 /**
  * @author seth@elypia.org (Seth Falco)
  */
-@Singleton
 @ParamAdapter(TextChannel.class)
 public class TextChannelAdapter implements EntityAdapter<TextChannel> {
 
@@ -46,13 +44,18 @@ public class TextChannelAdapter implements EntityAdapter<TextChannel> {
                 break;
             case MUTUAL:
                 channels.addAll(EventUtils.getAuthor(source).getMutualGuilds()
-                    .parallelStream()
+                    .stream()
                     .map(Guild::getTextChannels)
                     .flatMap(List::stream)
                     .collect(Collectors.toSet()));
                 break;
             case LOCAL:
-                channels.addAll(EventUtils.getGuild(source).getTextChannels());
+                Guild guild = EventUtils.getGuild(source);
+
+                if (guild == null)
+                    return null;
+
+                channels.addAll(guild.getTextChannels());
                 break;
             default:
                 throw new IllegalStateException("Unmanaged search scope.");

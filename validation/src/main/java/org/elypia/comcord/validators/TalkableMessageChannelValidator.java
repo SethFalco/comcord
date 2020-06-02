@@ -16,26 +16,24 @@
 
 package org.elypia.comcord.validators;
 
-import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.events.Event;
-import org.elypia.comcord.EventUtils;
-import org.elypia.comcord.constraints.Nsfw;
-import org.elypia.commandler.event.ActionEvent;
+import net.dv8tion.jda.api.entities.*;
+import org.elypia.comcord.constraints.Talkable;
 
-import javax.inject.Singleton;
 import javax.validation.*;
 
 /**
  * @author seth@elypia.org (Seth Falco)
  */
-@Singleton
-public class NsfwValidator implements ConstraintValidator<Nsfw, ActionEvent<Event, ?>> {
+public class TalkableMessageChannelValidator implements ConstraintValidator<Talkable, MessageChannel> {
 
     @Override
-    public boolean isValid(ActionEvent<Event, ?> value, ConstraintValidatorContext context) {
-        Event source = value.getRequest().getSource();
-        Guild guild = EventUtils.getGuild(source);
+    public boolean isValid(MessageChannel channel, ConstraintValidatorContext context) {
+        ChannelType type = channel.getType();
 
-        return guild != null || EventUtils.getTextChannel(source).isNSFW();
+        if (!type.isGuild())
+            return true;
+
+        TextChannel textChannel = (TextChannel)channel;
+        return textChannel.canTalk();
     }
 }

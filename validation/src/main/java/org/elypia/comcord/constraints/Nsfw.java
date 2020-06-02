@@ -16,7 +16,7 @@
 
 package org.elypia.comcord.constraints;
 
-import org.elypia.comcord.validators.NsfwValidator;
+import org.elypia.comcord.validators.NsfwMessageChannelValidator;
 
 import javax.validation.*;
 import java.lang.annotation.*;
@@ -32,7 +32,7 @@ import java.lang.annotation.*;
 @Target({ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-@Constraint(validatedBy = {NsfwValidator.class})
+@Constraint(validatedBy = {NsfwMessageChannelValidator.class})
 public @interface Nsfw {
 
     String message() default "{org.elypia.comcord.constraints.Nsfw.message}";

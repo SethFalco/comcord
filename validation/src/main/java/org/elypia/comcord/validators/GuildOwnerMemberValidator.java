@@ -17,24 +17,19 @@
 package org.elypia.comcord.validators;
 
 import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.events.Event;
-import org.elypia.comcord.EventUtils;
 import org.elypia.comcord.constraints.GuildOwner;
-import org.elypia.commandler.event.ActionEvent;
 
-import javax.inject.Singleton;
+import javax.enterprise.context.ApplicationScoped;
 import javax.validation.*;
 
 /**
  * @author seth@elypia.org (Seth Falco)
  */
-@Singleton
-public class GuildOwnerValidator implements ConstraintValidator<GuildOwner, ActionEvent<Event, ?>> {
+@ApplicationScoped
+public class GuildOwnerMemberValidator implements ConstraintValidator<GuildOwner, Member> {
 
     @Override
-    public boolean isValid(ActionEvent<Event, ?> value, ConstraintValidatorContext context) {
-        Event source = value.getRequest().getSource();
-        Member member = EventUtils.getMember(source);
-        return member != null && member.isOwner();
+    public boolean isValid(Member member, ConstraintValidatorContext context) {
+        return member.isOwner();
     }
 }

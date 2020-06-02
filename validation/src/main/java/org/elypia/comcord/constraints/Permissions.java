@@ -17,7 +17,7 @@
 package org.elypia.comcord.constraints;
 
 import net.dv8tion.jda.api.Permission;
-import org.elypia.comcord.validators.PermissionsEventValidator;
+import org.elypia.comcord.validators.*;
 
 import javax.validation.*;
 import java.lang.annotation.*;
@@ -26,7 +26,7 @@ import java.lang.annotation.*;
  * Validate that the application has the {@link Permission} required
  * in the channel or event to perform the action.
  *
- * Using the {@link #user()} parameter, it can also be configured if the
+ * Using the {@link #userNeedsPermission()} parameter, it can also be configured if the
  * user performing the command also required the permissions or not.
  *
  * This is helpful when performing admin related commands, or a command
@@ -38,7 +38,7 @@ import java.lang.annotation.*;
 @Target({ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-@Constraint(validatedBy = {PermissionsEventValidator.class})
+@Constraint(validatedBy = {PermissionsMemberValidator.class, PermissionMessageValidator.class})
 public @interface Permissions {
 
     String message() default "{org.elypia.comcord.constraints.Permissions.message}";
@@ -53,5 +53,5 @@ public @interface Permissions {
     /**
      * @return If the user also needs these permissions to perform this command.
      */
-    boolean user() default true;
+    boolean userNeedsPermission() default true;
 }

@@ -19,15 +19,15 @@ package org.elypia.comcord.messengers;
 import net.dv8tion.jda.api.MessageBuilder;
 import net.dv8tion.jda.api.entities.*;
 import org.elypia.comcord.api.DiscordMessenger;
+import org.elypia.commandler.annotation.stereotypes.MessageProvider;
 import org.elypia.commandler.event.ActionEvent;
 
-import javax.inject.Singleton;
 import java.util.StringJoiner;
 
 /**
  * @author seth@elypia.org (Seth Falco)
  */
-@Singleton
+@MessageProvider(provides = Message.class, value = MessageEmbed.class)
 public class MessageEmbedMessenger implements DiscordMessenger<MessageEmbed> {
 
     @Override

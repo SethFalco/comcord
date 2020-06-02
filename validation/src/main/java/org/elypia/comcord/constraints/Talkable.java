@@ -16,7 +16,7 @@
 
 package org.elypia.comcord.constraints;
 
-import org.elypia.comcord.validators.TalkableValidator;
+import org.elypia.comcord.validators.*;
 
 import javax.validation.*;
 import java.lang.annotation.*;
@@ -35,7 +35,7 @@ import java.lang.annotation.*;
 @Target({ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-@Constraint(validatedBy = {TalkableValidator.class})
+@Constraint(validatedBy = {TalkableMessageChannelValidator.class, TalkableMessageValidator.class})
 public @interface Talkable {
 
     String message() default "{org.elypia.comcord.constraints.Talkable.message}";

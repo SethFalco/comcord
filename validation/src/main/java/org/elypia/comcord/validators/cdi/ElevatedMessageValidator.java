@@ -1,5 +1,5 @@
 /*
- * Copyright 2019-2020 Elypia CIC
+ * Copyright 2019-2019 Elypia CIC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,14 +14,11 @@
  * limitations under the License.
  */
 
-package org.elypia.comcord.validators;
+package org.elypia.comcord.validators.cdi;
 
 import net.dv8tion.jda.api.*;
 import net.dv8tion.jda.api.entities.*;
-import net.dv8tion.jda.api.events.Event;
-import org.elypia.comcord.EventUtils;
 import org.elypia.comcord.constraints.Elevated;
-import org.elypia.commandler.event.ActionEvent;
 
 import javax.inject.Inject;
 import javax.validation.*;
@@ -35,36 +32,32 @@ import javax.validation.*;
  *
  * @author seth@elypia.org (Seth Falco)
  */
-public class ElevatedValidator implements ConstraintValidator<Elevated, ActionEvent<Event, ?>> {
-
-    @Inject
-    private JDA jda;
+public class ElevatedMessageValidator implements ConstraintValidator<Elevated, Message> {
 
     private long ownerId;
 
-    public ElevatedValidator() {
-        // Do nothing
-    }
-
-    @Override
-    public void initialize(Elevated elevated) {
+    @Inject
+    public ElevatedMessageValidator(JDA jda) {
         ApplicationInfo info = jda.retrieveApplicationInfo().complete();
         ownerId = info.getOwner().getIdLong();
     }
 
     @Override
-    public boolean isValid(ActionEvent<Event, ?> value, ConstraintValidatorContext context) {
-        Event source = value.getRequest().getSource();
-
-        if (EventUtils.getGuild(source) == null)
+    public boolean isValid(Message message, ConstraintValidatorContext context) {
+        if (!message.isFromGuild())
             return true;
 
-        TextChannel channel = EventUtils.getTextChannel(source);
+        Member member = message.getMember();
 
-        if (EventUtils.getMember(source).hasPermission(channel, Permission.MANAGE_SERVER))
+        if (member == null)
+            throw new IllegalStateException("Non-null message and non-null guild returned null member.");
+
+        TextChannel channel = message.getTextChannel();
+
+        if (member.hasPermission(channel, Permission.MANAGE_SERVER))
             return true;
 
-        User user = EventUtils.getAuthor(source);
+        User user = member.getUser();
         return user.getIdLong() == ownerId;
     }
 }

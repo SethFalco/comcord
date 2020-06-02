@@ -1,5 +1,5 @@
 /*
- * Copyright 2019-2020 Elypia CIC
+ * Copyright 2019-2019 Elypia CIC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,22 +14,27 @@
  * limitations under the License.
  */
 
-package org.elypia.comcord.messengers;
+package org.elypia.comcord.validators;
 
-import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.internal.entities.DataMessage;
-import org.elypia.comcord.api.DiscordMessenger;
-import org.elypia.commandler.annotation.stereotypes.MessageProvider;
-import org.elypia.commandler.event.ActionEvent;
+import net.dv8tion.jda.api.entities.*;
+import org.elypia.comcord.constraints.GuildOwner;
+
+import javax.enterprise.context.ApplicationScoped;
+import javax.validation.*;
 
 /**
  * @author seth@elypia.org (Seth Falco)
  */
-@MessageProvider(provides = Message.class, value = {Message.class, DataMessage.class})
-public class MessageMessenger implements DiscordMessenger<Message> {
+@ApplicationScoped
+public class GuildOwnerMessageValidator implements ConstraintValidator<GuildOwner, Message> {
 
     @Override
-    public Message buildMessage(ActionEvent<?, Message> event, Message output) {
-        return output;
+    public boolean isValid(Message message, ConstraintValidatorContext context) {
+        Member member = message.getMember();
+
+        if (member == null)
+            throw new IllegalStateException("Can't validate GuildOwner in DMs.");
+
+        return member.isOwner();
     }
 }

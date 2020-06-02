@@ -16,7 +16,7 @@
 
 package org.elypia.comcord.constraints;
 
-import org.elypia.comcord.validators.ElevatedValidator;
+import org.elypia.comcord.validators.cdi.*;
 
 import javax.validation.*;
 import java.lang.annotation.*;
@@ -27,7 +27,7 @@ import java.lang.annotation.*;
 @Target({ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-@Constraint(validatedBy = {ElevatedValidator.class})
+@Constraint(validatedBy = {ElevatedMemberValidator.class, ElevatedMessageValidator.class})
 public @interface Elevated {
 
     String message() default "{org.elypia.comcord.constraints.Elevated.message}";

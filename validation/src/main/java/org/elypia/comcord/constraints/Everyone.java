@@ -16,7 +16,7 @@
 
 package org.elypia.comcord.constraints;
 
-import org.elypia.comcord.validators.EveryoneValidator;
+import org.elypia.comcord.validators.EveryoneMessageValidator;
 
 import javax.validation.*;
 import java.lang.annotation.*;
@@ -36,7 +36,7 @@ import java.lang.annotation.*;
 @Target({ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-@Constraint(validatedBy = {EveryoneValidator.class})
+@Constraint(validatedBy = {EveryoneMessageValidator.class})
 public @interface Everyone {
 
     String message() default "{org.elypia.comcord.constraints.Everyone.message}";

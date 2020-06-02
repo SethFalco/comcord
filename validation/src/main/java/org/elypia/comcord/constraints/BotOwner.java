@@ -16,7 +16,7 @@
 
 package org.elypia.comcord.constraints;
 
-import org.elypia.comcord.validators.BotOwnerValidator;
+import org.elypia.comcord.validators.cdi.BotOwnerMessageValidator;
 
 import javax.validation.*;
 import java.lang.annotation.*;
@@ -27,7 +27,7 @@ import java.lang.annotation.*;
 @Target({ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-@Constraint(validatedBy = {BotOwnerValidator.class})
+@Constraint(validatedBy = {BotOwnerMessageValidator.class})
 public @interface BotOwner {
 
     String message() default "{org.elypia.comcord.constraints.BotOwner.message}";

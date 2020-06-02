@@ -20,17 +20,15 @@ import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.events.Event;
 import org.elypia.comcord.*;
 import org.elypia.comcord.api.EntityAdapter;
-import org.elypia.commandler.annotation.ParamAdapter;
+import org.elypia.commandler.annotation.stereotypes.ParamAdapter;
 import org.elypia.commandler.event.ActionEvent;
 import org.elypia.commandler.metadata.MetaParam;
 
-import javax.inject.Singleton;
 import java.util.*;
 
 /**
  * @author seth@elypia.org (Seth Falco)
  */
-@Singleton
 @ParamAdapter(Guild.class)
 public class GuildAdapter implements EntityAdapter<Guild> {
 

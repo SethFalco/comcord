@@ -18,46 +18,36 @@ package org.elypia.comcord.validators;
 
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.*;
-import net.dv8tion.jda.api.events.Event;
-import org.elypia.comcord.EventUtils;
 import org.elypia.comcord.constraints.Permissions;
-import org.elypia.commandler.event.ActionEvent;
 
-import javax.inject.Singleton;
+import javax.enterprise.context.ApplicationScoped;
 import javax.validation.*;
 
 /**
  * @author seth@elypia.org (Seth Falco)
  */
-@Singleton
-public class PermissionsEventValidator implements ConstraintValidator<Permissions, ActionEvent<Event, ?>> {
+@ApplicationScoped
+public class PermissionsMemberValidator implements ConstraintValidator<Permissions, Member> {
 
     private Permission[] permissions;
-    private boolean user;
+    private boolean userNeedsPermission;
 
     @Override
     public void initialize(Permissions constraintAnnotation) {
         permissions = constraintAnnotation.value();
-        user = constraintAnnotation.user();
+        userNeedsPermission = constraintAnnotation.userNeedsPermission();
     }
 
     @Override
-    public boolean isValid(ActionEvent<Event, ?> value, ConstraintValidatorContext context) {
-        Event source = value.getRequest().getSource();
-        Guild guild = EventUtils.getGuild(source);
+    public boolean isValid(Member member, ConstraintValidatorContext context) {
+        Guild guild = member.getGuild();
 
-        if (guild == null)
-            return true;
-
-        TextChannel channel = EventUtils.getTextChannel(source);
-
-        if (!guild.getSelfMember().hasPermission(channel, permissions))
+        if (!guild.getSelfMember().hasPermission(permissions))
             return false;
 
-        if (!user)
+        if (!userNeedsPermission)
             return true;
 
-        Member member = EventUtils.getMember(source);
-        return member.hasPermission(channel, permissions);
+        return member.hasPermission(permissions);
     }
 }

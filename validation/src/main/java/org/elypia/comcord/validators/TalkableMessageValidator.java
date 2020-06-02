@@ -1,5 +1,5 @@
 /*
- * Copyright 2019-2020 Elypia CIC
+ * Copyright 2019-2019 Elypia CIC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,24 +14,23 @@
  * limitations under the License.
  */
 
-package org.elypia.comcord.messengers;
+package org.elypia.comcord.validators;
 
-import net.dv8tion.jda.api.MessageBuilder;
 import net.dv8tion.jda.api.entities.Message;
-import org.elypia.comcord.api.DiscordMessenger;
-import org.elypia.commandler.annotation.stereotypes.MessageProvider;
-import org.elypia.commandler.event.ActionEvent;
+import org.elypia.comcord.constraints.Talkable;
 
-import java.net.URL;
+import javax.validation.*;
 
 /**
  * @author seth@elypia.org (Seth Falco)
  */
-@MessageProvider(provides = Message.class, value = {Boolean.class, CharSequence.class, Character.class, URL.class})
-public class MiscToMessageMessenger implements DiscordMessenger<Object> {
+public class TalkableMessageValidator implements ConstraintValidator<Talkable, Message> {
 
     @Override
-    public Message buildMessage(ActionEvent<?, Message> event, Object output) {
-        return new MessageBuilder(output.toString()).build();
+    public boolean isValid(Message message, ConstraintValidatorContext context) {
+        if (!message.isFromGuild())
+            return true;
+
+        return message.getTextChannel().canTalk();
     }
 }

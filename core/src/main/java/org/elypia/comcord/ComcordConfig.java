@@ -1,5 +1,5 @@
 /*
- * Copyright 2019-2020 Elypia CIC
+ * Copyright 2019-2019 Elypia CIC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,15 +21,19 @@ import org.apache.deltaspike.core.api.config.*;
 /**
  * @author seth@elypia.org (Seth Falco)
  */
-@Configuration(prefix = "discord.")
-public interface DiscordConfig {
+@Configuration(prefix = "comcord.")
+public interface ComcordConfig {
 
     /**
-     * The Discord bot token.
-     * This can be obtained on the Discord Developer Portal.
+     * If the {@link DiscordListener} implementation should
+     * listen to bots or ignore them.
      *
-     * @see <a href="https://discord.com/developers/applications/">Discord Developer Portal</a>
+     * It's <strong>strongly</strong> recommended that this is
+     * false, to avoid bots from triggering eachothers commands.
      */
-    @ConfigProperty(name = "bot-token")
-    String getBotToken();
+    @ConfigProperty(name = "listen-to-bots", defaultValue = "false")
+    boolean isListeningToBots();
+
+    @ConfigProperty(name = "listen-to-edit-events", defaultValue = "true")
+    boolean listenToEditEvents();
 }

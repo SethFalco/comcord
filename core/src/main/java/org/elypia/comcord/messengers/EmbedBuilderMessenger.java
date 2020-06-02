@@ -22,16 +22,16 @@ import net.dv8tion.jda.api.events.Event;
 import org.elypia.comcord.EventUtils;
 import org.elypia.comcord.api.DiscordMessenger;
 import org.elypia.commandler.Commandler;
+import org.elypia.commandler.annotation.stereotypes.MessageProvider;
 import org.elypia.commandler.api.Messenger;
 import org.elypia.commandler.event.ActionEvent;
 
-import javax.inject.Singleton;
 import java.util.StringJoiner;
 
 /**
  * @author seth@elypia.org (Seth Falco)
  */
-@Singleton
+@MessageProvider(provides = Message.class, value = {EmbedBuilder.class})
 public class EmbedBuilderMessenger implements DiscordMessenger<EmbedBuilder> {
 
     /**
@@ -64,8 +64,8 @@ public class EmbedBuilderMessenger implements DiscordMessenger<EmbedBuilder> {
 
     @Override
     public Message buildEmbed(ActionEvent<?, Message> event, EmbedBuilder output) {
-        Event discordEvent = (Event)event.getRequest().getSource();
-        Guild guild = EventUtils.getGuild(discordEvent);
+        Event source = (Event)event.getRequest().getSource();
+        Guild guild = EventUtils.getGuild(source);
 
         if (guild != null)
             output.setColor(guild.getSelfMember().getColor());

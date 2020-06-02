@@ -20,20 +20,18 @@ import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.Event;
 import org.elypia.comcord.*;
 import org.elypia.comcord.api.EntityAdapter;
-import org.elypia.commandler.annotation.ParamAdapter;
+import org.elypia.commandler.annotation.stereotypes.ParamAdapter;
 import org.elypia.commandler.event.ActionEvent;
 import org.elypia.commandler.metadata.MetaParam;
 
-import javax.inject.Singleton;
 import java.util.*;
 import java.util.stream.Collectors;
 
 // TODO: Make a way to specify "all" as a list argument.
-// TODO: Make a way that adapters can return a list of many arguments.
+// TODO: Make a way that adapters can return a list of many arguments, for example when searching and multiple emotes match
 /**
  * @author seth@elypia.org (Seth Falco)
  */
-@Singleton
 @ParamAdapter(Emote.class)
 public class EmoteAdapter implements EntityAdapter<Emote> {
 
@@ -48,13 +46,18 @@ public class EmoteAdapter implements EntityAdapter<Emote> {
                 break;
             case MUTUAL:
                 emotes.addAll(EventUtils.getAuthor(source).getMutualGuilds()
-                    .parallelStream()
+                    .stream()
                     .map(Guild::getEmotes)
                     .flatMap(List::stream)
                     .collect(Collectors.toSet()));
                 break;
             case LOCAL:
-                emotes.addAll(EventUtils.getGuild(source).getEmotes());
+                Guild guild = EventUtils.getGuild(source);
+
+                if (guild == null)
+                    return null;
+
+                emotes.addAll(guild.getEmotes());
                 break;
             default:
                 throw new IllegalStateException("Unmanaged search scope.");

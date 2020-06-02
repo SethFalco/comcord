@@ -1,5 +1,5 @@
 /*
- * Copyright 2019-2020 Elypia CIC
+ * Copyright 2019-2019 Elypia CIC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,24 +14,7 @@
  * limitations under the License.
  */
 
-package org.elypia.comcord.annotations;
-
-import java.lang.annotation.*;
-
 /**
- * @author seth@elypia.org (Seth Falco)
+ * Contains CDI-aware non-portable {@link javax.validation.ConstraintValidator}s.
  */
-@Target(ElementType.METHOD)
-@Retention(RetentionPolicy.RUNTIME)
-public @interface Reaction {
-
-    /**
-     * @return The command which response must be reacted to.
-     */
-    String command();
-
-    /**
-     * @return The emotes that can trigger this reaction command.
-     */
-    String[] emotes();
-}
+package org.elypia.comcord.validators.cdi;

@@ -1,5 +1,5 @@
 /*
- * Copyright 2019-2020 Elypia CIC
+ * Copyright 2019-2019 Elypia CIC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,28 +18,26 @@ package org.elypia.comcord.validators;
 
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.*;
-import net.dv8tion.jda.api.events.Event;
-import org.elypia.comcord.EventUtils;
 import org.elypia.comcord.constraints.Everyone;
-import org.elypia.commandler.event.ActionEvent;
 
 import javax.validation.*;
 
 /**
  * @author seth@elypia.org (Seth Falco)
  */
-public class EveryoneValidator implements ConstraintValidator<Everyone, ActionEvent<Event, Message>> {
+public class EveryoneMessageValidator implements ConstraintValidator<Everyone, Message> {
 
     @Override
-    public boolean isValid(ActionEvent<Event, Message> value, ConstraintValidatorContext context) {
-        Event source = value.getRequest().getSource();
-        Message message = EventUtils.getMessage(source);
-
-        if (!message.isFromType(ChannelType.TEXT))
+    public boolean isValid(Message message, ConstraintValidatorContext context) {
+        if (!message.isFromGuild())
             return true;
 
-        TextChannel channel = EventUtils.getTextChannel(source);
         Member member = message.getMember();
+
+        if (member == null)
+            throw new IllegalStateException("Obtained null member from a message in a guild.");
+
+        TextChannel channel = message.getTextChannel();
 
         if (member.hasPermission(channel, Permission.MESSAGE_MENTION_EVERYONE))
             return true;

@@ -16,7 +16,7 @@
 
 package org.elypia.comcord.constraints;
 
-import org.elypia.comcord.validators.GuildOwnerValidator;
+import org.elypia.comcord.validators.*;
 
 import javax.validation.*;
 import java.lang.annotation.*;
@@ -32,7 +32,7 @@ import java.lang.annotation.*;
 @Target({ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-@Constraint(validatedBy = {GuildOwnerValidator.class})
+@Constraint(validatedBy = {GuildOwnerMemberValidator.class, GuildOwnerMessageValidator.class})
 public @interface GuildOwner {
 
     String message() default "{org.elypia.comcord.constraints.GuildOwner.message}";

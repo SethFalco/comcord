@@ -17,7 +17,7 @@
 package org.elypia.comcord.constraints;
 
 import net.dv8tion.jda.api.entities.ChannelType;
-import org.elypia.comcord.validators.ChannelsValidator;
+import org.elypia.comcord.validators.*;
 
 import javax.validation.*;
 import java.lang.annotation.*;
@@ -28,7 +28,7 @@ import java.lang.annotation.*;
 @Target({ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-@Constraint(validatedBy = {ChannelsValidator.class})
+@Constraint(validatedBy = {ChannelsMessageValidator.class, ChannelsMessageChannelValidator.class})
 public @interface Channels {
 
     String message() default "{org.elypia.comcord.constraints.Channels.message}";

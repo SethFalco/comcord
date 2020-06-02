@@ -22,6 +22,7 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.slf4j.*;
 
 /**
+ * TODO: Look into buildAll
  * @author seth@elypia.org (Seth Falco)
  */
 public class DiscordListener extends ListenerAdapter {
@@ -33,7 +34,7 @@ public class DiscordListener extends ListenerAdapter {
 
     public DiscordListener(final DiscordIntegration integration) {
         this.integration = integration;
-        this.listeningToBots = integration.getConfig().isListeningToBots();
+        this.listeningToBots = integration.getComcordConfig().isListeningToBots();
     }
 
     /**
@@ -43,15 +44,16 @@ public class DiscordListener extends ListenerAdapter {
      */
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
-        if (event.getAuthor().isBot() && !listeningToBots)
+        if (shouldIgnoreMesage(event.getAuthor()))
             return;
 
-        String content = event.getMessage().getContentRaw();
+        Message message = event.getMessage();
+        String content = message.getContentRaw();
 
-        Message message = integration.getListener().onAction(integration, event, event.getMessage(), content);
+        Message response = integration.getListener().onAction(integration, event, message, content);
 
-        if (message != null)
-            event.getChannel().sendMessage(message).queue();
+        if (response != null)
+            event.getChannel().sendMessage(response).queue();
     }
 
     /**
@@ -62,31 +64,33 @@ public class DiscordListener extends ListenerAdapter {
      */
     @Override
     public void onMessageUpdate(MessageUpdateEvent event) {
-        String content = event.getMessage().getContentRaw();
-
-        if (event.getAuthor().isBot() && !listeningToBots)
+        if (shouldIgnoreMesage(event.getAuthor()) || !integration.getComcordConfig().listenToEditEvents())
             return;
 
-        Message updatedMessage = event.getMessage();
         MessageChannel channel = event.getChannel();
+        Message message = event.getMessage();
+        String content = message.getContentRaw();
 
-        channel.getHistoryAfter(updatedMessage.getIdLong(), 1).queue(history -> {
+        channel.getHistoryAfter(message.getIdLong(), 1).queue((history) -> {
             if (history.isEmpty()) {
-                Message message = integration.getListener().onAction(integration, event, event.getMessage(), content);
+                Message response = integration.getListener().onAction(integration, event, message, content);
 
-                if (message != null)
-                    channel.sendMessage(message).queue();
-            }
-            else {
+                if (response != null)
+                    channel.sendMessage(response).queue();
+            } else {
                 Message nextMessage = history.getRetrievedHistory().get(0);
 
-                if (nextMessage.getAuthor().getIdLong() == event.getJDA().getSelfUser().getIdLong()) {
-                    Message message = integration.getListener().onAction(integration, event, event.getMessage(), content);
+                if (nextMessage.getAuthor() == event.getJDA().getSelfUser()) {
+                    Message response = integration.getListener().onAction(integration, event, message, content);
 
-                    if (message != null)
-                        nextMessage.editMessage(message).queue();
+                    if (response != null)
+                        nextMessage.editMessage(response).override(true).queue();
                 }
             }
         });
+    }
+
+    private boolean shouldIgnoreMesage(User user) {
+        return user.isBot() && !listeningToBots;
     }
 }

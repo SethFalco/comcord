@@ -44,7 +44,7 @@ public interface EntityAdapter<O> extends Adapter<O> {
     }
 
     default O filter(Collection<O> collection, Class<? extends O> type, String input, Predicate<O> predicate) {
-        Iterator<O> matches = collection.parallelStream().filter(o ->
+        Iterator<O> matches = collection.stream().filter(o ->
             predicate.test(o) ||
             (IMentionable.class.isAssignableFrom(type) && ((IMentionable)o).getAsMention().equalsIgnoreCase(input)) ||
             (ISnowflake.class.isAssignableFrom(type) && ((ISnowflake)o).getId().equals(input))

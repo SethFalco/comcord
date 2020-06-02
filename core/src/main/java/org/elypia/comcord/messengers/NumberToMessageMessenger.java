@@ -19,15 +19,16 @@ package org.elypia.comcord.messengers;
 import net.dv8tion.jda.api.MessageBuilder;
 import net.dv8tion.jda.api.entities.Message;
 import org.elypia.comcord.api.DiscordMessenger;
+import org.elypia.commandler.annotation.stereotypes.MessageProvider;
 import org.elypia.commandler.event.ActionEvent;
 
-import javax.inject.*;
+import javax.inject.Inject;
 import java.text.NumberFormat;
 
 /**
  * @author seth@elypia.org (Seth Falco)
  */
-@Singleton
+@MessageProvider(provides = Message.class, value = {Number.class, Double.class, Float.class, Long.class, Integer.class, Short.class, Byte.class})
 public class NumberToMessageMessenger implements DiscordMessenger<Number> {
 
     private NumberFormat format;

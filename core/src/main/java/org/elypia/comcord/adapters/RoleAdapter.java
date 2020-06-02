@@ -20,18 +20,16 @@ import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.Event;
 import org.elypia.comcord.*;
 import org.elypia.comcord.api.EntityAdapter;
-import org.elypia.commandler.annotation.ParamAdapter;
+import org.elypia.commandler.annotation.stereotypes.ParamAdapter;
 import org.elypia.commandler.event.ActionEvent;
 import org.elypia.commandler.metadata.MetaParam;
 
-import javax.inject.Singleton;
 import java.util.*;
 import java.util.stream.Collectors;
 
 /**
  * @author seth@elypia.org (Seth Falco)
  */
-@Singleton
 @ParamAdapter(Role.class)
 public class RoleAdapter implements EntityAdapter<Role> {
 
@@ -46,13 +44,18 @@ public class RoleAdapter implements EntityAdapter<Role> {
                 break;
             case MUTUAL:
                 roles.addAll(EventUtils.getAuthor(source).getMutualGuilds()
-                    .parallelStream()
+                    .stream()
                     .map(Guild::getRoles)
                     .flatMap(List::stream)
                     .collect(Collectors.toSet()));
                 break;
             case LOCAL:
-                roles.addAll(EventUtils.getGuild(source).getRoles());
+                Guild guild = EventUtils.getGuild(source);
+
+                if (guild == null)
+                    return null;
+
+                roles.addAll(guild.getRoles());
                 break;
             default:
                 throw new IllegalStateException("Unmanaged search scope.");
