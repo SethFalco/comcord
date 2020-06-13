@@ -17,7 +17,7 @@
 package org.elypia.comcord.adapters;
 
 import net.dv8tion.jda.api.entities.*;
-import net.dv8tion.jda.api.events.Event;
+import net.dv8tion.jda.api.events.GenericEvent;
 import org.elypia.comcord.*;
 import org.elypia.comcord.api.EntityAdapter;
 import org.elypia.commandler.annotation.stereotypes.ParamAdapter;
@@ -33,14 +33,9 @@ import java.util.stream.Collectors;
 @ParamAdapter(User.class)
 public class UserAdapter implements EntityAdapter<User> {
 
-    // TODO: Accomodate MessageUpdateEvent
-    // TODO: Assumes you are in a guild/text channel
-    // TODO: Check effective name
-    // TODO: Empty quotes doesn't parse correctly
-    // TODO: CommandlerEvent is not being injected @Everyone
     @Override
     public User adapt(String input, Class<? extends User> type, MetaParam data, ActionEvent<?, ?> event) {
-        Event source = (Event)event.getRequest().getSource();
+        GenericEvent source = (GenericEvent)event.getRequest().getSource();
         Collection<User> users = new ArrayList<>();
 
         switch (getScope(event, data, Scope.LOCAL)) {
@@ -56,6 +51,11 @@ public class UserAdapter implements EntityAdapter<User> {
                     .collect(Collectors.toSet()));
                 break;
             case LOCAL:
+                Guild guild = EventUtils.getGuild(source);
+
+                if (guild == null)
+                    return null;
+
                 users.addAll(EventUtils.getGuild(source).getMembers().stream()
                     .map(Member::getUser).collect(Collectors.toSet()));
                 break;

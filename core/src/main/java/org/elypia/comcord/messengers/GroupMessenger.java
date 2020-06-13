@@ -1,5 +1,5 @@
 /*
- * Copyright 2019-2019 Elypia CIC
+ * Copyright 2019-2020 Elypia CIC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,32 +18,46 @@ package org.elypia.comcord.messengers;
 
 import net.dv8tion.jda.api.*;
 import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.utils.MarkdownUtil;
 import org.elypia.comcord.api.DiscordMessenger;
 import org.elypia.commandler.annotation.stereotypes.MessageProvider;
 import org.elypia.commandler.event.ActionEvent;
 import org.elypia.commandler.models.*;
 
+import java.util.StringJoiner;
+
 @MessageProvider(provides = Message.class, value = GroupModel.class)
 public class GroupMessenger implements DiscordMessenger<GroupModel> {
-
-    @Override
-    public Message buildEmbed(ActionEvent<?, Message> event, GroupModel group) {
-        EmbedBuilder builder = new EmbedBuilder();
-
-        for (ControllerModel controller : group)
-            builder.addField(controller.getName(), controller.getDescription(), false);
-
-        builder.setFooter("For more help, do: `help commands {module name}`");
-        return new MessageBuilder(builder).build();
-    }
 
     @Override
     public Message buildMessage(ActionEvent<?, Message> event, GroupModel group) {
         StringBuilder builder = new StringBuilder();
 
         for (ControllerModel controller : group) {
-            builder.append(controller.getName()).append("\n").append(controller.getDescription());
+            builder.append(controller.getName()).append("\n");
+
+            for (PropertyModel property : controller.getProperties())
+                builder.append(property.getDisplayName()).append(": ").append(property.getValue()).append("\n");
+
+            builder.append(controller.getDescription());
             builder.append("\n\n");
+        }
+
+        return new MessageBuilder(builder).build();
+    }
+
+    @Override
+    public Message buildEmbed(ActionEvent<?, Message> event, GroupModel group) {
+        EmbedBuilder builder = new EmbedBuilder();
+
+        for (ControllerModel controller : group) {
+            StringJoiner joiner = new StringJoiner("\n");
+
+            for (PropertyModel property : controller.getProperties())
+                joiner.add(MarkdownUtil.bold(property.getDisplayName()) + ": " + MarkdownUtil.monospace(property.getValue()));
+
+            joiner.add(controller.getDescription());
+            builder.addField(controller.getName(), joiner.toString(), false);
         }
 
         return new MessageBuilder(builder).build();

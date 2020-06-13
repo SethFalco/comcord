@@ -1,5 +1,5 @@
 /*
- * Copyright 2019-2019 Elypia CIC
+ * Copyright 2019-2020 Elypia CIC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,9 +19,12 @@ package org.elypia.comcord.validators.cdi;
 import net.dv8tion.jda.api.*;
 import net.dv8tion.jda.api.entities.*;
 import org.elypia.comcord.constraints.Elevated;
+import org.slf4j.*;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.validation.*;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * This is not intended for checking specific permissions,
@@ -32,14 +35,26 @@ import javax.validation.*;
  *
  * @author seth@elypia.org (Seth Falco)
  */
+@ApplicationScoped
 public class ElevatedMessageValidator implements ConstraintValidator<Elevated, Message> {
 
-    private long ownerId;
+    private static final Logger logger = LoggerFactory.getLogger(ElevatedMessageValidator.class);
+
+    private final CompletableFuture<ApplicationInfo> future;
+    private Long ownerId;
 
     @Inject
     public ElevatedMessageValidator(JDA jda) {
-        ApplicationInfo info = jda.retrieveApplicationInfo().complete();
-        ownerId = info.getOwner().getIdLong();
+        future = jda.retrieveApplicationInfo().submit();
+    }
+
+    @Override
+    public void initialize(Elevated elevated) {
+        try {
+            ownerId = future.get().getOwner().getIdLong();
+        } catch (Exception ex) {
+            logger.error("Failed to obtain application owner ID, will be unvalidate if it's the owner.", ex);
+        }
     }
 
     @Override
@@ -56,6 +71,9 @@ public class ElevatedMessageValidator implements ConstraintValidator<Elevated, M
 
         if (member.hasPermission(channel, Permission.MANAGE_SERVER))
             return true;
+
+        if (ownerId == null)
+            return false;
 
         User user = member.getUser();
         return user.getIdLong() == ownerId;

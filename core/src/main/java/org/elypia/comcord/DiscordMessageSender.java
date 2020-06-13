@@ -1,5 +1,5 @@
 /*
- * Copyright 2019-2019 Elypia CIC
+ * Copyright 2019-2020 Elypia CIC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,7 +23,6 @@ import org.elypia.commandler.producers.MessageSender;
 
 import javax.enterprise.inject.Specializes;
 
-// TODO: Editing messages sends new messages when using MessageSender
 @Specializes
 public class DiscordMessageSender extends MessageSender {
 
@@ -31,6 +30,7 @@ public class DiscordMessageSender extends MessageSender {
         super(integration, messengerManager, event);
     }
 
+    @Override
     public <T> void send(T object) {
         Object message = messengerManager.provide(event, object);
         integration.send(event, message);

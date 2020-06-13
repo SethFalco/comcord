@@ -1,5 +1,5 @@
 /*
- * Copyright 2019-2019 Elypia CIC
+ * Copyright 2019-2020 Elypia CIC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,6 +25,7 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.validation.*;
 import java.time.Instant;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * @author seth@elypia.org (Seth Falco)
@@ -34,21 +35,31 @@ public class BotOwnerMessageValidator implements ConstraintValidator<BotOwner, M
 
     private static final Logger logger = LoggerFactory.getLogger(BotOwnerMessageValidator.class);
 
-    private long ownerId;
+    private final CompletableFuture<ApplicationInfo> future;
+    private Long ownerId;
 
     @Inject
     public BotOwnerMessageValidator(JDA jda) {
-        ApplicationInfo info = jda.retrieveApplicationInfo().complete();
-        ownerId = info.getOwner().getIdLong();
+        future = jda.retrieveApplicationInfo().submit();
+    }
+
+    @Override
+    public void initialize(BotOwner elevated) {
+        try {
+            ownerId = future.get().getOwner().getIdLong();
+        } catch (Exception ex) {
+            logger.error("Failed to obtain application owner ID, will be unvalidate if it's the owner.", ex);
+        }
     }
 
     @Override
     public boolean isValid(Message message, ConstraintValidatorContext context) {
+        if (ownerId == null)
+            return false;
+
         User user = message.getAuthor();
         boolean isValid = user.getIdLong() == ownerId;
-
         logger.info("A command reserved for bot owners was attemped at {} by the user {}, returned {}.", Instant.now(), user, isValid);
-
         return isValid;
     }
 }

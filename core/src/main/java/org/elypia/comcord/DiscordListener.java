@@ -18,14 +18,12 @@ package org.elypia.comcord;
 
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.*;
-import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.slf4j.*;
 
 /**
- * TODO: Look into buildAll
  * @author seth@elypia.org (Seth Falco)
  */
-public class DiscordListener extends ListenerAdapter {
+public class DiscordListener extends ActivatedListenerAdapter {
 
     private static final Logger logger = LoggerFactory.getLogger(DiscordListener.class);
 

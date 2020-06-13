@@ -1,5 +1,5 @@
 /*
- * Copyright 2019-2019 Elypia CIC
+ * Copyright 2019-2020 Elypia CIC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,9 +14,11 @@
  * limitations under the License.
  */
 
-package org.elypia.comcord;
+package org.elypia.comcord.configuration;
 
+import net.dv8tion.jda.api.MessageBuilder;
 import org.apache.deltaspike.core.api.config.*;
+import org.elypia.comcord.DiscordListener;
 
 /**
  * @author seth@elypia.org (Seth Falco)
@@ -25,15 +27,26 @@ import org.apache.deltaspike.core.api.config.*;
 public interface ComcordConfig {
 
     /**
-     * If the {@link DiscordListener} implementation should
-     * listen to bots or ignore them.
-     *
      * It's <strong>strongly</strong> recommended that this is
      * false, to avoid bots from triggering eachothers commands.
+     *
+     * @return If the {@link DiscordListener} implementation should
+     * listen to bots or ignore them.
      */
     @ConfigProperty(name = "listen-to-bots", defaultValue = "false")
     boolean isListeningToBots();
 
+    /**
+     * @return If edits of messages should count as requests.
+     */
     @ConfigProperty(name = "listen-to-edit-events", defaultValue = "true")
     boolean listenToEditEvents();
+
+    /**
+     * @return If when making calls to "build", should
+     * {@link net.dv8tion.jda.api.MessageBuilder#buildAll(MessageBuilder.SplitPolicy...)}
+     * or just the regular {@link MessageBuilder#build()}.
+     */
+    @ConfigProperty(name = "should-build-all", defaultValue = "false")
+    boolean shouldBuildAll();
 }

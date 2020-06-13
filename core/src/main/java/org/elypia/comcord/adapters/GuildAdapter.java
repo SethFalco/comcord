@@ -17,7 +17,7 @@
 package org.elypia.comcord.adapters;
 
 import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.events.Event;
+import net.dv8tion.jda.api.events.GenericEvent;
 import org.elypia.comcord.*;
 import org.elypia.comcord.api.EntityAdapter;
 import org.elypia.commandler.annotation.stereotypes.ParamAdapter;
@@ -34,7 +34,7 @@ public class GuildAdapter implements EntityAdapter<Guild> {
 
     @Override
     public Guild adapt(String input, Class<? extends Guild> type, MetaParam data, ActionEvent<?, ?> event) {
-        Event source = (Event)event.getRequest().getSource();
+        GenericEvent source = (GenericEvent)event.getRequest().getSource();
         Collection<Guild> guilds = new ArrayList<>();
 
         switch (getScope(event, data, Scope.MUTUAL)) {

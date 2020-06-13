@@ -18,7 +18,7 @@ package org.elypia.comcord.messengers;
 
 import net.dv8tion.jda.api.*;
 import net.dv8tion.jda.api.entities.*;
-import net.dv8tion.jda.api.events.Event;
+import net.dv8tion.jda.api.events.GenericEvent;
 import org.elypia.comcord.EventUtils;
 import org.elypia.comcord.api.DiscordMessenger;
 import org.elypia.commandler.Commandler;
@@ -64,7 +64,7 @@ public class EmbedBuilderMessenger implements DiscordMessenger<EmbedBuilder> {
 
     @Override
     public Message buildEmbed(ActionEvent<?, Message> event, EmbedBuilder output) {
-        Event source = (Event)event.getRequest().getSource();
+        GenericEvent source = (GenericEvent)event.getRequest().getSource();
         Guild guild = EventUtils.getGuild(source);
 
         if (guild != null)

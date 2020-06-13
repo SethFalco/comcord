@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.elypia.comcord;
+package org.elypia.comcord.configuration;
 
 import org.apache.deltaspike.core.api.config.*;
 

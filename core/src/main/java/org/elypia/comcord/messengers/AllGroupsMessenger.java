@@ -1,5 +1,5 @@
 /*
- * Copyright 2019-2019 Elypia CIC
+ * Copyright 2019-2020 Elypia CIC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,10 +18,13 @@ package org.elypia.comcord.messengers;
 
 import net.dv8tion.jda.api.*;
 import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.utils.MarkdownUtil;
 import org.elypia.comcord.api.DiscordMessenger;
 import org.elypia.commandler.annotation.stereotypes.MessageProvider;
 import org.elypia.commandler.event.ActionEvent;
-import org.elypia.commandler.models.AllGroupsModel;
+import org.elypia.commandler.models.*;
+
+import java.util.*;
 
 @MessageProvider(provides = Message.class, value = AllGroupsModel.class)
 public class AllGroupsMessenger implements DiscordMessenger<AllGroupsModel> {
@@ -29,8 +32,38 @@ public class AllGroupsMessenger implements DiscordMessenger<AllGroupsModel> {
     @Override
     public Message buildEmbed(ActionEvent<?, Message> event, AllGroupsModel groups) {
         EmbedBuilder builder = new EmbedBuilder();
-        builder.setDescription(String.join("\n", groups.getGroups().keySet()));
-        builder.setFooter("For more help, do: `help modules {group name}`");
+
+        ControllerModel controller = groups.getHelpModel();
+        builder.setTitle(controller.getName());
+        builder.setDescription(controller.getDescription());
+
+        for (CommandModel metaCommand : controller.getCommands()) {
+            StringBuilder value = new StringBuilder();
+
+            StringJoiner joiner = new StringJoiner("\n");
+
+            for (PropertyModel property : metaCommand.getProperties())
+                joiner.add(MarkdownUtil.bold(property.getDisplayName()) + ": " + MarkdownUtil.monospace(property.getValue()));
+
+            joiner.add(metaCommand.getDescription());
+
+            value.append("\n").append(joiner.toString());
+
+            List<ParamModel> metaParams = metaCommand.getParams();
+
+            if (!metaParams.isEmpty()) {
+                value.append("\n" + "**Parameters**");
+
+                metaParams.forEach((param) -> {
+                    value.append("\n`").append(param.getName()).append("`: ");
+                    value.append(param.getDescription());
+                });
+            }
+
+            builder.addField(metaCommand.getName(), value.toString(), false);
+        }
+
+        builder.addField("Groups", String.join("\n", groups.getGroups().keySet()), false);
         return new MessageBuilder(builder).build();
     }
 

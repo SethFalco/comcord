@@ -17,7 +17,7 @@
 package org.elypia.comcord.adapters;
 
 import net.dv8tion.jda.api.entities.*;
-import net.dv8tion.jda.api.events.Event;
+import net.dv8tion.jda.api.events.GenericEvent;
 import org.elypia.comcord.*;
 import org.elypia.comcord.api.EntityAdapter;
 import org.elypia.commandler.annotation.stereotypes.ParamAdapter;
@@ -35,7 +35,7 @@ public class TextChannelAdapter implements EntityAdapter<TextChannel> {
 
     @Override
     public TextChannel adapt(String input, Class<? extends TextChannel> type, MetaParam data, ActionEvent<?, ?> event) {
-        Event source = (Event)event.getRequest().getSource();
+        GenericEvent source = (GenericEvent)event.getRequest().getSource();
         Collection<TextChannel> channels = new ArrayList<>();
 
         switch (getScope(event, data, Scope.LOCAL)) {

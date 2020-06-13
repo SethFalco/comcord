@@ -17,7 +17,7 @@
 package org.elypia.comcord.adapters;
 
 import net.dv8tion.jda.api.entities.*;
-import net.dv8tion.jda.api.events.Event;
+import net.dv8tion.jda.api.events.GenericEvent;
 import org.elypia.comcord.*;
 import org.elypia.comcord.api.EntityAdapter;
 import org.elypia.commandler.annotation.stereotypes.ParamAdapter;
@@ -27,8 +27,6 @@ import org.elypia.commandler.metadata.MetaParam;
 import java.util.*;
 import java.util.stream.Collectors;
 
-// TODO: Make a way to specify "all" as a list argument.
-// TODO: Make a way that adapters can return a list of many arguments, for example when searching and multiple emotes match
 /**
  * @author seth@elypia.org (Seth Falco)
  */
@@ -37,7 +35,7 @@ public class EmoteAdapter implements EntityAdapter<Emote> {
 
     @Override
     public Emote adapt(String input, Class<? extends Emote> type, MetaParam data, ActionEvent<?, ?> event) {
-        Event source = (Event)event.getRequest().getSource();
+        GenericEvent source = (GenericEvent)event.getRequest().getSource();
         Set<Emote> emotes = new HashSet<>(EventUtils.getMessage(source).getEmotes());
 
         switch (getScope(event, data, Scope.MUTUAL)) {

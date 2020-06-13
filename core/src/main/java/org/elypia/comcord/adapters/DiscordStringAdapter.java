@@ -1,5 +1,5 @@
 /*
- * Copyright 2019-2019 Elypia CIC
+ * Copyright 2019-2020 Elypia CIC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@
 package org.elypia.comcord.adapters;
 
 import net.dv8tion.jda.api.entities.MessageChannel;
-import net.dv8tion.jda.api.events.Event;
+import net.dv8tion.jda.api.events.GenericEvent;
 import org.elypia.comcord.EventUtils;
 import org.elypia.commandler.annotation.stereotypes.ParamAdapter;
 import org.elypia.commandler.api.Adapter;
@@ -37,10 +37,10 @@ public class DiscordStringAdapter implements Adapter<CharSequence> {
 
         Object source = event.getRequest().getSource();
 
-        if (!(source instanceof Event))
+        if (!(source instanceof GenericEvent))
             return null;
 
-        Event sourceEvent = (Event)source;
+        GenericEvent sourceEvent = (GenericEvent)source;
         MessageChannel channel = EventUtils.getMessageChannel(sourceEvent);
 
         if (channel == null)

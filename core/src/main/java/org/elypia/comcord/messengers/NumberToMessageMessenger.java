@@ -44,7 +44,7 @@ public class NumberToMessageMessenger implements DiscordMessenger<Number> {
 
     @Override
     public Message buildMessage(ActionEvent<?, Message> event, Number output) {
-        String formatted = event.getMetaCommand().getProperty(this.getClass(), "formatted", true);
+        String formatted = event.getMetaCommand().getProperty(this.getClass(), "formatted").getValue();
 
         if (formatted.equalsIgnoreCase("true"))
             return new MessageBuilder(format.format(output)).build();

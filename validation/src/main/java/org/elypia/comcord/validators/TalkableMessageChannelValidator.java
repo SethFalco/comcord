@@ -19,11 +19,13 @@ package org.elypia.comcord.validators;
 import net.dv8tion.jda.api.entities.*;
 import org.elypia.comcord.constraints.Talkable;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.validation.*;
 
 /**
  * @author seth@elypia.org (Seth Falco)
  */
+@ApplicationScoped
 public class TalkableMessageChannelValidator implements ConstraintValidator<Talkable, MessageChannel> {
 
     @Override

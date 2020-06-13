@@ -18,15 +18,13 @@ package org.elypia.comcord;
 
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.*;
-import net.dv8tion.jda.api.events.Event;
-import net.dv8tion.jda.api.events.guild.GenericGuildEvent;
-import net.dv8tion.jda.api.events.guild.member.GenericGuildMemberEvent;
-import net.dv8tion.jda.api.events.message.*;
+import net.dv8tion.jda.api.events.GenericEvent;
+import net.dv8tion.jda.api.events.message.GenericMessageEvent;
+import org.elypia.comcord.configuration.*;
 import org.elypia.commandler.api.*;
-import org.elypia.commandler.event.*;
+import org.elypia.commandler.event.ActionEvent;
 
-import javax.enterprise.context.*;
-import javax.enterprise.inject.Produces;
+import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.Producer;
 import javax.inject.Inject;
 import java.io.Serializable;
@@ -35,7 +33,7 @@ import java.io.Serializable;
  * @author seth@elypia.org (Seth Falco)
  */
 @ApplicationScoped
-public class DiscordIntegration implements Integration<Event, Message> {
+public class DiscordIntegration implements Integration<GenericEvent, Message> {
 
     private final ActionListener listener;
     private final DiscordConfig discordConfig;
@@ -69,7 +67,7 @@ public class DiscordIntegration implements Integration<Event, Message> {
     }
 
     @Override
-    public Serializable getActionId(Event source) {
+    public Serializable getActionId(GenericEvent source) {
         if (source instanceof GenericMessageEvent)
             return ((GenericMessageEvent)source).getMessageIdLong();
 
@@ -77,114 +75,9 @@ public class DiscordIntegration implements Integration<Event, Message> {
     }
 
     @Override
-    public void send(ActionEvent<Event, Message> event, Message response) {
-        MessageChannel channel = getMessageChannel(event.getRequest());
+    public void send(ActionEvent<GenericEvent, Message> event, Message response) {
+        MessageChannel channel = EventUtils.getMessageChannel(event.getRequest().getSource());
         channel.sendMessage(response).queue();
-    }
-
-    /**
-     * @param request The Commandler request to get a guild from.
-     * @return The member contained within this event.
-     */
-    @RequestScoped
-    @Produces
-    public Guild getGuild(Request request) {
-        Event source = (Event)request.getSource();
-
-        if (source instanceof GenericMessageEvent) {
-            GenericMessageEvent event = (GenericMessageEvent)source;
-
-            if (event.isFromGuild())
-                return event.getGuild();
-        }
-
-        if (source instanceof GenericGuildEvent)
-            return ((GenericGuildEvent)source).getGuild();
-
-        return null;
-    }
-
-    /**
-     * @param request The Commandler request to get a text channel from.
-     * @return The text channel contained within this event.
-     */
-    @RequestScoped
-    @Produces
-    public TextChannel getTextChannel(Request request) {
-        Event source = (Event)request.getSource();
-
-        if (source instanceof GenericMessageEvent)
-            return ((GenericMessageEvent)source).getTextChannel();
-
-        return null;
-    }
-
-    /**
-     * @param request The Commandler request to get a message from.
-     * @return The message contained within this event.
-     */
-    @RequestScoped
-    @Produces
-    public Message getMessage(Request request) {
-        Event source = (Event)request.getSource();
-
-        if (source instanceof MessageReceivedEvent)
-            return ((MessageReceivedEvent)source).getMessage();
-
-        if (source instanceof MessageUpdateEvent)
-            return ((MessageUpdateEvent)source).getMessage();
-
-        return null;
-    }
-
-    /**
-     * @param request The Commandler request to get the User from.
-     * @return The member contained within this event.
-     */
-    @RequestScoped
-    @Produces
-    public User getAuthor(Request request) {
-        Event source = (Event)request.getSource();
-
-        if (source instanceof MessageReceivedEvent)
-            return ((MessageReceivedEvent)source).getAuthor();
-
-        if (source instanceof MessageUpdateEvent)
-            return ((MessageUpdateEvent)source).getAuthor();
-
-        return null;
-    }
-    /**
-     * @param request The Commandler request to get a member from.
-     * @return The member contained within this event.
-     */
-    @RequestScoped
-    @Produces
-    public static Member getMember(Request request) {
-        Event source = (Event)request.getSource();
-
-        if (source instanceof MessageReceivedEvent)
-            return ((MessageReceivedEvent)source).getMember();
-
-        if (source instanceof GenericGuildMemberEvent)
-            return ((GenericGuildMemberEvent)source).getMember();
-
-        return null;
-    }
-
-    /**
-     * @param request The Commandler request to get a message channel from.
-     * @return The message channel contained within this event.
-     */
-    @RequestScoped
-    @Produces
-    public static MessageChannel getMessageChannel(Request request) {
-        Event source = (Event)request.getSource();
-
-        if (source instanceof GenericMessageEvent)
-            return ((GenericMessageEvent)source).getChannel();
-
-        return null;
     }
 
     public ActionListener getListener() {
