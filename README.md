@@ -90,7 +90,7 @@ then we'll make sure to get it sorted.
 [Maven]: https://maven.apache.org/ "Depend via Maven"
 [JDA]: https://github.com/DV8FromTheWorld/JDA "JDA on GitHub"
 
-[Matrix]: https://img.shields.io/matrix/elypia-general:matrix.org?logo=matrix "Matrix Shield"
+[Matrix]: https://img.shields.io/matrix/elypia:matrix.org?logo=matrix "Matrix Shield"
 [Discord]: https://discord.com/api/guilds/184657525990359041/widget.png "Discord Shield"
 [Maven Central]: https://img.shields.io/maven-central/v/org.elypia.comcord/core "Download Shield"
 [Docs]: https://img.shields.io/badge/docs-comcord-blue.svg "Documentation Shield"

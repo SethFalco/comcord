@@ -29,7 +29,7 @@ allprojects() {
     apply plugin: "jacoco"
 
     group = "org.elypia.comcord"
-    version = "2.0.0"
+    version = "2.0.1"
     description = "Bringing Commandler and Discord together."
 
     ext {
@@ -38,7 +38,7 @@ allprojects() {
         issueUrl = "${repoUrl}/issues"
         website = "https://elypia.org/"
 
-        deltaSpikeVersion = "1.9.3"
+        deltaSpikeVersion = "1.9.4"
         commandlerVersion = "4.0.1"
     }
 
