@@ -49,9 +49,7 @@ public class DiscordListener extends ActivatedListenerAdapter {
         String content = message.getContentRaw();
 
         Message response = integration.getListener().onAction(integration, event, message, content);
-
-        if (response != null)
-            event.getChannel().sendMessage(response).queue();
+        respond(event, response);
     }
 
     /**
@@ -72,9 +70,7 @@ public class DiscordListener extends ActivatedListenerAdapter {
         channel.getHistoryAfter(message.getIdLong(), 1).queue((history) -> {
             if (history.isEmpty()) {
                 Message response = integration.getListener().onAction(integration, event, message, content);
-
-                if (response != null)
-                    channel.sendMessage(response).queue();
+                respond(event, response);
             } else {
                 Message nextMessage = history.getRetrievedHistory().get(0);
 
@@ -88,7 +84,26 @@ public class DiscordListener extends ActivatedListenerAdapter {
         });
     }
 
+    /**
+     * @param user The user that performed an action.
+     * @return If we are interested in responding to this user.
+     */
     private boolean shouldIgnoreMesage(User user) {
         return user.isBot() && !listeningToBots;
+    }
+
+    /**
+     * @param event The event that represents the user action.
+     * @param message The message to respond with, nothing will happen
+     * if there is no permission to write in the channel the event took place in.
+     */
+    private void respond(GenericMessageEvent event, Message message) {
+        if (message == null)
+            return;
+
+        if (event.isFromGuild() && !event.getTextChannel().canTalk())
+            logger.warn("A command was performed however we don't have write permission in the channel it was performed in.");
+        else
+            event.getChannel().sendMessage(message).queue();
     }
 }
