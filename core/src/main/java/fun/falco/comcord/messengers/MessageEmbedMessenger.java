@@ -16,29 +16,30 @@
 
 package fun.falco.comcord.messengers;
 
-import net.dv8tion.jda.api.*;
-import net.dv8tion.jda.api.entities.*;
-import fun.falco.comcord.api.DiscordMessenger;
+import java.util.StringJoiner;
+
 import org.elypia.commandler.annotation.stereotypes.MessageProvider;
 import org.elypia.commandler.api.Messenger;
 import org.elypia.commandler.event.ActionEvent;
-import org.slf4j.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.util.StringJoiner;
+import fun.falco.comcord.api.DiscordMessenger;
+import net.dv8tion.jda.api.MessageBuilder;
+import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.MessageEmbed;
 
 /**
- * <strong>
- *     Really you should not depend on this {@link Messenger}
- *     as it can omit information and produce unreliable and
- *     unexpected string messages if the bot doesn't have the
- *     {@link Permission#MESSAGE_EMBED_LINKS} permission.
+ * Really you should not depend on this {@link Messenger} as it can omit
+ * information and produce unreliable and unexpected string messages if the bot
+ * doesn't have the {@link Permission#MESSAGE_EMBED_LINKS} permission.
  *
- *     You should prefer to handle working around permissions
- *     yourself and return a {@link Message}, or alternatively
- *     return a custom model object and implement a {@link DiscordMessenger}
- *     for it to handle how to build a message with an embed, vs
- *     as just text.
- * </strong>
+ * <p>You should prefer to handle working around permissions yourself and return
+ * a {@link Message}, or alternatively return a custom model object and
+ * implement a {@link DiscordMessenger} for it to handle how to build a message
+ * with an embed, vs as just text.</p>
+ *
  * @author seth@falco.fun (Seth Falco)
  */
 @MessageProvider(provides = Message.class, value = MessageEmbed.class)
@@ -58,45 +59,51 @@ public class MessageEmbedMessenger implements DiscordMessenger<MessageEmbed> {
         MessageEmbed.Thumbnail thumbnail = messageEmbed.getThumbnail();
         MessageEmbed.Footer footer = messageEmbed.getFooter();
 
-        if (authorInfo != null)
+        if (authorInfo != null) {
             joiner.add("**" + authorInfo.getName() + "**");
+        }
 
-        if (title != null)
+        if (title != null) {
             joiner.add(title);
+        }
 
-        if (description != null)
+        if (description != null) {
             joiner.add(description);
+        }
 
-        for (MessageEmbed.Field field : messageEmbed.getFields())
+        for (MessageEmbed.Field field : messageEmbed.getFields()) {
             joiner.add(field.getName() + "\n" + field.getValue());
+        }
 
-        if (footer != null)
+        if (footer != null) {
             joiner.add(footer.getText());
+        }
 
         if (image != null) {
             String url = image.getUrl();
             String proxyUrl = image.getProxyUrl();
 
-            if (url != null)
+            if (url != null) {
                 joiner.add(url);
-
-            else if (proxyUrl != null)
+            } else if (proxyUrl != null) {
                 joiner.add(proxyUrl);
+            }
         }
 
         if (thumbnail != null) {
             String url = thumbnail.getUrl();
             String proxyUrl = thumbnail.getProxyUrl();
 
-            if (url != null)
+            if (url != null) {
                 joiner.add(url);
-
-            else if (proxyUrl != null)
+            } else if (proxyUrl != null) {
                 joiner.add(proxyUrl);
+            }
         }
 
-        if (joiner.length() == 0)
+        if (joiner.length() == 0) {
             throw new IllegalStateException("When converting MessageEmbed to a String, produced an empty message.");
+        }
 
         return new MessageBuilder(joiner.toString()).build();
     }

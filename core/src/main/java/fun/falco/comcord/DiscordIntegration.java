@@ -16,18 +16,23 @@
 
 package fun.falco.comcord;
 
-import net.dv8tion.jda.api.JDA;
-import net.dv8tion.jda.api.entities.*;
-import net.dv8tion.jda.api.events.GenericEvent;
-import net.dv8tion.jda.api.events.message.GenericMessageEvent;
-import fun.falco.comcord.configuration.*;
-import org.elypia.commandler.api.*;
-import org.elypia.commandler.event.ActionEvent;
+import java.io.Serializable;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.Producer;
 import javax.inject.Inject;
-import java.io.Serializable;
+
+import org.elypia.commandler.api.ActionListener;
+import org.elypia.commandler.api.Integration;
+import org.elypia.commandler.event.ActionEvent;
+
+import fun.falco.comcord.configuration.ComcordConfig;
+import fun.falco.comcord.configuration.DiscordConfig;
+import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.MessageChannel;
+import net.dv8tion.jda.api.events.GenericEvent;
+import net.dv8tion.jda.api.events.message.GenericMessageEvent;
 
 /**
  * @author seth@falco.fun (Seth Falco)
@@ -44,9 +49,9 @@ public class DiscordIntegration implements Integration<GenericEvent, Message> {
      * You're expected to use the {@link Producer}
      * annotation to provide the {@link JDA} instance for integration.
      *
-     * @param listener Commandlers action listener implementation to send commands to.
-     * @param discordConfig The discord configuration.
-     * @param jda The Discord API client.
+     * @param listener Commandler action listener implementation to send commands to.
+     * @param discordConfig Discord configuration.
+     * @param jda Discord API client.
      */
     @Inject
     public DiscordIntegration(ActionListener listener, DiscordConfig discordConfig, ComcordConfig comcordConfig, JDA jda) {
@@ -68,8 +73,9 @@ public class DiscordIntegration implements Integration<GenericEvent, Message> {
 
     @Override
     public Serializable getActionId(GenericEvent source) {
-        if (source instanceof GenericMessageEvent)
-            return ((GenericMessageEvent)source).getMessageIdLong();
+        if (source instanceof GenericMessageEvent) {
+            return ((GenericMessageEvent) source).getMessageIdLong();
+        }
 
         throw new IllegalStateException("Can't get serializable ID of this action.");
     }

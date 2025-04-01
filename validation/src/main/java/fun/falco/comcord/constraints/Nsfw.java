@@ -16,16 +16,22 @@
 
 package fun.falco.comcord.constraints;
 
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+import javax.validation.Constraint;
+import javax.validation.Payload;
+
 import fun.falco.comcord.validators.NsfwMessageChannelValidator;
 
-import javax.validation.*;
-import java.lang.annotation.*;
-
 /**
- * Verify that the application is allowed to send things deemed
- * NSFW in the channel.
+ * Verify that the application is allowed to send things deemed NSFW in the
+ * channel.
  *
- * If the message is in PMs/DMs, it should allow the message regardless.
+ * <p>If the message is in PMs/DMs, it should allow the message regardless.</p>
  *
  * @author seth@falco.fun (Seth Falco)
  */

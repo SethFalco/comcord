@@ -16,16 +16,23 @@
 
 package fun.falco.comcord.constraints;
 
-import fun.falco.comcord.validators.*;
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-import javax.validation.*;
-import java.lang.annotation.*;
+import javax.validation.Constraint;
+import javax.validation.Payload;
+
+import fun.falco.comcord.validators.GuildOwnerMemberValidator;
+import fun.falco.comcord.validators.GuildOwnerMessageValidator;
 
 /**
- * Validate that a command was performed by the owner of the Guild
- * if the command was performed in a guild at all.
+ * Validate that a command was performed by the owner of the Guild if the
+ * command was performed in a guild at all.
  *
- * If it was not performed in a guild it should always pass.
+ * <p>If it was not performed in a guild it should always pass.</p>
  *
  * @author seth@falco.fun (Seth Falco)
  */

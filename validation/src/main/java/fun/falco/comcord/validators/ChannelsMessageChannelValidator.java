@@ -16,11 +16,13 @@
 
 package fun.falco.comcord.validators;
 
-import net.dv8tion.jda.api.entities.*;
-import fun.falco.comcord.constraints.Channels;
-
 import javax.enterprise.context.ApplicationScoped;
-import javax.validation.*;
+import javax.validation.ConstraintValidator;
+import javax.validation.ConstraintValidatorContext;
+
+import fun.falco.comcord.constraints.Channels;
+import net.dv8tion.jda.api.entities.ChannelType;
+import net.dv8tion.jda.api.entities.MessageChannel;
 
 /**
  * @author seth@falco.fun (Seth Falco)
@@ -40,8 +42,9 @@ public class ChannelsMessageChannelValidator implements ConstraintValidator<Chan
         ChannelType type = channel.getType();
 
         for (ChannelType channelType : types) {
-            if (channelType == type)
+            if (channelType == type) {
                 return true;
+            }
         }
 
         return false;

@@ -16,11 +16,18 @@
 
 package fun.falco.comcord.constraints;
 
-import net.dv8tion.jda.api.entities.ChannelType;
-import fun.falco.comcord.validators.*;
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-import javax.validation.*;
-import java.lang.annotation.*;
+import javax.validation.Constraint;
+import javax.validation.Payload;
+
+import fun.falco.comcord.validators.ChannelsMessageChannelValidator;
+import fun.falco.comcord.validators.ChannelsMessageValidator;
+import net.dv8tion.jda.api.entities.ChannelType;
 
 /**
  * @author seth@falco.fun (Seth Falco)
@@ -36,7 +43,7 @@ public @interface Channels {
     Class<? extends Payload>[] payload() default {};
 
     /**
-     * @return The acceptable channels type this can be received from.
+     * @return Acceptable channels type this can be received from.
      */
     ChannelType[] value();
 }

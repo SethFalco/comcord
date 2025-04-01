@@ -16,11 +16,13 @@
 
 package fun.falco.comcord.validators;
 
-import net.dv8tion.jda.api.entities.*;
-import fun.falco.comcord.constraints.GuildOwner;
-
 import javax.enterprise.context.ApplicationScoped;
-import javax.validation.*;
+import javax.validation.ConstraintValidator;
+import javax.validation.ConstraintValidatorContext;
+
+import fun.falco.comcord.constraints.GuildOwner;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.Message;
 
 /**
  * @author seth@falco.fun (Seth Falco)
@@ -32,8 +34,9 @@ public class GuildOwnerMessageValidator implements ConstraintValidator<GuildOwne
     public boolean isValid(Message message, ConstraintValidatorContext context) {
         Member member = message.getMember();
 
-        if (member == null)
+        if (member == null) {
             throw new IllegalStateException("Can't validate GuildOwner in DMs.");
+        }
 
         return member.isOwner();
     }

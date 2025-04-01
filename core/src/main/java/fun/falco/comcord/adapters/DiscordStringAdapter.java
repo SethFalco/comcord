@@ -16,35 +16,39 @@
 
 package fun.falco.comcord.adapters;
 
-import net.dv8tion.jda.api.entities.MessageChannel;
-import net.dv8tion.jda.api.events.GenericEvent;
-import fun.falco.comcord.EventUtils;
 import org.elypia.commandler.annotation.stereotypes.ParamAdapter;
 import org.elypia.commandler.api.Adapter;
 import org.elypia.commandler.event.ActionEvent;
 import org.elypia.commandler.metadata.MetaParam;
+
+import fun.falco.comcord.EventUtils;
+import net.dv8tion.jda.api.entities.MessageChannel;
+import net.dv8tion.jda.api.events.GenericEvent;
 
 @ParamAdapter(CharSequence.class)
 public class DiscordStringAdapter implements Adapter<CharSequence> {
 
     @Override
     public CharSequence adapt(String input, Class<? extends CharSequence> type, MetaParam metaParam, ActionEvent<?, ?> event) {
-        if (!input.startsWith("msg:"))
+        if (!input.startsWith("msg:")) {
             return input;
+        }
 
         String inputId = input.replace("msg:", "");
         long messageId = Long.parseLong(inputId);
 
         Object source = event.getRequest().getSource();
 
-        if (!(source instanceof GenericEvent))
+        if (!(source instanceof GenericEvent)) {
             return null;
+        }
 
-        GenericEvent sourceEvent = (GenericEvent)source;
+        GenericEvent sourceEvent = (GenericEvent) source;
         MessageChannel channel = EventUtils.getMessageChannel(sourceEvent);
 
-        if (channel == null)
+        if (channel == null) {
             return null;
+        }
 
         return channel.retrieveMessageById(messageId).complete().getContentRaw();
     }

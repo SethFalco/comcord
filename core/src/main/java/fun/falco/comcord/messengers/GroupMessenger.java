@@ -16,15 +16,19 @@
 
 package fun.falco.comcord.messengers;
 
-import net.dv8tion.jda.api.*;
-import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.utils.MarkdownUtil;
-import fun.falco.comcord.api.DiscordMessenger;
+import java.util.StringJoiner;
+
 import org.elypia.commandler.annotation.stereotypes.MessageProvider;
 import org.elypia.commandler.event.ActionEvent;
-import org.elypia.commandler.models.*;
+import org.elypia.commandler.models.ControllerModel;
+import org.elypia.commandler.models.GroupModel;
+import org.elypia.commandler.models.PropertyModel;
 
-import java.util.StringJoiner;
+import fun.falco.comcord.api.DiscordMessenger;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.MessageBuilder;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.utils.MarkdownUtil;
 
 @MessageProvider(provides = Message.class, value = GroupModel.class)
 public class GroupMessenger implements DiscordMessenger<GroupModel> {
@@ -36,8 +40,9 @@ public class GroupMessenger implements DiscordMessenger<GroupModel> {
         for (ControllerModel controller : group) {
             builder.append(controller.getName()).append("\n");
 
-            for (PropertyModel property : controller.getProperties())
+            for (PropertyModel property : controller.getProperties()) {
                 builder.append(property.getDisplayName()).append(": ").append(property.getValue()).append("\n");
+            }
 
             builder.append(controller.getDescription());
             builder.append("\n\n");
@@ -53,8 +58,9 @@ public class GroupMessenger implements DiscordMessenger<GroupModel> {
         for (ControllerModel controller : group) {
             StringJoiner joiner = new StringJoiner("\n");
 
-            for (PropertyModel property : controller.getProperties())
+            for (PropertyModel property : controller.getProperties()) {
                 joiner.add(MarkdownUtil.bold(property.getDisplayName()) + ": " + MarkdownUtil.monospace(property.getValue()));
+            }
 
             joiner.add(controller.getDescription());
             builder.addField(controller.getName(), joiner.toString(), false);

@@ -16,23 +16,29 @@
 
 package fun.falco.comcord.validators.cdi;
 
-import net.dv8tion.jda.api.*;
-import net.dv8tion.jda.api.entities.*;
-import fun.falco.comcord.constraints.*;
-import org.slf4j.*;
+import java.util.concurrent.CompletableFuture;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import javax.validation.*;
+import javax.validation.ConstraintValidator;
+import javax.validation.ConstraintValidatorContext;
 
-import java.util.concurrent.CompletableFuture;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import fun.falco.comcord.constraints.Elevated;
+import fun.falco.comcord.constraints.Permissions;
+import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.ApplicationInfo;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.User;
 
 /**
- * This is not intended for checking specific permissions,
- * but rather as a generic way to determine if a user is
- * allowed to configure parts of the bot.
+ * Not intended for checking specific permissions, but rather as a generic way
+ * to determine if a user is allowed to configure parts of the bot.
  *
- * See {@link Permissions} for checking permissions.
+ * <p>See {@link Permissions} for checking permissions.</p>
  *
  * @author seth@falco.fun (Seth Falco)
  */
@@ -60,11 +66,13 @@ public class ElevatedMemberValidator implements ConstraintValidator<Elevated, Me
 
     @Override
     public boolean isValid(Member member, ConstraintValidatorContext context) {
-        if (member.hasPermission(Permission.MANAGE_SERVER))
+        if (member.hasPermission(Permission.MANAGE_SERVER)) {
             return true;
+        }
 
-        if (ownerId == null)
+        if (ownerId == null) {
             return false;
+        }
 
         User user = member.getUser();
         return user.getIdLong() == ownerId;

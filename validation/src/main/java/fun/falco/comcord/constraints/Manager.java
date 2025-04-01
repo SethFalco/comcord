@@ -16,11 +16,17 @@
 
 package fun.falco.comcord.constraints;
 
-import net.dv8tion.jda.api.Permission;
-import fun.falco.comcord.validators.cdi.ManagerMessageValidator;
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-import javax.validation.*;
-import java.lang.annotation.*;
+import javax.validation.Constraint;
+import javax.validation.Payload;
+
+import fun.falco.comcord.validators.cdi.ManagerMessageValidator;
+import net.dv8tion.jda.api.Permission;
 
 /**
  * Validate that the command was performed in a guild, by someone

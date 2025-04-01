@@ -16,11 +16,14 @@
 
 package fun.falco.comcord.validators;
 
-import net.dv8tion.jda.api.entities.*;
-import fun.falco.comcord.constraints.Nsfw;
-
 import javax.enterprise.context.ApplicationScoped;
-import javax.validation.*;
+import javax.validation.ConstraintValidator;
+import javax.validation.ConstraintValidatorContext;
+
+import fun.falco.comcord.constraints.Nsfw;
+import net.dv8tion.jda.api.entities.ChannelType;
+import net.dv8tion.jda.api.entities.MessageChannel;
+import net.dv8tion.jda.api.entities.TextChannel;
 
 /**
  * @author seth@falco.fun (Seth Falco)
@@ -32,10 +35,11 @@ public class NsfwMessageChannelValidator implements ConstraintValidator<Nsfw, Me
     public boolean isValid(MessageChannel channel, ConstraintValidatorContext context) {
         ChannelType type = channel.getType();
 
-        if (!type.isGuild())
+        if (!type.isGuild()) {
             return true;
+        }
 
-        TextChannel textChannel = (TextChannel)channel;
+        TextChannel textChannel = (TextChannel) channel;
         return textChannel.isNSFW();
     }
 }

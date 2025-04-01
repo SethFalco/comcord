@@ -16,19 +16,20 @@
 
 package fun.falco.comcord.constraints;
 
-import fun.falco.comcord.validators.*;
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-import javax.validation.*;
-import java.lang.annotation.*;
+import javax.validation.Constraint;
+import javax.validation.Payload;
+
+import fun.falco.comcord.validators.TalkableMessageChannelValidator;
+import fun.falco.comcord.validators.TalkableMessageValidator;
 
 /**
- * Validate that the given channel can be communicated in by
- * your application.
- *
- * This is helpful for when you are configure notices, or notifications
- * which may be sent in future and need to validate the channel the user
- * is requesting the message it send is one the application
- * may actually be able to send it.
+ * Validate that the given channel can be communicated in by your application.
  *
  * @author seth@falco.fun (Seth Falco)
  */

@@ -18,3 +18,7 @@ dependencies {
     implementation project(":core")
     api "org.elypia.commandler:validation:${commandlerVersion}"
 }
+
+tasks.named('compileJava') {
+    dependsOn parent.project('core').tasks.named('processResources')
+}

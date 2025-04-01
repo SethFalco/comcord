@@ -16,20 +16,26 @@
 
 package fun.falco.comcord.constraints;
 
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+import javax.validation.Constraint;
+import javax.validation.Payload;
+
 import fun.falco.comcord.validators.EveryoneMessageValidator;
 
-import javax.validation.*;
-import java.lang.annotation.*;
-
 /**
- * Validate that the user has permission to do an @everyone or @here
- * if it's possible for the user to make the bot say @everyone or @here
- * through the parameter provided to it.
+ * Validate that the user has permission to do an @everyone or @here if it's
+ * possible for the user to make the bot say @everyone or @here through the
+ * parameter provided to it.
  *
- * This is useful for commands where the application may use part of the users
- * input in the response of the message. It's important to validate that it's
- * not the user trying to bypass any permissions that prevent them from doing
- * the bulk mentions by making the bot do the bulk mentions for them.
+ * <p>For commands where the application may use part of the users input in the
+ * response of the message. It's important to validate that it's not the user
+ * trying to bypass any permissions that prevent them from doing the bulk
+ * mentions by making the bot do the bulk mentions for them.</p>
  *
  * @author seth@falco.fun (Seth Falco)
  */

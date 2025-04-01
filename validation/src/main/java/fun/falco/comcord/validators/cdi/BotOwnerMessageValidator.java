@@ -16,16 +16,22 @@
 
 package fun.falco.comcord.validators.cdi;
 
-import net.dv8tion.jda.api.JDA;
-import net.dv8tion.jda.api.entities.*;
-import fun.falco.comcord.constraints.BotOwner;
-import org.slf4j.*;
+import java.time.Instant;
+import java.util.concurrent.CompletableFuture;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import javax.validation.*;
-import java.time.Instant;
-import java.util.concurrent.CompletableFuture;
+import javax.validation.ConstraintValidator;
+import javax.validation.ConstraintValidatorContext;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import fun.falco.comcord.constraints.BotOwner;
+import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.entities.ApplicationInfo;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.User;
 
 /**
  * @author seth@falco.fun (Seth Falco)
@@ -48,18 +54,19 @@ public class BotOwnerMessageValidator implements ConstraintValidator<BotOwner, M
         try {
             ownerId = future.get().getOwner().getIdLong();
         } catch (Exception ex) {
-            logger.error("Failed to obtain application owner ID, will be unvalidated if it's the owner.", ex);
+            logger.error("Failed to obtain application owner's Discord ID, will be invalid if it's the owner.", ex);
         }
     }
 
     @Override
     public boolean isValid(Message message, ConstraintValidatorContext context) {
-        if (ownerId == null)
+        if (ownerId == null) {
             return false;
+        }
 
         User user = message.getAuthor();
         boolean isValid = user.getIdLong() == ownerId;
-        logger.info("A command reserved for bot owners was attemped at {} by the user {}, returned {}.", Instant.now(), user, isValid);
+        logger.info("A command reserved for bot owners was attempted at {} by the user {}, returned {}.", Instant.now(), user, isValid);
         return isValid;
     }
 }

@@ -16,15 +16,23 @@
 
 package fun.falco.comcord;
 
-import net.dv8tion.jda.api.entities.*;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.context.RequestScoped;
+import javax.enterprise.inject.Produces;
+
+import org.elypia.commandler.event.Request;
+
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.MessageChannel;
+import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.GenericEvent;
 import net.dv8tion.jda.api.events.guild.GenericGuildEvent;
 import net.dv8tion.jda.api.events.guild.member.GenericGuildMemberEvent;
-import net.dv8tion.jda.api.events.message.*;
-import org.elypia.commandler.event.Request;
-
-import javax.enterprise.context.*;
-import javax.enterprise.inject.Produces;
+import net.dv8tion.jda.api.events.message.GenericMessageEvent;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.MessageUpdateEvent;
 
 @ApplicationScoped
 public class EventProducer {
@@ -42,91 +50,100 @@ public class EventProducer {
     }
 
     /**
-     * @param request The Commandler request to get a guild from.
-     * @return The member contained within this event.
+     * @param request Commandler request to get a guild from.
+     * @return Member contained within this event.
      */
     @RequestScoped
     @Produces
     public Guild getGuild(Request request) {
-        GenericEvent source = (GenericEvent)request.getSource();
+        GenericEvent source = (GenericEvent) request.getSource();
 
         if (source instanceof GenericMessageEvent) {
-            GenericMessageEvent genericMessageEvent = (GenericMessageEvent)source;
+            GenericMessageEvent genericMessageEvent = (GenericMessageEvent) source;
 
-            if (genericMessageEvent.isFromGuild())
+            if (genericMessageEvent.isFromGuild()) {
                 return genericMessageEvent.getGuild();
+            }
         }
 
-        if (source instanceof GenericGuildEvent)
-            return ((GenericGuildEvent)source).getGuild();
+        if (source instanceof GenericGuildEvent) {
+            return ((GenericGuildEvent) source).getGuild();
+        }
 
         return null;
     }
 
     /**
-     * @param request The Commandler request to get a message from.
-     * @return The message contained within this event.
+     * @param request Commandler request to get a message from.
+     * @return Message contained within this event.
      */
     @RequestScoped
     @Produces
     public Message getMessage(Request request) {
-        GenericEvent genericEvent = (GenericEvent)request.getSource();
+        GenericEvent genericEvent = (GenericEvent) request.getSource();
 
-        if (genericEvent instanceof MessageReceivedEvent)
-            return ((MessageReceivedEvent)genericEvent).getMessage();
+        if (genericEvent instanceof MessageReceivedEvent) {
+            return ((MessageReceivedEvent) genericEvent).getMessage();
+        }
 
-        if (genericEvent instanceof MessageUpdateEvent)
-            return ((MessageUpdateEvent)genericEvent).getMessage();
+        if (genericEvent instanceof MessageUpdateEvent) {
+            return ((MessageUpdateEvent) genericEvent).getMessage();
+        }
 
         return null;
     }
 
     /**
-     * @param request The Commandler request to get the User from.
-     * @return The member contained within this event.
+     * @param request Commandler request to get the User from.
+     * @return Member contained within this event.
      */
     @RequestScoped
     @Produces
     public User getAuthor(Request request) {
-        GenericEvent genericEvent = (GenericEvent)request.getSource();
+        GenericEvent genericEvent = (GenericEvent) request.getSource();
 
-        if (genericEvent instanceof MessageReceivedEvent)
-            return ((MessageReceivedEvent)genericEvent).getAuthor();
+        if (genericEvent instanceof MessageReceivedEvent) {
+            return ((MessageReceivedEvent) genericEvent).getAuthor();
+        }
 
-        if (genericEvent instanceof MessageUpdateEvent)
-            return ((MessageUpdateEvent)genericEvent).getAuthor();
+        if (genericEvent instanceof MessageUpdateEvent) {
+            return ((MessageUpdateEvent) genericEvent).getAuthor();
+        }
 
         return null;
     }
     /**
-     * @param request The Commandler request to get a member from.
-     * @return The member contained within this event.
+     * @param request Commandler request to get a member from.
+     * @return Member contained within this event.
      */
     @RequestScoped
     @Produces
     public Member getMember(Request request) {
-        GenericEvent genericEvent = (GenericEvent)request.getSource();
+        GenericEvent genericEvent = (GenericEvent) request.getSource();
 
-        if (genericEvent instanceof MessageReceivedEvent)
-            return ((MessageReceivedEvent)genericEvent).getMember();
+        if (genericEvent instanceof MessageReceivedEvent) {
+            return ((MessageReceivedEvent) genericEvent).getMember();
+        }
 
-        if (genericEvent instanceof GenericGuildMemberEvent)
-            return ((GenericGuildMemberEvent)genericEvent).getMember();
+        if (genericEvent instanceof GenericGuildMemberEvent) {
+            return ((GenericGuildMemberEvent) genericEvent).getMember();
+        }
 
         return null;
     }
 
     /**
-     * @param request The Commandler request to get a message channel from.
-     * @return The message channel contained within this event.
+     * @param request Commandler request to get a message channel from.
+     * @return Message channel contained within this event.
      */
     @RequestScoped
     @Produces
     public MessageChannel getMessageChannel(Request request) {
-        GenericEvent genericEvent = (GenericEvent)request.getSource();
+        GenericEvent genericEvent = (GenericEvent) request.getSource();
 
-        if (genericEvent instanceof GenericMessageEvent)
-            return ((GenericMessageEvent)genericEvent).getChannel();
+        if (genericEvent instanceof GenericMessageEvent) {
+            return ((GenericMessageEvent) genericEvent).getChannel();
+        }
 
         return null;
     }

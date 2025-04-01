@@ -16,9 +16,12 @@
 
 package fun.falco.comcord.annotations;
 
-import fun.falco.comcord.Scope;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-import java.lang.annotation.*;
+import fun.falco.comcord.Scope;
 
 /**
  * Some objects in Discord can be searched but there are
@@ -34,12 +37,12 @@ import java.lang.annotation.*;
 public @interface Scoped {
 
     /**
-     * @return The scope to search by in a guild.
+     * @return Scope to search by in a guild.
      */
     Scope inGuild() default Scope.LOCAL;
 
     /**
-     * @return The scope to search by when not in a guild.
+     * @return Scope to search by when not in a guild.
      */
     Scope inPrivate() default Scope.MUTUAL;
 }

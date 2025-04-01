@@ -16,11 +16,12 @@
 
 package fun.falco.comcord.validators;
 
-import net.dv8tion.jda.api.entities.Member;
-import fun.falco.comcord.constraints.GuildOwner;
-
 import javax.enterprise.context.ApplicationScoped;
-import javax.validation.*;
+import javax.validation.ConstraintValidator;
+import javax.validation.ConstraintValidatorContext;
+
+import fun.falco.comcord.constraints.GuildOwner;
+import net.dv8tion.jda.api.entities.Member;
 
 /**
  * @author seth@falco.fun (Seth Falco)

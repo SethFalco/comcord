@@ -16,14 +16,16 @@
 
 package fun.falco.comcord.messengers;
 
-import net.dv8tion.jda.api.MessageBuilder;
-import net.dv8tion.jda.api.entities.Message;
-import fun.falco.comcord.api.DiscordMessenger;
+import java.text.NumberFormat;
+
+import javax.inject.Inject;
+
 import org.elypia.commandler.annotation.stereotypes.MessageProvider;
 import org.elypia.commandler.event.ActionEvent;
 
-import javax.inject.Inject;
-import java.text.NumberFormat;
+import fun.falco.comcord.api.DiscordMessenger;
+import net.dv8tion.jda.api.MessageBuilder;
+import net.dv8tion.jda.api.entities.Message;
 
 /**
  * @author seth@falco.fun (Seth Falco)
@@ -46,9 +48,10 @@ public class NumberToMessageMessenger implements DiscordMessenger<Number> {
     public Message buildMessage(ActionEvent<?, Message> event, Number output) {
         String formatted = event.getMetaCommand().getProperty(this.getClass(), "formatted").getValue();
 
-        if (formatted.equalsIgnoreCase("true"))
+        if (formatted.equalsIgnoreCase("true")) {
             return new MessageBuilder(format.format(output)).build();
-        else
+        } else {
             return new MessageBuilder(String.valueOf(output)).build();
+        }
     }
 }

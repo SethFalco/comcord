@@ -16,16 +16,19 @@
 
 package fun.falco.comcord.api;
 
-import net.dv8tion.jda.api.entities.*;
-import net.dv8tion.jda.api.events.guild.GenericGuildEvent;
-import fun.falco.comcord.Scope;
-import fun.falco.comcord.annotations.Scoped;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.function.Predicate;
+
 import org.elypia.commandler.api.Adapter;
 import org.elypia.commandler.event.ActionEvent;
 import org.elypia.commandler.metadata.MetaParam;
 
-import java.util.*;
-import java.util.function.Predicate;
+import fun.falco.comcord.Scope;
+import fun.falco.comcord.annotations.Scoped;
+import net.dv8tion.jda.api.entities.IMentionable;
+import net.dv8tion.jda.api.entities.ISnowflake;
+import net.dv8tion.jda.api.events.guild.GenericGuildEvent;
 
 /**
  * @author seth@falco.fun (Seth Falco)
@@ -37,8 +40,9 @@ public interface EntityAdapter<O> extends Adapter<O> {
     default Scope getScope(ActionEvent<?, ?> event, MetaParam data, Scope defaultScope) {
         Scoped scoped = data.getParameter().getAnnotation(Scoped.class);
 
-        if (scoped == null)
+        if (scoped == null) {
             return defaultScope;
+        }
 
         return (event.getRequest().getSource() instanceof GenericGuildEvent) ? scoped.inGuild() : scoped.inPrivate();
     }
@@ -46,8 +50,8 @@ public interface EntityAdapter<O> extends Adapter<O> {
     default O filter(Collection<O> collection, Class<? extends O> type, String input, Predicate<O> predicate) {
         Iterator<O> matches = collection.stream().filter(o ->
             predicate.test(o) ||
-            (IMentionable.class.isAssignableFrom(type) && ((IMentionable)o).getAsMention().equalsIgnoreCase(input)) ||
-            (ISnowflake.class.isAssignableFrom(type) && ((ISnowflake)o).getId().equals(input))
+            (IMentionable.class.isAssignableFrom(type) && ((IMentionable) o).getAsMention().equalsIgnoreCase(input)) ||
+            (ISnowflake.class.isAssignableFrom(type) && ((ISnowflake) o).getId().equals(input))
         ).iterator();
 
         return matches.hasNext() ? matches.next() : null;

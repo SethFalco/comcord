@@ -16,13 +16,14 @@
 
 package fun.falco.comcord.adapters;
 
-import net.dv8tion.jda.api.entities.Activity;
+import java.util.Objects;
+
 import org.elypia.commandler.annotation.stereotypes.ParamAdapter;
 import org.elypia.commandler.api.Adapter;
 import org.elypia.commandler.event.ActionEvent;
 import org.elypia.commandler.metadata.MetaParam;
 
-import java.util.Objects;
+import net.dv8tion.jda.api.entities.Activity;
 
 /**
  * {@link Adapter} that adapts the {@link net.dv8tion.jda.api.entities.Activity.ActivityType}
@@ -42,8 +43,9 @@ public class ActivityTypeAdapter implements Adapter<Activity.ActivityType> {
         for (Activity.ActivityType activityType : Activity.ActivityType.values()) {
             String name = activityType.name().toLowerCase().replace("_", "");
 
-            if (name.equalsIgnoreCase(input) || String.valueOf(activityType.getKey()).equals(input))
+            if (name.equalsIgnoreCase(input) || String.valueOf(activityType.getKey()).equals(input)) {
                 return activityType;
+            }
         }
 
         switch (input) {

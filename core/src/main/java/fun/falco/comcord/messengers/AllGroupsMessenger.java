@@ -16,15 +16,22 @@
 
 package fun.falco.comcord.messengers;
 
-import net.dv8tion.jda.api.*;
-import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.utils.MarkdownUtil;
-import fun.falco.comcord.api.DiscordMessenger;
+import java.util.List;
+import java.util.StringJoiner;
+
 import org.elypia.commandler.annotation.stereotypes.MessageProvider;
 import org.elypia.commandler.event.ActionEvent;
-import org.elypia.commandler.models.*;
+import org.elypia.commandler.models.AllGroupsModel;
+import org.elypia.commandler.models.CommandModel;
+import org.elypia.commandler.models.ControllerModel;
+import org.elypia.commandler.models.ParamModel;
+import org.elypia.commandler.models.PropertyModel;
 
-import java.util.*;
+import fun.falco.comcord.api.DiscordMessenger;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.MessageBuilder;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.utils.MarkdownUtil;
 
 @MessageProvider(provides = Message.class, value = AllGroupsModel.class)
 public class AllGroupsMessenger implements DiscordMessenger<AllGroupsModel> {
@@ -42,8 +49,9 @@ public class AllGroupsMessenger implements DiscordMessenger<AllGroupsModel> {
 
             StringJoiner joiner = new StringJoiner("\n");
 
-            for (PropertyModel property : metaCommand.getProperties())
+            for (PropertyModel property : metaCommand.getProperties()) {
                 joiner.add(MarkdownUtil.bold(property.getDisplayName()) + ": " + MarkdownUtil.monospace(property.getValue()));
+            }
 
             joiner.add(metaCommand.getDescription());
 
@@ -71,8 +79,9 @@ public class AllGroupsMessenger implements DiscordMessenger<AllGroupsModel> {
     public Message buildMessage(ActionEvent<?, Message> event, AllGroupsModel groups) {
         StringBuilder builder = new StringBuilder("Groups");
 
-        for (String group : groups.getGroups().keySet())
+        for (String group : groups.getGroups().keySet()) {
             builder.append("\n* ").append(group);
+        }
 
         return new MessageBuilder(builder).build();
     }

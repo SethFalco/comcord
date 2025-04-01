@@ -16,16 +16,21 @@
 
 package fun.falco.comcord.adapters;
 
-import net.dv8tion.jda.api.entities.*;
-import net.dv8tion.jda.api.events.GenericEvent;
-import fun.falco.comcord.*;
-import fun.falco.comcord.api.EntityAdapter;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.elypia.commandler.annotation.stereotypes.ParamAdapter;
 import org.elypia.commandler.event.ActionEvent;
 import org.elypia.commandler.metadata.MetaParam;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import fun.falco.comcord.EventUtils;
+import fun.falco.comcord.Scope;
+import fun.falco.comcord.api.EntityAdapter;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.events.GenericEvent;
 
 /**
  * @author seth@falco.fun (Seth Falco)
@@ -35,7 +40,7 @@ public class TextChannelAdapter implements EntityAdapter<TextChannel> {
 
     @Override
     public TextChannel adapt(String input, Class<? extends TextChannel> type, MetaParam data, ActionEvent<?, ?> event) {
-        GenericEvent source = (GenericEvent)event.getRequest().getSource();
+        GenericEvent source = (GenericEvent) event.getRequest().getSource();
         Collection<TextChannel> channels = new ArrayList<>();
 
         switch (getScope(event, data, Scope.LOCAL)) {
@@ -52,8 +57,9 @@ public class TextChannelAdapter implements EntityAdapter<TextChannel> {
             case LOCAL:
                 Guild guild = EventUtils.getGuild(source);
 
-                if (guild == null)
+                if (guild == null) {
                     return null;
+                }
 
                 channels.addAll(guild.getTextChannels());
                 break;

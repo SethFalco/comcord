@@ -17,11 +17,18 @@
 package fun.falco.comcord;
 
 import net.dv8tion.jda.api.Permission;
-import net.dv8tion.jda.api.entities.*;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.MessageChannel;
+import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.GenericEvent;
 import net.dv8tion.jda.api.events.guild.GenericGuildEvent;
 import net.dv8tion.jda.api.events.guild.member.GenericGuildMemberEvent;
-import net.dv8tion.jda.api.events.message.*;
+import net.dv8tion.jda.api.events.message.GenericMessageEvent;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.MessageUpdateEvent;
 
 /**
  * Obtain event entities from various types
@@ -36,91 +43,102 @@ public final class EventUtils {
     }
 
     public static boolean canSendEmbed(final Message message) {
-        if (!message.isFromGuild())
+        if (!message.isFromGuild()) {
             return true;
+        }
 
         Member member = message.getGuild().getSelfMember();
         return member.hasPermission(message.getTextChannel(), Permission.MESSAGE_EMBED_LINKS);
     }
 
     /**
-     * @param source The Discord event to get a member from.
-     * @return The member contained within this event.
+     * @param source Discord event to get a member from.
+     * @return Member contained within this event.
      */
     public static Member getMember(final GenericEvent source) {
-        if (source instanceof MessageReceivedEvent)
-            return ((MessageReceivedEvent)source).getMember();
+        if (source instanceof MessageReceivedEvent) {
+            return ((MessageReceivedEvent) source).getMember();
+        }
 
-        if (source instanceof GenericGuildMemberEvent)
-            return ((GenericGuildMemberEvent)source).getMember();
+        if (source instanceof GenericGuildMemberEvent) {
+            return ((GenericGuildMemberEvent) source).getMember();
+        }
 
         return null;
     }
 
     /**
-     * @param source The Discord event to get a author from.
-     * @return The member contained within this event.
+     * @param source Discord event to get a author from.
+     * @return Member contained within this event.
      */
     public static User getAuthor(final GenericEvent source) {
-        if (source instanceof MessageReceivedEvent)
-            return ((MessageReceivedEvent)source).getAuthor();
+        if (source instanceof MessageReceivedEvent) {
+            return ((MessageReceivedEvent) source).getAuthor();
+        }
 
-        if (source instanceof MessageUpdateEvent)
-            return ((MessageUpdateEvent)source).getAuthor();
+        if (source instanceof MessageUpdateEvent) {
+            return ((MessageUpdateEvent) source).getAuthor();
+        }
 
         return null;
     }
 
     /**
-     * @param source The Discord event to get a message from.
-     * @return The member contained within this event.
+     * @param source Discord event to get a message from.
+     * @return Member contained within this event.
      */
     public static Message getMessage(final GenericEvent source) {
-        if (source instanceof MessageReceivedEvent)
-            return ((MessageReceivedEvent)source).getMessage();
+        if (source instanceof MessageReceivedEvent) {
+            return ((MessageReceivedEvent) source).getMessage();
+        }
 
-        if (source instanceof MessageUpdateEvent)
-            return ((MessageUpdateEvent)source).getMessage();
+        if (source instanceof MessageUpdateEvent) {
+            return ((MessageUpdateEvent) source).getMessage();
+        }
 
         return null;
     }
 
     /**
-     * @param source The Discord event to get a guild from.
-     * @return The member contained within this event.
+     * @param source Discord event to get a guild from.
+     * @return Member contained within this event.
      */
     public static Guild getGuild(final GenericEvent source) {
         if (source instanceof GenericMessageEvent) {
-            GenericMessageEvent event = (GenericMessageEvent)source;
+            GenericMessageEvent event = (GenericMessageEvent) source;
 
-            if (event.isFromGuild())
+            if (event.isFromGuild()) {
                 return event.getGuild();
+            }
         }
 
-        if (source instanceof GenericGuildEvent)
-            return ((GenericGuildEvent)source).getGuild();
+        if (source instanceof GenericGuildEvent) {
+            return ((GenericGuildEvent) source).getGuild();
+        }
 
         return null;
     }
 
     /**
-     * @param source The Discord event to get a text channel from.
-     * @return The text channel contained within this event.
+     * @param source Discord event to get a text channel from.
+     * @return Text channel contained within this event.
      */
     public static TextChannel getTextChannel(final GenericEvent source) {
-        if (source instanceof GenericMessageEvent)
-            return ((GenericMessageEvent)source).getTextChannel();
+        if (source instanceof GenericMessageEvent) {
+            return ((GenericMessageEvent) source).getTextChannel();
+        }
 
         return null;
     }
 
     /**
-     * @param source The Discord event to get a message channel from.
-     * @return The message channel contained within this event.
+     * @param source Discord event to get a message channel from.
+     * @return Message channel contained within this event.
      */
     public static MessageChannel getMessageChannel(final GenericEvent source) {
-        if (source instanceof GenericMessageEvent)
-            return ((GenericMessageEvent)source).getChannel();
+        if (source instanceof GenericMessageEvent) {
+            return ((GenericMessageEvent) source).getChannel();
+        }
 
         return null;
     }

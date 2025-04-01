@@ -16,12 +16,12 @@
 
 package fun.falco.comcord;
 
+import javax.enterprise.inject.Specializes;
+
 import org.elypia.commandler.api.Integration;
 import org.elypia.commandler.event.ActionEvent;
 import org.elypia.commandler.managers.MessengerManager;
 import org.elypia.commandler.producers.MessageSender;
-
-import javax.enterprise.inject.Specializes;
 
 @Specializes
 public class DiscordMessageSender extends MessageSender {

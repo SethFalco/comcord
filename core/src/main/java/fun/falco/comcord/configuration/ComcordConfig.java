@@ -16,9 +16,11 @@
 
 package fun.falco.comcord.configuration;
 
-import net.dv8tion.jda.api.MessageBuilder;
-import org.apache.deltaspike.core.api.config.*;
+import org.apache.deltaspike.core.api.config.ConfigProperty;
+import org.apache.deltaspike.core.api.config.Configuration;
+
 import fun.falco.comcord.DiscordListener;
+import net.dv8tion.jda.api.MessageBuilder;
 
 /**
  * @author seth@falco.fun (Seth Falco)
@@ -27,11 +29,12 @@ import fun.falco.comcord.DiscordListener;
 public interface ComcordConfig {
 
     /**
-     * It's <strong>strongly</strong> recommended that this is
-     * false, to avoid bots from triggering eachothers commands.
+     * It's <strong>strongly</strong> recommended that this is false, to avoid
+     * bots from triggering each others commands.
      *
-     * @return If the {@link DiscordListener} implementation should
-     * listen to bots or ignore them.
+     * @return
+     *     If the {@link DiscordListener} implementation should listen to bots
+     *     or ignore them.
      */
     @ConfigProperty(name = "listen-to-bots", defaultValue = "false")
     boolean isListeningToBots();
@@ -43,9 +46,10 @@ public interface ComcordConfig {
     boolean listenToEditEvents();
 
     /**
-     * @return If when making calls to "build", should
-     * {@link net.dv8tion.jda.api.MessageBuilder#buildAll(MessageBuilder.SplitPolicy...)}
-     * or just the regular {@link MessageBuilder#build()}.
+     * @return
+     *     If when making calls to "build", should
+     *     {@link MessageBuilder#buildAll(MessageBuilder.SplitPolicy...)} or just
+     *     the regular {@link MessageBuilder#build()}.
      */
     @ConfigProperty(name = "should-build-all", defaultValue = "false")
     boolean shouldBuildAll();

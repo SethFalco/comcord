@@ -16,12 +16,14 @@
 
 package fun.falco.comcord.validators;
 
-import net.dv8tion.jda.api.Permission;
-import net.dv8tion.jda.api.entities.*;
-import fun.falco.comcord.constraints.Permissions;
-
 import javax.enterprise.context.ApplicationScoped;
-import javax.validation.*;
+import javax.validation.ConstraintValidator;
+import javax.validation.ConstraintValidatorContext;
+
+import fun.falco.comcord.constraints.Permissions;
+import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Member;
 
 /**
  * @author seth@falco.fun (Seth Falco)
@@ -42,11 +44,13 @@ public class PermissionsMemberValidator implements ConstraintValidator<Permissio
     public boolean isValid(Member member, ConstraintValidatorContext context) {
         Guild guild = member.getGuild();
 
-        if (!guild.getSelfMember().hasPermission(permissions))
+        if (!guild.getSelfMember().hasPermission(permissions)) {
             return false;
+        }
 
-        if (!userNeedsPermission)
+        if (!userNeedsPermission) {
             return true;
+        }
 
         return member.hasPermission(permissions);
     }

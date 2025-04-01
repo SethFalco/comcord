@@ -16,22 +16,32 @@
 
 package fun.falco.comcord.validators.cdi;
 
-import net.dv8tion.jda.api.*;
-import net.dv8tion.jda.api.entities.*;
-import fun.falco.comcord.constraints.*;
-import org.slf4j.*;
+import java.util.concurrent.CompletableFuture;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import javax.validation.*;
+import javax.validation.ConstraintValidator;
+import javax.validation.ConstraintValidatorContext;
 
-import java.util.concurrent.CompletableFuture;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import fun.falco.comcord.constraints.Manager;
+import fun.falco.comcord.constraints.Permissions;
+import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.ApplicationInfo;
+import net.dv8tion.jda.api.entities.ChannelType;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.User;
 
 /**
- * This is the same as the {@link ElevatedMessageValidator}
- * except it rejects messages in {@link ChannelType#PRIVATE} channels.
+ * Same as the {@link ElevatedMessageValidator} except it rejects messages in
+ * {@link ChannelType#PRIVATE} channels.
  *
- * See {@link fun.falco.comcord.constraints.Permissions} for checking permissions.
+ * <p>See {@link Permissions} for checking permissions.</p>
  *
  * @author seth@falco.fun (Seth Falco)
  */
@@ -59,21 +69,25 @@ public class ManagerMessageValidator implements ConstraintValidator<Manager, Mes
 
     @Override
     public boolean isValid(Message message, ConstraintValidatorContext context) {
-        if (!message.isFromGuild())
+        if (!message.isFromGuild()) {
             return false;
+        }
 
         Member member = message.getMember();
 
-        if (member == null)
+        if (member == null) {
             throw new IllegalStateException("Non-null message and non-null guild returned null member.");
+        }
 
         TextChannel channel = message.getTextChannel();
 
-        if (member.hasPermission(channel, Permission.MANAGE_SERVER))
+        if (member.hasPermission(channel, Permission.MANAGE_SERVER)) {
             return true;
+        }
 
-        if (ownerId == null)
+        if (ownerId == null) {
             return false;
+        }
 
         User user = member.getUser();
         return user.getIdLong() == ownerId;

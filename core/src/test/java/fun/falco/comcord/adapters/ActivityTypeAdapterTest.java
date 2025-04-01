@@ -16,12 +16,14 @@
 
 package fun.falco.comcord.adapters;
 
-import net.dv8tion.jda.api.entities.Activity;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import static org.junit.jupiter.api.Assertions.*;
+import net.dv8tion.jda.api.entities.Activity;
 
 /**
  * @author seth@falco.fun (Seth Falco)

@@ -16,16 +16,21 @@
 
 package fun.falco.comcord.adapters;
 
-import net.dv8tion.jda.api.entities.*;
-import net.dv8tion.jda.api.events.GenericEvent;
-import fun.falco.comcord.*;
-import fun.falco.comcord.api.EntityAdapter;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 import org.elypia.commandler.annotation.stereotypes.ParamAdapter;
 import org.elypia.commandler.event.ActionEvent;
 import org.elypia.commandler.metadata.MetaParam;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import fun.falco.comcord.EventUtils;
+import fun.falco.comcord.Scope;
+import fun.falco.comcord.api.EntityAdapter;
+import net.dv8tion.jda.api.entities.Emote;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.events.GenericEvent;
 
 /**
  * @author seth@falco.fun (Seth Falco)
@@ -35,7 +40,7 @@ public class EmoteAdapter implements EntityAdapter<Emote> {
 
     @Override
     public Emote adapt(String input, Class<? extends Emote> type, MetaParam data, ActionEvent<?, ?> event) {
-        GenericEvent source = (GenericEvent)event.getRequest().getSource();
+        GenericEvent source = (GenericEvent) event.getRequest().getSource();
         Set<Emote> emotes = new HashSet<>(EventUtils.getMessage(source).getEmotes());
 
         switch (getScope(event, data, Scope.MUTUAL)) {
@@ -52,8 +57,9 @@ public class EmoteAdapter implements EntityAdapter<Emote> {
             case LOCAL:
                 Guild guild = EventUtils.getGuild(source);
 
-                if (guild == null)
+                if (guild == null) {
                     return null;
+                }
 
                 emotes.addAll(guild.getEmotes());
                 break;

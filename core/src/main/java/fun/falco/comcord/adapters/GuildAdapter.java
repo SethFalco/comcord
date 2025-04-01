@@ -16,15 +16,18 @@
 
 package fun.falco.comcord.adapters;
 
-import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.events.GenericEvent;
-import fun.falco.comcord.*;
-import fun.falco.comcord.api.EntityAdapter;
+import java.util.ArrayList;
+import java.util.Collection;
+
 import org.elypia.commandler.annotation.stereotypes.ParamAdapter;
 import org.elypia.commandler.event.ActionEvent;
 import org.elypia.commandler.metadata.MetaParam;
 
-import java.util.*;
+import fun.falco.comcord.EventUtils;
+import fun.falco.comcord.Scope;
+import fun.falco.comcord.api.EntityAdapter;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.events.GenericEvent;
 
 /**
  * @author seth@falco.fun (Seth Falco)
@@ -34,7 +37,7 @@ public class GuildAdapter implements EntityAdapter<Guild> {
 
     @Override
     public Guild adapt(String input, Class<? extends Guild> type, MetaParam data, ActionEvent<?, ?> event) {
-        GenericEvent source = (GenericEvent)event.getRequest().getSource();
+        GenericEvent source = (GenericEvent) event.getRequest().getSource();
         Collection<Guild> guilds = new ArrayList<>();
 
         switch (getScope(event, data, Scope.MUTUAL)) {

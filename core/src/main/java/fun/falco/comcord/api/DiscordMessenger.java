@@ -16,12 +16,13 @@
 
 package fun.falco.comcord.api;
 
-import net.dv8tion.jda.api.entities.Message;
-import fun.falco.comcord.EventUtils;
+import java.util.Objects;
+
 import org.elypia.commandler.api.Messenger;
 import org.elypia.commandler.event.ActionEvent;
 
-import java.util.Objects;
+import fun.falco.comcord.EventUtils;
+import net.dv8tion.jda.api.entities.Message;
 
 /**
  * @author seth@falco.fun (Seth Falco)
@@ -36,10 +37,11 @@ public interface DiscordMessenger<O> extends Messenger<O, Message> {
             Message message = event.getRequest().getMessage();
 
             if (EventUtils.canSendEmbed(message)) {
-                Message embed =  buildEmbed(event, output);
+                Message embed = buildEmbed(event, output);
 
-                if (embed != null)
+                if (embed != null) {
                     return embed;
+                }
             }
         }
 

@@ -16,10 +16,17 @@
 
 package fun.falco.comcord.constraints;
 
-import fun.falco.comcord.validators.cdi.*;
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-import javax.validation.*;
-import java.lang.annotation.*;
+import javax.validation.Constraint;
+import javax.validation.Payload;
+
+import fun.falco.comcord.validators.cdi.ElevatedMemberValidator;
+import fun.falco.comcord.validators.cdi.ElevatedMessageValidator;
 
 /**
  * @author seth@falco.fun (Seth Falco)

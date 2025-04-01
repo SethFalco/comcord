@@ -16,12 +16,15 @@
 
 package fun.falco.comcord.validators;
 
-import net.dv8tion.jda.api.Permission;
-import net.dv8tion.jda.api.entities.*;
-import fun.falco.comcord.constraints.Everyone;
-
 import javax.enterprise.context.ApplicationScoped;
-import javax.validation.*;
+import javax.validation.ConstraintValidator;
+import javax.validation.ConstraintValidatorContext;
+
+import fun.falco.comcord.constraints.Everyone;
+import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.TextChannel;
 
 /**
  * @author seth@falco.fun (Seth Falco)
@@ -31,18 +34,21 @@ public class EveryoneMessageValidator implements ConstraintValidator<Everyone, M
 
     @Override
     public boolean isValid(Message message, ConstraintValidatorContext context) {
-        if (!message.isFromGuild())
+        if (!message.isFromGuild()) {
             return true;
+        }
 
         Member member = message.getMember();
 
-        if (member == null)
+        if (member == null) {
             throw new IllegalStateException("Obtained null member from a message in a guild.");
+        }
 
         TextChannel channel = message.getTextChannel();
 
-        if (member.hasPermission(channel, Permission.MESSAGE_MENTION_EVERYONE))
+        if (member.hasPermission(channel, Permission.MESSAGE_MENTION_EVERYONE)) {
             return true;
+        }
 
         return message.mentionsEveryone();
     }

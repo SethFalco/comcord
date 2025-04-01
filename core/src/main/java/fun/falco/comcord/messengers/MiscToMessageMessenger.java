@@ -16,13 +16,14 @@
 
 package fun.falco.comcord.messengers;
 
-import net.dv8tion.jda.api.MessageBuilder;
-import net.dv8tion.jda.api.entities.Message;
-import fun.falco.comcord.api.DiscordMessenger;
+import java.net.URL;
+
 import org.elypia.commandler.annotation.stereotypes.MessageProvider;
 import org.elypia.commandler.event.ActionEvent;
 
-import java.net.URL;
+import fun.falco.comcord.api.DiscordMessenger;
+import net.dv8tion.jda.api.MessageBuilder;
+import net.dv8tion.jda.api.entities.Message;
 
 /**
  * @author seth@falco.fun (Seth Falco)

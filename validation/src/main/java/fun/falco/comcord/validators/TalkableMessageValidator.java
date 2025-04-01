@@ -16,11 +16,12 @@
 
 package fun.falco.comcord.validators;
 
-import net.dv8tion.jda.api.entities.Message;
-import fun.falco.comcord.constraints.Talkable;
-
 import javax.enterprise.context.ApplicationScoped;
-import javax.validation.*;
+import javax.validation.ConstraintValidator;
+import javax.validation.ConstraintValidatorContext;
+
+import fun.falco.comcord.constraints.Talkable;
+import net.dv8tion.jda.api.entities.Message;
 
 /**
  * @author seth@falco.fun (Seth Falco)
@@ -30,8 +31,9 @@ public class TalkableMessageValidator implements ConstraintValidator<Talkable, M
 
     @Override
     public boolean isValid(Message message, ConstraintValidatorContext context) {
-        if (!message.isFromGuild())
+        if (!message.isFromGuild()) {
             return true;
+        }
 
         return message.getTextChannel().canTalk();
     }

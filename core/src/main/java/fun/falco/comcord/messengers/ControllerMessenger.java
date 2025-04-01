@@ -16,15 +16,22 @@
 
 package fun.falco.comcord.messengers;
 
-import net.dv8tion.jda.api.*;
-import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.utils.MarkdownUtil;
-import fun.falco.comcord.api.DiscordMessenger;
+import java.util.Iterator;
+import java.util.List;
+import java.util.StringJoiner;
+
 import org.elypia.commandler.annotation.stereotypes.MessageProvider;
 import org.elypia.commandler.event.ActionEvent;
-import org.elypia.commandler.models.*;
+import org.elypia.commandler.models.CommandModel;
+import org.elypia.commandler.models.ControllerModel;
+import org.elypia.commandler.models.ParamModel;
+import org.elypia.commandler.models.PropertyModel;
 
-import java.util.*;
+import fun.falco.comcord.api.DiscordMessenger;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.MessageBuilder;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.utils.MarkdownUtil;
 
 @MessageProvider(provides = Message.class, value = ControllerModel.class)
 public class ControllerMessenger implements DiscordMessenger<ControllerModel> {
@@ -52,8 +59,9 @@ public class ControllerMessenger implements DiscordMessenger<ControllerModel> {
                 builder.append(param.getDescription());
             });
 
-            if (commands.hasNext())
+            if (commands.hasNext()) {
                 builder.append("\n\n");
+            }
         }
 
         return new MessageBuilder(builder).build();
@@ -66,8 +74,9 @@ public class ControllerMessenger implements DiscordMessenger<ControllerModel> {
 
         StringJoiner controllerJoiner = new StringJoiner("\n");
 
-        for (PropertyModel property : controller.getProperties())
+        for (PropertyModel property : controller.getProperties()) {
             controllerJoiner.add(MarkdownUtil.bold(property.getDisplayName()) + ": " + MarkdownUtil.monospace(property.getValue()));
+        }
 
         controllerJoiner.add(controller.getDescription());
 
@@ -76,8 +85,9 @@ public class ControllerMessenger implements DiscordMessenger<ControllerModel> {
         for (CommandModel metaCommand : controller.getCommands()) {
             StringJoiner joiner = new StringJoiner("\n");
 
-            for (PropertyModel property : metaCommand.getProperties())
+            for (PropertyModel property : metaCommand.getProperties()) {
                 joiner.add(MarkdownUtil.bold(property.getDisplayName()) + ": " + MarkdownUtil.monospace(property.getValue()));
+            }
 
             joiner.add(metaCommand.getDescription());
 

@@ -16,22 +16,26 @@
 
 package fun.falco.comcord.constraints;
 
-import net.dv8tion.jda.api.Permission;
-import fun.falco.comcord.validators.*;
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-import javax.validation.*;
-import java.lang.annotation.*;
+import javax.validation.Constraint;
+import javax.validation.Payload;
+
+import fun.falco.comcord.validators.PermissionMessageValidator;
+import fun.falco.comcord.validators.PermissionsMemberValidator;
+import net.dv8tion.jda.api.Permission;
 
 /**
- * Validate that the application has the {@link Permission} required
- * in the channel or event to perform the action.
+ * Validate that the application has the {@link Permission} required in the
+ * channel or event to perform the action.
  *
- * Using the {@link #userNeedsPermission()} parameter, it can also be configured if the
- * user performing the command also required the permissions or not.
- *
- * This is helpful when performing admin related commands, or a command
- * which is essentially a shortcut to several commands in Discord which
- * may require
+ * <p>Using the {@link #userNeedsPermission()} parameter, it can also be
+ * configured if the user performing the command also required the permissions
+ * or not.</p>
  *
  * @author seth@falco.fun (Seth Falco)
  */
@@ -46,7 +50,7 @@ public @interface Permissions {
     Class<? extends Payload>[] payload() default {};
 
     /**
-     * @return The permissions required to do this command.
+     * @return Permissions required to do this command.
      */
     Permission[] value();
 

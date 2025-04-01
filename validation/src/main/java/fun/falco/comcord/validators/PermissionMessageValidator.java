@@ -16,12 +16,16 @@
 
 package fun.falco.comcord.validators;
 
-import net.dv8tion.jda.api.Permission;
-import net.dv8tion.jda.api.entities.*;
-import fun.falco.comcord.constraints.Permissions;
-
 import javax.enterprise.context.ApplicationScoped;
-import javax.validation.*;
+import javax.validation.ConstraintValidator;
+import javax.validation.ConstraintValidatorContext;
+
+import fun.falco.comcord.constraints.Permissions;
+import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.TextChannel;
 
 /**
  * @author seth@falco.fun (Seth Falco)
@@ -40,22 +44,26 @@ public class PermissionMessageValidator implements ConstraintValidator<Permissio
 
     @Override
     public boolean isValid(Message message, ConstraintValidatorContext context) {
-        if (!message.isFromGuild())
+        if (!message.isFromGuild()) {
             throw new IllegalStateException("Permission validation check can not be used in DMs.");
+        }
 
         Guild guild = message.getGuild();
         TextChannel channel = message.getTextChannel();
 
-        if (!guild.getSelfMember().hasPermission(channel, permissions))
+        if (!guild.getSelfMember().hasPermission(channel, permissions)) {
             return false;
+        }
 
-        if (!userNeedsPermission)
+        if (!userNeedsPermission) {
             return true;
+        }
 
         Member member = message.getMember();
 
-        if (member == null)
+        if (member == null) {
             throw new IllegalStateException("Non-null message with non-null guild returned null author.");
+        }
 
         return member.hasPermission(channel, permissions);
     }
