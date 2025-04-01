@@ -1,99 +1,76 @@
-# Comcord [![Matrix]][matrix-community] [![Discord]][discord-guild] [![Maven Central]][maven-page] [![Docs]][documentation] [![Build]][gitlab] [![Coverage]][gitlab] [![Donate]][elypia-donate]
-The [Gradle]/[Maven] import string can be found at the maven-central badge above!
+# Comcord [![](https://img.shields.io/maven-central/v/org.elypia.comcord/core)](https://search.maven.org/search?q=g:org.elypia.comcord) [![](https://gitlab.com/SethFalco/comcord/badges/main/pipeline.svg)](https://gitlab.com/SethFalco/comcord)
+
+## Deprecation Notice
+
+Comcord has not been worked on for years, and pre-dates Discord Slash Commands. As I'm no longer a Discord user, it's very unlikely I'll set time aside to maintain this project.
+
+I would be happy to provide support and endorse a fork of this project, or a new library altogether that bridges Commandler to Discord if someone else was interested in maintaining it. Feel free to get in contact!
 
 ## About
-Comcord (**Com**mandler for Dis**cord**) is an extension to Commandler
-for integration with Discord.  
 
-This will provide various pre-made implementations to help you get
-started as quickly as possible with making a Discord bot.
+Comcord (**Com**mandler for Dis**cord**) was an extension to Commandler for integration with Discord.
 
-### Heads Up
-Comcord is **not** an implementation of the Discord API. It's an integration project
-which just ties Commandler, the command handling framework together with Discord using
-[JDA] which is an API client to interact with Discord and develop Discord bots.
+### Heads-up!
 
-## Quick-Start
-**application.yml**
+Comcord is **not** itself a wrapper around the Discord API. It's an integration between Commandler, the command handling framework, and JDA, an API client for Discord.
+
+## Getting Started
+
+### Import
+
+Visit [Comcord on Maven Central](https://search.maven.org/search?q=g:org.elypia.comcord), and follow the instructions for your build system of choice to add Comcord to your project.
+
+### Setup Commandler
+
+It's recommended to start by following the ["Your First Command" section of Commandler](https://gitlab.com/SethFalco/commandler#your-first-command). Once you've done this and your command is working, you can replace the `console` module with Comcord.
+
+### Scaffolding
+
+Create an `application.yml` file in your classpath. Here you can configure your application, including Commandler.
+
+**`main/resources/application.yml`**
 ```yml
 commandler:
   standard-dispatcher:
     prefixes: 
       - "$"
 discord:
-  bot-token: "It's strongly recommended to set this through environment variables."
+  bot-token: "{BOT_TOKEN}"
 comcord:
   listen-to-bots: false
   listen-to-edit-events: true
 ```
 
-**Main.java**
+Next, create a class that produces the instance of the JDA client. This adds JDA to the CDI container, so it can be injected into any class that needs it, including your controllers.
+
+**`main/java/org/example/bot/Main.java`**
 ```java
 public class Main {
-    
-    /**
-    * First call Commandler#create() to initialize the CDI
-    * (Contexts and Dependency Injection) container. This will 
-    * initialize most of the application and validate your classes
-    * and configuration.
-    * 
-    * Then call Commandler#run(); on the instance to create the
-    * enabled integrations, this will boot up your application
-    * and allow it to start accepting commands.
-    */
+
+    /** Create the Commandler instance and runs all integrations. */
     public static void main(String[] args) {
         Commandler commandler = Commandler.create();
         commandler.run();
     }
     
-    /**
-    * Make a producer class which will just construct your JDA instance.
-    * You can visit https://github.com/DV8FromTheWorld/JDA for more information
-    * on how to get started with JDA.
-    */
     @ApplicationScoped
     public static class DiscordBot {
         
-        /** The Discord client, this lets us interact with Discords API. */
         private final JDA jda;
             
-        /** Configure your JDA instance. */
+        /** Construct your JDA client. */
         @Inject
         public DiscordBot(DiscordConfig discordConfig) throws LoginException {
             String token = discordConfig.getBotToken();
             jda = JDABuilder.create(token, GatewayIntent.GUILD_MESSAGES).build();
         }
     
-        /** Add the JDA instance an injectable bean for the CDI container. */
-        @ApplicationScoped // Ensures it's only ever constructed once.
-        @Produces // Marks this method as producing an injectable bean.
+        /** Add the JDA instance as a singleton to the CDI container. */
+        @ApplicationScoped
+        @Produces
         public JDA getJda() {
             return jda;
         }
     }
 }
 ```
-
-## Support
-Should any problems occur, come visit us over on [Discord][discord-guild]!
-We're always around and there are ample developers that would be 
-willing to help; if it's a problem with the library itself 
-then we'll make sure to get it sorted.
-
-[matrix-community]: https://matrix.to/#/+elypia:matrix.org "Matrix Invite"
-[discord-guild]: https://discord.com/invite/hprGMaM "Discord Invite"
-[maven-page]: https://search.maven.org/search?q=g:org.elypia.comcord "Maven Central"
-[documentation]: https://elypia.gitlab.io/comcord "Documentation"
-[gitlab]: https://gitlab.com/Elypia/comcord/commits/master "Repository on GitLab"
-[elypia-donate]: https://elypia.org/donate "Donate to Elypia"
-[Gradle]: https://gradle.org/ "Depend via Gradle"
-[Maven]: https://maven.apache.org/ "Depend via Maven"
-[JDA]: https://github.com/DV8FromTheWorld/JDA "JDA on GitHub"
-
-[Matrix]: https://img.shields.io/matrix/elypia:matrix.org?logo=matrix "Matrix Shield"
-[Discord]: https://discord.com/api/guilds/184657525990359041/widget.png "Discord Shield"
-[Maven Central]: https://img.shields.io/maven-central/v/org.elypia.comcord/core "Download Shield"
-[Docs]: https://img.shields.io/badge/docs-comcord-blue.svg "Documentation Shield"
-[Build]: https://gitlab.com/Elypia/comcord/badges/master/pipeline.svg "GitLab Build Shield"
-[Coverage]: https://gitlab.com/Elypia/comcord/badges/master/coverage.svg "GitLab Coverage Shield"
-[Donate]: https://img.shields.io/badge/donate-elypia-blueviolet "Donate Shield"

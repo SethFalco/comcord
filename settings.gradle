@@ -1,5 +1,5 @@
 /*
- * Copyright 2019-2020 Elypia CIC
+ * Copyright 2019-2025 Seth Falco and Comcord Contributors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,6 +19,5 @@ rootProject.name = "comcord"
 /** Library */
 include "core"
 
-/** Extend the Commandler Validation Module with Discord specific validations. */
+/** Extend Commandler Validation module with Discord-specific validations. */
 include 'validation'
-

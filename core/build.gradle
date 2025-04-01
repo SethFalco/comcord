@@ -1,5 +1,5 @@
 /*
- * Copyright 2019-2020 Elypia CIC
+ * Copyright 2019-2025 Seth Falco and Comcord Contributors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,5 +16,5 @@
 
 dependencies {
     api "org.elypia.commandler:core:${commandlerVersion}"
-    api "net.dv8tion:JDA:4.2.0_171"
+    api "net.dv8tion:JDA:4.2.0_249"
 }
