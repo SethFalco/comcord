@@ -1,8 +1,14 @@
 # Comcord [![](https://img.shields.io/maven-central/v/org.elypia.comcord/core)](https://search.maven.org/search?q=g:org.elypia.comcord) [![](https://gitlab.com/SethFalco/comcord/badges/main/pipeline.svg)](https://gitlab.com/SethFalco/comcord)
 
+## Deprecation Notice
+
+Comcord has not been worked on for years, and pre-dates Discord Slash Commands. As I'm no longer a Discord user, it's very unlikely I'll set time aside to maintain this project.
+
+I would be happy to provide support and endorse a fork of this project, or a new library altogether that bridges Commandler to Discord if someone else was interested in maintaining it. Feel free to get in contact!
+
 ## About
 
-Comcord (**Com**mandler for Dis**cord**) is an extension to Commandler for integration with Discord.
+Comcord (**Com**mandler for Dis**cord**) was an extension to Commandler for integration with Discord.
 
 ### Heads-up!
 
