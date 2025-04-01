@@ -21,7 +21,7 @@ plugins {
 allprojects() {
     apply plugin: "jacoco"
 
-    group = "org.elypia.comcord"
+    group = "fun.falco.comcord"
     version = "2.1.2"
     description = "Implements Discord support for Commandler."
 
