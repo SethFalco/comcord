@@ -19,6 +19,5 @@ rootProject.name = "comcord"
 /** Library */
 include "core"
 
-/** Extend the Commandler Validation Module with Discord specific validations. */
+/** Extend Commandler Validation module with Discord-specific validations. */
 include 'validation'
-
