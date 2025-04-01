@@ -1,4 +1,6 @@
-# Comcord [![](https://img.shields.io/maven-central/v/org.elypia.comcord/core)](https://search.maven.org/search?q=g:org.elypia.comcord) [![](https://gitlab.com/SethFalco/comcord/badges/main/pipeline.svg)](https://gitlab.com/SethFalco/comcord)
+# Comcord
+
+[![](https://img.shields.io/maven-central/v/org.elypia.comcord/core)](https://search.maven.org/search?q=g:org.elypia.comcord) [![](https://gitlab.com/SethFalco/comcord/badges/main/pipeline.svg)](https://gitlab.com/SethFalco/comcord)
 
 ## Deprecation Notice
 
