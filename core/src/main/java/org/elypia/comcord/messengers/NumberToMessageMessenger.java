@@ -1,5 +1,5 @@
 /*
- * Copyright 2019-2020 Elypia CIC
+ * Copyright 2019-2025 Seth Falco and Comcord Contributors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,7 +26,7 @@ import javax.inject.Inject;
 import java.text.NumberFormat;
 
 /**
- * @author seth@elypia.org (Seth Falco)
+ * @author seth@falco.fun (Seth Falco)
  */
 @MessageProvider(provides = Message.class, value = {Number.class, Double.class, Float.class, Long.class, Integer.class, Short.class, Byte.class})
 public class NumberToMessageMessenger implements DiscordMessenger<Number> {

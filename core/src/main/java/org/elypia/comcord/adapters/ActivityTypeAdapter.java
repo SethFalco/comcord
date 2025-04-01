@@ -28,7 +28,7 @@ import java.util.Objects;
  * {@link Adapter} that adapts the {@link net.dv8tion.jda.api.entities.Activity.ActivityType}
  * provided by JDA.
  *
- * @author seth@elypia.org (Seth Falco)
+ * @author seth@falco.fun (Seth Falco)
  * @since 2.1.0
  */
 @ParamAdapter(Activity.ActivityType.class)

@@ -1,5 +1,5 @@
 /*
- * Copyright 2019-2020 Elypia CIC
+ * Copyright 2019-2025 Seth Falco and Comcord Contributors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,7 +39,7 @@ import java.util.StringJoiner;
  *     for it to handle how to build a message with an embed, vs
  *     as just text.
  * </strong>
- * @author seth@elypia.org (Seth Falco)
+ * @author seth@falco.fun (Seth Falco)
  */
 @MessageProvider(provides = Message.class, value = MessageEmbed.class)
 public class MessageEmbedMessenger implements DiscordMessenger<MessageEmbed> {
