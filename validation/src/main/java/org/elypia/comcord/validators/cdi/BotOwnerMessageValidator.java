@@ -48,7 +48,7 @@ public class BotOwnerMessageValidator implements ConstraintValidator<BotOwner, M
         try {
             ownerId = future.get().getOwner().getIdLong();
         } catch (Exception ex) {
-            logger.error("Failed to obtain application owner ID, will be unvalidate if it's the owner.", ex);
+            logger.error("Failed to obtain application owner ID, will be unvalidated if it's the owner.", ex);
         }
     }
 

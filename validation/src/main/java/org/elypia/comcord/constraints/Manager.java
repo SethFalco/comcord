@@ -14,32 +14,28 @@
  * limitations under the License.
  */
 
-package org.elypia.comcord.annotations;
+package org.elypia.comcord.constraints;
 
-import org.elypia.comcord.Scope;
+import net.dv8tion.jda.api.Permission;
+import org.elypia.comcord.validators.cdi.ManagerMessageValidator;
 
+import javax.validation.*;
 import java.lang.annotation.*;
 
 /**
- * Some objects in Discord can be searched but there are
- * various scopes to search from. For example searching a User
- * could be searched Locally, in the current chat only, Mutually
- * only in the current chat or in any mutual guilds, and Globally,
- * through all of Discord that the bot can see.
+ * Validate that the command was performed in a guild, by someone
+ * with the {@link Permission#MANAGE_SERVER} permission.
  *
  * @author seth@elypia.org (Seth Falco)
+ * @since 2.1.1
  */
-@Target({ElementType.PARAMETER, ElementType.FIELD})
+@Target({ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Scoped {
+@Documented
+@Constraint(validatedBy = {ManagerMessageValidator.class})
+public @interface Manager {
 
-    /**
-     * @return The scope to search by in a guild.
-     */
-    Scope inGuild() default Scope.LOCAL;
-
-    /**
-     * @return The scope to search by when not in a guild.
-     */
-    Scope inPrivate() default Scope.MUTUAL;
+    String message() default "{org.elypia.comcord.constraints.Manager.message}";
+    Class<?>[] groups() default {};
+    Class<? extends Payload>[] payload() default {};
 }

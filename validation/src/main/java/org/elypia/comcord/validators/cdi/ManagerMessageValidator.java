@@ -28,29 +28,28 @@ import javax.validation.*;
 import java.util.concurrent.CompletableFuture;
 
 /**
- * This is not intended for checking specific permissions,
- * but rather as a generic way to determine if a user is
- * allowed to configure parts of the bot.
+ * This is the same as the {@link ElevatedMessageValidator}
+ * except it rejects messages in {@link ChannelType#PRIVATE} channels.
  *
- * See {@link Permissions} for checking permissions.
+ * See {@link org.elypia.comcord.constraints.Permissions} for checking permissions.
  *
  * @author seth@elypia.org (Seth Falco)
  */
 @ApplicationScoped
-public class ElevatedMemberValidator implements ConstraintValidator<Elevated, Member> {
+public class ManagerMessageValidator implements ConstraintValidator<Manager, Message> {
 
-    private static final Logger logger = LoggerFactory.getLogger(ElevatedMemberValidator.class);
+    private static final Logger logger = LoggerFactory.getLogger(ManagerMessageValidator.class);
 
     private final CompletableFuture<ApplicationInfo> future;
     private Long ownerId;
 
     @Inject
-    public ElevatedMemberValidator(JDA jda) {
+    public ManagerMessageValidator(JDA jda) {
         future = jda.retrieveApplicationInfo().submit();
     }
 
     @Override
-    public void initialize(Elevated elevated) {
+    public void initialize(Manager elevated) {
         try {
             ownerId = future.get().getOwner().getIdLong();
         } catch (Exception ex) {
@@ -59,8 +58,18 @@ public class ElevatedMemberValidator implements ConstraintValidator<Elevated, Me
     }
 
     @Override
-    public boolean isValid(Member member, ConstraintValidatorContext context) {
-        if (member.hasPermission(Permission.MANAGE_SERVER))
+    public boolean isValid(Message message, ConstraintValidatorContext context) {
+        if (!message.isFromGuild())
+            return false;
+
+        Member member = message.getMember();
+
+        if (member == null)
+            throw new IllegalStateException("Non-null message and non-null guild returned null member.");
+
+        TextChannel channel = message.getTextChannel();
+
+        if (member.hasPermission(channel, Permission.MANAGE_SERVER))
             return true;
 
         if (ownerId == null)

@@ -53,7 +53,7 @@ public class ElevatedMessageValidator implements ConstraintValidator<Elevated, M
         try {
             ownerId = future.get().getOwner().getIdLong();
         } catch (Exception ex) {
-            logger.error("Failed to obtain application owner ID, will be unvalidate if it's the owner.", ex);
+            logger.error("Failed to obtain application owner's Discord ID, will be invalid if it's the owner.", ex);
         }
     }
 
