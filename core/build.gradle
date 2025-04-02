@@ -15,6 +15,6 @@
  */
 
 dependencies {
-    api "org.elypia.commandler:core:${commandlerVersion}"
-    api "net.dv8tion:JDA:4.2.0_249"
+    api("org.elypia.commandler:core:${commandlerVersion}")
+    api("net.dv8tion:JDA:4.2.0_249")
 }
